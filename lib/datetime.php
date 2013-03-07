@@ -73,6 +73,21 @@ namespace ICanBoogie;
  * echo "Rendez-vous in 72 hours: $time";  // Rendez-vous in 72 hours: 2013-02-07T05:03:45+0900
  * </pre>
  *
+ * Empty dates are also supported:
+ *
+ * <pre>
+ * <?php
+ *
+ * $time = new DateTime('0000-00-00', 'utc');
+ * // or
+ * $time = DateTime::none();
+ * echo $time;                             // -0001-11-30T00:00:00Z
+ * echo $time->is_empty;                   // true
+ * echo $time->as_date;                    // 0000-00-00
+ * echo $time->as_db;                      // 0000-00-00 00:00:00
+ *
+ * </pre>
+ *
  * @property int $timestamp Unix timestamp.
  * @property int $day Day of the month.
  * @property int $hour Hour of the day.
@@ -94,6 +109,7 @@ namespace ICanBoogie;
  * @property-read bool $is_today `true` if the instance is today.
  * @property-read bool $is_past `true` if the instance lies in the past.
  * @property-read bool $is_future `true` if the instance lies in the future.
+ * @property-read bool $is_empty `true` if the instance represents an empty date such as "0000-00-00" or "0000-00-00 00:00:00".
  * @property-read DateTime $tomorrow A new instance representing the next day. Time is reseted to 00:00:00.
  * @property-read DateTime $yesterday A new instance representing the previous day. Time is reseted to 00:00:00.
  * @property-read DateTime $monday A new instance representing Monday of the week. Time is reseted to 00:00:00.
@@ -200,6 +216,18 @@ class DateTime extends \DateTime
 	}
 
 	/**
+	 * Returns an instance representing an empty date ("0000-00-00").
+	 *
+	 * The instance is created in the "UTC" time zone.
+	 *
+	 * @return \ICanBoogie\DateTime
+	 */
+	static public function none()
+	{
+		return new static('0000-00-00', 'utc');
+	}
+
+	/**
 	 * If the time zone is specified as a string a {@link \DateTimeZone} instance is created and
 	 * used instead.
 	 *
@@ -274,6 +302,8 @@ class DateTime extends \DateTime
 				return $this < new static('now', $this->zone);
 			case 'is_future':
 				return $this > new static('now', $this->zone);
+			case 'is_empty':
+				return $this->year == -1 && $this->month == 11 && $this->day == 30;
 			case 'tomorrow':
 				$time = clone $this;
 				$time->modify('+1 day');
@@ -521,5 +551,29 @@ class DateTime extends \DateTime
 		}
 
 		return $this;
+	}
+
+	/**
+	 * If the instance represents an empty date and the format is {@link DATE} or {@link DB},
+	 * an empty date is returned, respectively "0000-00-00" and "0000-00-00 00:00:00". Note that
+	 * the time information is discarted for {@link DB}. This only apply to {@link DATE} and
+	 * {@link DB} formats. For instance {@link RSS} will return the following string:
+	 * "Wed, 30 Nov -0001 00:00:00 +0000".
+	 */
+	public function format($format)
+	{
+		if (($format == self::DATE || $format == self::DB) && $this->is_empty)
+		{
+			if ($format == self::DATE)
+			{
+				return '0000-00-00';
+			}
+			else
+			{
+				return '0000-00-00 00:00:00';
+			}
+		}
+
+		return parent::format($format);
 	}
 }

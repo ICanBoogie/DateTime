@@ -20,6 +20,28 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		date_default_timezone_set('Europe/Paris');
 	}
 
+	public function test_now()
+	{
+		$d = DateTime::now();
+		$now = new \DateTime('now');
+		$this->assertEquals(date_default_timezone_get(), $d->zone->name);
+		$this->assertEquals($d->year, $now->format('Y'));
+		$this->assertEquals($d->month, $now->format('m'));
+		$this->assertEquals($d->day, $now->format('d'));
+		$this->assertEquals($d->hour, $now->format('H'));
+		$this->assertEquals($d->minute, $now->format('i'));
+		$this->assertEquals($d->second, $now->format('s'));
+	}
+
+	public function test_none()
+	{
+		$d = DateTime::none();
+		$this->assertEquals('UTC', $d->zone->name);
+		$this->assertEquals(-1, $d->year);
+		$this->assertEquals(11, $d->month);
+		$this->assertEquals(30, $d->day);
+	}
+
 	public function test_change()
 	{
 		$d = new DateTime('2001-01-01 01:01:01');
@@ -466,6 +488,28 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$d->is_future = true;
 	}
 
+	public function test_get_is_empty()
+	{
+		$d = DateTime::none();
+		$this->assertTrue($d->is_empty);
+		$d = new DateTime('0000-00-00 00:00:00');
+		$this->assertTrue($d->is_empty);
+		$d = new DateTime('0000-00-00');
+		$this->assertTrue($d->is_empty);
+		$d = new DateTime('now');
+		$this->assertFalse($d->is_empty);
+		$d = new DateTime('@0');
+		$this->assertFalse($d->is_empty);
+	}
+
+	/**
+	 * @expectedException ICanBoogie\PropertyNotWritable
+	 */
+	public function test_set_is_empty()
+	{
+		DateTime::now()->is_empty = true;
+	}
+
 	public function test_get_tomorrow()
 	{
 		$d = new DateTime('2013-02-10 21:21:21', 'utc');
@@ -635,6 +679,14 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	{
 		$d = DateTime::now();
 		$d->is_dst = true;
+	}
+
+	public function test_format()
+	{
+		$empty = DateTime::none();
+		$this->assertEquals('0000-00-00', $empty->format(DateTime::DATE));
+		$this->assertEquals('0000-00-00 00:00:00', $empty->format(DateTime::DB));
+		$this->assertEquals('Wed, 30 Nov -0001 00:00:00 +0000', $empty->format(DateTime::RSS));
 	}
 
 	/*
@@ -912,12 +964,16 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	{
 		$now = DateTime::now();
 		$this->assertEquals($now->format(DateTime::DB), $now->format_as_db());
+		$empty = DateTime::none();
+		$this->assertEquals('0000-00-00 00:00:00', $empty->format_as_db());
 	}
 
 	public function test_get_as_db()
 	{
 		$now = DateTime::now();
 		$this->assertEquals($now->format(DateTime::DB), $now->as_db);
+		$empty = DateTime::none();
+		$this->assertEquals('0000-00-00 00:00:00', $empty->as_db);
 	}
 
 	/**
@@ -954,12 +1010,16 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	{
 		$now = DateTime::now();
 		$this->assertEquals($now->format(DateTime::DATE), $now->format_as_date());
+		$empty = DateTime::none();
+		$this->assertEquals('0000-00-00', $empty->format_as_date());
 	}
 
 	public function test_get_as_date()
 	{
 		$now = DateTime::now();
 		$this->assertEquals($now->format(DateTime::DATE), $now->as_date);
+		$empty = DateTime::none();
+		$this->assertEquals('0000-00-00', $empty->as_date);
 	}
 
 	/**
