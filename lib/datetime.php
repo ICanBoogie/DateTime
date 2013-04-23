@@ -187,11 +187,23 @@ class DateTime extends \DateTime
 	/**
 	 * Creates a {@link DateTime} instance from a source.
 	 *
+	 * <pre>
+	 * <?php
+	 *
+	 * use ICanBoogie\DateTime;
+	 *
+	 * DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')));
+	 * DateTime::from('2001-01-01 01:01:01', 'Europe/Paris');
+	 * DateTime::from('now');
+	 * </pre>
+	 *
 	 * @param mixed $source
+	 * @param mixed $timezone The time zone to use to create the time. The value is ignored if the
+	 * source is an instance of {@link \DateTime}.
 	 *
 	 * @return \ICanBoogie\DateTime
 	 */
-	static public function from($source)
+	static public function from($source, $timezone=null)
 	{
 		if ($source instanceof self)
 		{
@@ -199,14 +211,14 @@ class DateTime extends \DateTime
 		}
 		else if ($source instanceof \DateTime)
 		{
-			return new static($source->getTimestamp(), $source->getTimezone());
+			return new static($source->format(self::DB), $source->getTimezone());
 		}
 
-		return new static($source);
+		return new static($source, $timezone);
 	}
 
 	/**
-	 * Returns an instance with the current time and the local time zone.
+	 * Returns an instance with the current local time and the local time zone.
 	 *
 	 * @return \ICanBoogie\DateTime
 	 */
@@ -218,20 +230,45 @@ class DateTime extends \DateTime
 	/**
 	 * Returns an instance representing an empty date ("0000-00-00").
 	 *
-	 * The instance is created in the "UTC" time zone.
+	 * <pre>
+	 * <?php
+	 *
+	 * use ICanBoogie\DateTime;
+	 *
+	 * $d = DateTime::none();
+	 * $d->is_empty;                      // true
+	 * $d->zone->name;                    // "UTC"
+	 *
+	 * $d = DateTime::none('Asia/Tokyo');
+	 * $d->is_empty;                      // true
+	 * $d->zone->name;                    // "Asia/Tokio"
+	 * </pre>
+	 *
+	 * @param \DateTimeZone|string $timezone The time zone in which the empty date is created.
+	 * Defaults to "UTC".
 	 *
 	 * @return \ICanBoogie\DateTime
 	 */
-	static public function none()
+	static public function none($timezone='utc')
 	{
-		return new static('0000-00-00', 'utc');
+		return new static('0000-00-00', $timezone);
 	}
 
 	/**
 	 * If the time zone is specified as a string a {@link \DateTimeZone} instance is created and
 	 * used instead.
 	 *
-	 * @param string $time
+	 * <pre>
+	 * <?php
+	 *
+	 * use ICanBoogie\DateTime;
+	 *
+	 * new DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')));
+	 * new DateTime('2001-01-01 01:01:01', 'Europe/Paris');
+	 * new DateTime;
+	 * </pre>
+	 *
+	 * @param string $time Defaults to "now".
 	 * @param \DateTimeZone|string|null $timezone
 	 */
 	public function __construct($time='now', $timezone=null)
@@ -466,7 +503,7 @@ class DateTime extends \DateTime
 	 * If the timezone is `local` the timezone returned by {@link date_default_timezone_get()} is
 	 * used instead.
 	 */
-	public function setTimezone(/*\DateTimeZone*/ $timezone)
+	public function setTimezone($timezone)
 	{
 		if ($timezone === 'local')
 		{

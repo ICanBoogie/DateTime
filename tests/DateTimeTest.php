@@ -40,6 +40,45 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(-1, $d->year);
 		$this->assertEquals(11, $d->month);
 		$this->assertEquals(30, $d->day);
+
+		$d = DateTime::none('Asia/Tokyo');
+		$this->assertEquals('Asia/Tokyo', $d->zone->name);
+		$this->assertTrue($d->is_empty);
+
+		$d = DateTime::none(new \DateTimeZone('Asia/Tokyo'));
+		$this->assertEquals('Asia/Tokyo', $d->zone->name);
+		$this->assertTrue($d->is_empty);
+	}
+
+	public function test_from()
+	{
+		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')));
+		$this->assertEquals('Europe/Paris', $d->zone->name);
+		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
+
+		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')), new \DateTimeZone('UTC'));
+		$this->assertEquals('Europe/Paris', $d->zone->name);
+		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
+
+		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('UTC')));
+		$this->assertEquals('UTC', $d->zone->name);
+		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
+
+		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('UTC')), new \DateTimeZone('Europe/Paris'));
+		$this->assertEquals('UTC', $d->zone->name);
+		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
+
+		$d = DateTime::from('2001-01-01 01:01:01', new \DateTimeZone('UTC'));
+		$this->assertEquals('UTC', (string) $d->zone);
+		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
+
+		$d = DateTime::from('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris'));
+		$this->assertEquals('Europe/Paris', $d->zone->name);
+		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
+
+		$d = DateTime::from('2001-01-01 01:01:01');
+		$this->assertEquals(date_default_timezone_get(), $d->zone->name);
+		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 	}
 
 	public function test_change()
