@@ -87,7 +87,7 @@ class TimeZone extends \DateTimeZone
 
 				if (!$this->location)
 				{
-					$this->location = new TimeZoneLocation($this->getLocation());
+					$this->location = TimeZoneLocation::from($this);
 				}
 
 				return $this->location;

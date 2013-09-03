@@ -37,6 +37,27 @@ namespace ICanBoogie;
  */
 class TimeZoneLocation
 {
+	static private $cache;
+
+	/**
+	 * Creates an instance from a {@link \DateTimeZone} instance.
+	 *
+	 * @param \DateTimeZone $zone
+	 *
+	 * @return \ICanBoogie\TimeZoneLocation
+	 */
+	static public function from(\DateTimeZone $zone)
+	{
+		$hash = spl_object_hash($zone);
+
+		if (empty(self::$cache[$hash]))
+		{
+			self::$cache[$hash] = new static($zone->getLocation());
+		}
+
+		return self::$cache[$hash];
+	}
+
 	private $location;
 
 	/**

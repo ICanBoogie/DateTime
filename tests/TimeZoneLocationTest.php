@@ -15,6 +15,23 @@ use ICanBoogie\TimeZoneLocation;
 
 class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 {
+	public function test_from()
+	{
+		$zone = new \DateTimeZone('Europe/Paris');
+		$location = TimeZoneLocation::from($zone);
+
+		$this->assertInstanceOf('ICanBoogie\TimeZoneLocation', $location);
+	}
+
+	public function test_from_cache()
+	{
+		$zone = new \DateTimeZone('Europe/Paris');
+		$location = TimeZoneLocation::from($zone);
+		$cached = TimeZoneLocation::from($zone);
+
+		$this->assertEquals(spl_object_hash($location), spl_object_hash($cached));
+	}
+
 	public function test_location()
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
