@@ -22,17 +22,6 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 		$instance = new TimeZoneLocation($location);
 	}
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
-	public function test_location_with_extraneous()
-	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$location['__extraneous__'] = "You know that I'm no good";
-		$instance = new TimeZoneLocation($location);
-	}
-
 	public function test_get_coutry_code()
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
@@ -40,6 +29,18 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 		$instance = new TimeZoneLocation($location);
 
 		$this->assertEquals($location['country_code'], $instance->country_code);
+	}
+
+	/**
+	 * @expectedException ICanBoogie\PropertyNotWritable
+	 */
+	public function test_set_country_code()
+	{
+		$zone = new \DateTimeZone('Europe/Paris');
+		$location = $zone->getLocation();
+		$instance = new TimeZoneLocation($location);
+
+		$instance->country_code = true;
 	}
 
 	public function test_get_latitude()
@@ -51,6 +52,18 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($location['latitude'], $instance->latitude);
 	}
 
+	/**
+	 * @expectedException ICanBoogie\PropertyNotWritable
+	 */
+	public function test_set_latitude()
+	{
+		$zone = new \DateTimeZone('Europe/Paris');
+		$location = $zone->getLocation();
+		$instance = new TimeZoneLocation($location);
+
+		$instance->latitude = true;
+	}
+
 	public function test_get_longitude()
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
@@ -58,6 +71,18 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 		$instance = new TimeZoneLocation($location);
 
 		$this->assertEquals($location['longitude'], $instance->longitude);
+	}
+
+	/**
+	 * @expectedException ICanBoogie\PropertyNotWritable
+	 */
+	public function test_set_longitude()
+	{
+		$zone = new \DateTimeZone('Europe/Paris');
+		$location = $zone->getLocation();
+		$instance = new TimeZoneLocation($location);
+
+		$instance->longitude = true;
 	}
 
 	public function test_get_comments()
@@ -70,6 +95,18 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @expectedException ICanBoogie\PropertyNotWritable
+	 */
+	public function test_set_comments()
+	{
+		$zone = new \DateTimeZone('Europe/Paris');
+		$location = $zone->getLocation();
+		$instance = new TimeZoneLocation($location);
+
+		$instance->comments = true;
+	}
+
+	/**
 	 * @expectedException ICanBoogie\PropertyNotDefined
 	 */
 	public function test_get_unsupported_property()
@@ -79,6 +116,18 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 		$instance = new TimeZoneLocation($location);
 
 		$instance->you_know_that_i_m_no_good;
+	}
+
+	/**
+	 * @expectedException ICanBoogie\PropertyNotWritable
+	 */
+	public function test_set_unsupported_property()
+	{
+		$zone = new \DateTimeZone('Europe/Paris');
+		$location = $zone->getLocation();
+		$instance = new TimeZoneLocation($location);
+
+		$instance->unsupported_property = true;
 	}
 
 	public function test_to_string()

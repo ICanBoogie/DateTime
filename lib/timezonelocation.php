@@ -26,6 +26,8 @@ namespace ICanBoogie;
  * echo $location->country_code; // FR
  * echo $location->latitude;     // 48.86667
  * echo $location->longitude;    // 2.33333
+ *
+ * $location->latitude = true;   // throws ICanBoogie\PropertyNotWritable
  * </pre>
  *
  * @property-read string $country_code The country code of the location.
@@ -35,53 +37,16 @@ namespace ICanBoogie;
  */
 class TimeZoneLocation
 {
-	/**
-	 * The country code of the location.
-	 *
-	 * @var string
-	 */
-	protected $country_code;
+	private $location;
 
 	/**
-	 * The latitude of the location.
-	 *
-	 * @var float
-	 */
-	protected $latitude;
-
-	/**
-	 * The longitude of the location.
-	 *
-	 * @var float
-	 */
-	protected $longitude;
-
-	/**
-	 * Comments on the location.
-	 *
-	 * @var string
-	 */
-	protected $comments;
-
-	/**
-	 * Initializes the {@link $country_code}, {@link $latitude}, {@link $longitude} and
-	 * {@link $comments} properties.
+	 * Initializes the {@link $location} property.
 	 *
 	 * @param array $location Location information provided by {@link \DateTimeZone::getLocation()}.
-	 *
-	 * @throws \InvalidArgumentException In attempt to initialize an unsupported property.
 	 */
 	public function __construct(array $location)
 	{
-		foreach ($location as $property => $value)
-		{
-			if (!property_exists($this, $property))
-			{
-				throw new \InvalidArgumentException("Unsupported property: $property.");
-			}
-
-			$this->$property = $value;
-		}
+		$this->location = $location;
 	}
 
 	/**
@@ -94,9 +59,9 @@ class TimeZoneLocation
 	 */
 	public function __get($property)
 	{
-		if (property_exists($this, $property))
+		if (isset($this->location[$property]))
 		{
-			return $this->$property;
+			return $this->location[$property];
 		}
 
 		if (class_exists('ICanBoogie\PropertyNotDefined'))
@@ -106,6 +71,21 @@ class TimeZoneLocation
 		else
 		{
 			throw new \RuntimeException("Property is not defined: $property.");
+		}
+	}
+
+	/**
+	 * @throws PropertyNotWritable in attempt to set an unsupported property.
+	 */
+	public function __set($property, $value)
+	{
+		if (class_exists('ICanBoogie\PropertyNotWritable'))
+		{
+			throw new PropertyNotWritable(array($property, $this));
+		}
+		else
+		{
+			throw new \RuntimeException("Property is not writable: $property.");
 		}
 	}
 
