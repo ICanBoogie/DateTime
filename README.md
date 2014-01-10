@@ -98,6 +98,52 @@ class is vastly inspired by Ruby's [Time](http://www.ruby-doc.org/core-1.9.3/Tim
 
 
 
+## Day of week
+
+```php
+<?php
+
+use ICanBoogie\DateTime:
+
+$time = new DateTime('2014-01-06 11:11:11', 'utc'); // a monday at 11:11:11 UTC
+
+echo $time->monday;                          // 2014-01-06T00:00:00Z
+echo $time->tuesday;                         // 2014-01-07T00:00:00Z
+echo $time->wednesday;                       // 2014-01-08T00:00:00Z
+echo $time->thursday;                        // 2014-01-09T00:00:00Z
+echo $time->friday;                          // 2014-01-10T00:00:00Z
+echo $time->saturday;                        // 2014-01-11T00:00:00Z
+echo $time->sunday;                          // 2014-01-12T00:00:00Z
+
+$time->monday->is_monday;                    // true
+$time->tuesday->is_tuesday;                  // true
+$time->wednesday->is_wednesday;              // true
+$time->thursday->is_thursday;                // true
+$time->friday->is_friday;                    // true
+$time->saturday->is_saturday;                // true
+$time->sunday->is_sunday;                    // true
+
+$time->monday->is_tuesday;                   // false
+$time->tuesday->is_wednesday;                // false
+$time->wednesday->is_thursday;               // false
+$time->thursday->is_friday;                  // false
+$time->friday->is_saturday;                  // false
+$time->saturday->is_sunday;                  // false
+$time->sunday->is_monday;                    // false
+
+$time->monday->weekday;                      // 1
+$time->tuesday->weekday;                     // 2
+$time->wednesday->weekday;                   // 3
+$time->thursday->weekday;                    // 4
+$time->friday->weekday;                      // 5
+$time->saturday->weekday;                    // 6
+$time->sunday->weekday;                      // 7
+```
+
+
+
+
+
 ## Requirement
 
 The package requires PHP 5.3 or later.

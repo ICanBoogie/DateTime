@@ -113,6 +113,11 @@ namespace ICanBoogie;
  * @property-read DateTime $tomorrow A new instance representing the next day. Time is reseted to 00:00:00.
  * @property-read DateTime $yesterday A new instance representing the previous day. Time is reseted to 00:00:00.
  * @property-read DateTime $monday A new instance representing Monday of the week. Time is reseted to 00:00:00.
+ * @property-read DateTime $tuesday A new instance representing Tuesday of the week. Time is reseted to 00:00:00.
+ * @property-read DateTime $wednesday A new instance representing Wednesday of the week. Time is reseted to 00:00:00.
+ * @property-read DateTime $thursday A new instance representing Thursday of the week. Time is reseted to 00:00:00.
+ * @property-read DateTime $friday A new instance representing Friday of the week. Time is reseted to 00:00:00.
+ * @property-read DateTime $saturday A new instance representing Saturday of the week. Time is reseted to 00:00:00.
  * @property-read DateTime $sunday A new instance representing Sunday of the week. Time is reseted to 00:00:00.
  *
  * @property-read string $as_atom The instance formatted according to {@link ATOM}.
@@ -153,6 +158,8 @@ namespace ICanBoogie;
  * @method string format_as_number() format_as_number() Formats the instance according to {@link NUMBER}.
  * @method string format_as_date() format_as_date() Formats the instance according to {@link DATE}.
  * @method string format_as_time() format_as_time() Formats the instance according to {@link TIME}.
+ *
+ * @see http://en.wikipedia.org/wiki/ISO_8601
  */
 class DateTime extends \DateTime
 {
@@ -351,28 +358,19 @@ class DateTime extends \DateTime
 				$time->modify('-1 day');
 				$time->setTime(0, 0, 0);
 				return $time;
+
+			/*
+			 * days
+			 */
 			case 'monday':
-				$time = clone $this;
-				$day = $time->weekday;
-
-				if ($day != 1)
-				{
-					$time->modify('-' . ($day - 1) . ' day');
-				}
-
-				$time->setTime(0, 0, 0);
-				return $time;
+			case 'tuesday':
+			case 'wednesday':
+			case 'thursday':
+			case 'friday':
+			case 'saturday':
 			case 'sunday':
-				$time = clone $this;
-				$day = $time->weekday;
 
-				if ($day != 7)
-				{
-					$time->modify('+' . (7 - $day) . ' day');
-				}
-
-				$time->setTime(0, 0, 0);
-				return $time;
+				return $this->{ 'get_' . $property }();
 
 			case 'zone':
 				return TimeZone::from($this->getTimezone());
@@ -402,6 +400,96 @@ class DateTime extends \DateTime
 	}
 
 	/**
+	 * Returns Monday of the week.
+	 *
+	 * @return \ICanBoogie\DateTime
+	 */
+	protected function get_monday()
+	{
+		$time = clone $this;
+		$day = $time->weekday;
+
+		if ($day != 1)
+		{
+			$time->modify('-' . ($day - 1) . ' day');
+		}
+
+		$time->setTime(0, 0, 0);
+
+		return $time;
+	}
+
+	/**
+	 * Returns Tuesday of the week.
+	 *
+	 * @return \ICanBoogie\DateTime
+	 */
+	protected function get_tuesday()
+	{
+		return $this->monday->modify('+1 day');
+	}
+
+	/**
+	 * Returns Wednesday of the week.
+	 *
+	 * @return \ICanBoogie\DateTime
+	 */
+	protected function get_wednesday()
+	{
+		return $this->monday->modify('+2 day');
+	}
+
+	/**
+	 * Returns Thursday of the week.
+	 *
+	 * @return \ICanBoogie\DateTime
+	 */
+	protected function get_thursday()
+	{
+		return $this->monday->modify('+3 day');
+	}
+
+	/**
+	 * Returns Friday of the week.
+	 *
+	 * @return \ICanBoogie\DateTime
+	 */
+	protected function get_friday()
+	{
+		return $this->monday->modify('+4 day');
+	}
+
+	/**
+	 * Returns Saturday of the week.
+	 *
+	 * @return \ICanBoogie\DateTime
+	 */
+	protected function get_saturday()
+	{
+		return $this->monday->modify('+5 day');
+	}
+
+	/**
+	 * Returns Sunday of the week.
+	 *
+	 * @return \ICanBoogie\DateTime
+	 */
+	protected function get_sunday()
+	{
+		$time = clone $this;
+		$day = $time->weekday;
+
+		if ($day != 7)
+		{
+			$time->modify('+' . (7 - $day) . ' day');
+		}
+
+		$time->setTime(0, 0, 0);
+
+		return $time;
+	}
+
+	/**
 	 * Sets the {@link $year}, {@link $month}, {@link $day}, {@link $hour}, {@link $minute},
 	 * {@link $second}, {@link $timestamp} and {@link $zone} properties.
 	 *
@@ -411,7 +499,7 @@ class DateTime extends \DateTime
 	public function __set($property, $value)
 	{
 		static $readonly = array('quarter', 'week', 'year_day', 'weekday',
-		'tomorrow', 'yesterday', 'monday', 'sunday', 'utc', 'local');
+		'tomorrow', 'yesterday', 'utc', 'local');
 
 		switch ($property)
 		{
@@ -433,7 +521,7 @@ class DateTime extends \DateTime
 				return;
 		}
 
-		if (strpos($property, 'is_') === 0 || strpos($property, 'as_') === 0 || in_array($property, $readonly))
+		if (strpos($property, 'is_') === 0 || strpos($property, 'as_') === 0 || in_array($property, $readonly) || method_exists($this, 'get_' . $property))
 		{
 			if (class_exists('ICanBoogie\PropertyNotWritable'))
 			{

@@ -579,42 +579,147 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$d->yesterday = true;
 	}
 
-	public function test_get_monday()
+	/**
+	 * @dataProvider provide_writeonly_property
+	 * @expectedException ICanBoogie\PropertyNotWritable
+	 */
+	public function test_set_writeonly_property($property)
 	{
-		$d = new DateTime('2013-02-05 11:11:11');
-		$this->assertEquals('2013-02-04 00:00:00', $d->monday->as_db);
-		$d = new DateTime('2013-02-04 11:11:11');
-		$this->assertEquals('2013-02-04 00:00:00', $d->monday->as_db);
-		$d = new DateTime('2013-02-04 00:00:00');
-		$this->assertEquals('2013-02-04 00:00:00', $d->monday->as_db);
+		DateTime::now()->$property = null;
+	}
+
+	public function provide_writeonly_property()
+	{
+		$properties = 'monday|tuesday|wednesday|thursday|friday|saturday|sunday';
+
+		return array_map(function($v) { return (array) $v; }, explode('|', $properties));
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @dataProvider provide_test_day_instance
 	 */
-	public function test_set_monday()
+	public function test_day_instance($date, $expected, $day)
 	{
-		$d = DateTime::now();
-		$d->monday = true;
+		$d = new DateTime($date);
+		$this->assertEquals($expected, $d->$day->as_db);
 	}
 
-	public function test_get_sunday()
+	public function provide_test_day_instance()
 	{
-		$d = new DateTime('2013-02-05 11:11:11');
-		$this->assertEquals('2013-02-10 00:00:00', $d->sunday->as_db);
-		$d = new DateTime('2013-02-10 11:11:11');
-		$this->assertEquals('2013-02-10 00:00:00', $d->sunday->as_db);
-		$d = new DateTime('2013-02-10 00:00:00');
-		$this->assertEquals('2013-02-10 00:00:00', $d->sunday->as_db);
-	}
+		return array
+		(
+			# monday
+			array('2014-01-06 00:00:00', '2014-01-06 00:00:00', 'monday'), // Mo
+			array('2014-01-06 11:11:11', '2014-01-06 00:00:00', 'monday'), // Mo
+			array('2014-01-07 00:00:00', '2014-01-06 00:00:00', 'monday'), // Tu
+			array('2014-01-07 11:11:11', '2014-01-06 00:00:00', 'monday'), // Tu
+			array('2014-01-08 00:00:00', '2014-01-06 00:00:00', 'monday'), // We
+			array('2014-01-08 11:11:11', '2014-01-06 00:00:00', 'monday'), // We
+			array('2014-01-09 00:00:00', '2014-01-06 00:00:00', 'monday'), // Th
+			array('2014-01-09 11:11:11', '2014-01-06 00:00:00', 'monday'), // Th
+			array('2014-01-10 00:00:00', '2014-01-06 00:00:00', 'monday'), // Fr
+			array('2014-01-10 11:11:11', '2014-01-06 00:00:00', 'monday'), // Fr
+			array('2014-01-11 00:00:00', '2014-01-06 00:00:00', 'monday'), // Sa
+			array('2014-01-11 11:11:11', '2014-01-06 00:00:00', 'monday'), // Sa
+			array('2014-01-12 00:00:00', '2014-01-06 00:00:00', 'monday'), // Su
+			array('2014-01-12 11:11:11', '2014-01-06 00:00:00', 'monday'), // Su
 
-	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
-	 */
-	public function test_set_sunday()
-	{
-		$d = DateTime::now();
-		$d->sunday = true;
+			# tuesday
+			array('2014-01-06 00:00:00', '2014-01-07 00:00:00', 'tuesday'), // Mo
+			array('2014-01-06 11:11:11', '2014-01-07 00:00:00', 'tuesday'), // Mo
+			array('2014-01-07 00:00:00', '2014-01-07 00:00:00', 'tuesday'), // Tu
+			array('2014-01-07 11:11:11', '2014-01-07 00:00:00', 'tuesday'), // Tu
+			array('2014-01-08 00:00:00', '2014-01-07 00:00:00', 'tuesday'), // We
+			array('2014-01-08 11:11:11', '2014-01-07 00:00:00', 'tuesday'), // We
+			array('2014-01-09 00:00:00', '2014-01-07 00:00:00', 'tuesday'), // Th
+			array('2014-01-09 11:11:11', '2014-01-07 00:00:00', 'tuesday'), // Th
+			array('2014-01-10 00:00:00', '2014-01-07 00:00:00', 'tuesday'), // Fr
+			array('2014-01-10 11:11:11', '2014-01-07 00:00:00', 'tuesday'), // Fr
+			array('2014-01-11 00:00:00', '2014-01-07 00:00:00', 'tuesday'), // Sa
+			array('2014-01-11 11:11:11', '2014-01-07 00:00:00', 'tuesday'), // Sa
+			array('2014-01-12 00:00:00', '2014-01-07 00:00:00', 'tuesday'), // Su
+			array('2014-01-12 11:11:11', '2014-01-07 00:00:00', 'tuesday'), // Su
+
+			# wednesday
+			array('2014-01-06 00:00:00', '2014-01-08 00:00:00', 'wednesday'), // Mo
+			array('2014-01-06 11:11:11', '2014-01-08 00:00:00', 'wednesday'), // Mo
+			array('2014-01-07 00:00:00', '2014-01-08 00:00:00', 'wednesday'), // Tu
+			array('2014-01-07 11:11:11', '2014-01-08 00:00:00', 'wednesday'), // Tu
+			array('2014-01-08 00:00:00', '2014-01-08 00:00:00', 'wednesday'), // We
+			array('2014-01-08 11:11:11', '2014-01-08 00:00:00', 'wednesday'), // We
+			array('2014-01-09 00:00:00', '2014-01-08 00:00:00', 'wednesday'), // Th
+			array('2014-01-09 11:11:11', '2014-01-08 00:00:00', 'wednesday'), // Th
+			array('2014-01-10 00:00:00', '2014-01-08 00:00:00', 'wednesday'), // Fr
+			array('2014-01-10 11:11:11', '2014-01-08 00:00:00', 'wednesday'), // Fr
+			array('2014-01-11 00:00:00', '2014-01-08 00:00:00', 'wednesday'), // Sa
+			array('2014-01-11 11:11:11', '2014-01-08 00:00:00', 'wednesday'), // Sa
+			array('2014-01-12 00:00:00', '2014-01-08 00:00:00', 'wednesday'), // Su
+			array('2014-01-12 11:11:11', '2014-01-08 00:00:00', 'wednesday'), // Su
+
+			# thursday
+			array('2014-01-06 00:00:00', '2014-01-09 00:00:00', 'thursday'), // Mo
+			array('2014-01-06 11:11:11', '2014-01-09 00:00:00', 'thursday'), // Mo
+			array('2014-01-07 00:00:00', '2014-01-09 00:00:00', 'thursday'), // Tu
+			array('2014-01-07 11:11:11', '2014-01-09 00:00:00', 'thursday'), // Tu
+			array('2014-01-08 00:00:00', '2014-01-09 00:00:00', 'thursday'), // We
+			array('2014-01-08 11:11:11', '2014-01-09 00:00:00', 'thursday'), // We
+			array('2014-01-09 00:00:00', '2014-01-09 00:00:00', 'thursday'), // Th
+			array('2014-01-09 11:11:11', '2014-01-09 00:00:00', 'thursday'), // Th
+			array('2014-01-10 00:00:00', '2014-01-09 00:00:00', 'thursday'), // Fr
+			array('2014-01-10 11:11:11', '2014-01-09 00:00:00', 'thursday'), // Fr
+			array('2014-01-11 00:00:00', '2014-01-09 00:00:00', 'thursday'), // Sa
+			array('2014-01-11 11:11:11', '2014-01-09 00:00:00', 'thursday'), // Sa
+			array('2014-01-12 00:00:00', '2014-01-09 00:00:00', 'thursday'), // Su
+			array('2014-01-12 11:11:11', '2014-01-09 00:00:00', 'thursday'), // Su
+
+			# friday
+			array('2014-01-06 00:00:00', '2014-01-10 00:00:00', 'friday'), // Mo
+			array('2014-01-06 11:11:11', '2014-01-10 00:00:00', 'friday'), // Mo
+			array('2014-01-07 00:00:00', '2014-01-10 00:00:00', 'friday'), // Tu
+			array('2014-01-07 11:11:11', '2014-01-10 00:00:00', 'friday'), // Tu
+			array('2014-01-08 00:00:00', '2014-01-10 00:00:00', 'friday'), // We
+			array('2014-01-08 11:11:11', '2014-01-10 00:00:00', 'friday'), // We
+			array('2014-01-09 00:00:00', '2014-01-10 00:00:00', 'friday'), // Th
+			array('2014-01-09 11:11:11', '2014-01-10 00:00:00', 'friday'), // Th
+			array('2014-01-10 00:00:00', '2014-01-10 00:00:00', 'friday'), // Fr
+			array('2014-01-10 11:11:11', '2014-01-10 00:00:00', 'friday'), // Fr
+			array('2014-01-11 00:00:00', '2014-01-10 00:00:00', 'friday'), // Sa
+			array('2014-01-11 11:11:11', '2014-01-10 00:00:00', 'friday'), // Sa
+			array('2014-01-12 00:00:00', '2014-01-10 00:00:00', 'friday'), // Su
+			array('2014-01-12 11:11:11', '2014-01-10 00:00:00', 'friday'), // Su
+
+			# saturday
+			array('2014-01-06 00:00:00', '2014-01-11 00:00:00', 'saturday'), // Mo
+			array('2014-01-06 11:11:11', '2014-01-11 00:00:00', 'saturday'), // Mo
+			array('2014-01-07 00:00:00', '2014-01-11 00:00:00', 'saturday'), // Tu
+			array('2014-01-07 11:11:11', '2014-01-11 00:00:00', 'saturday'), // Tu
+			array('2014-01-08 00:00:00', '2014-01-11 00:00:00', 'saturday'), // We
+			array('2014-01-08 11:11:11', '2014-01-11 00:00:00', 'saturday'), // We
+			array('2014-01-09 00:00:00', '2014-01-11 00:00:00', 'saturday'), // Th
+			array('2014-01-09 11:11:11', '2014-01-11 00:00:00', 'saturday'), // Th
+			array('2014-01-10 00:00:00', '2014-01-11 00:00:00', 'saturday'), // Fr
+			array('2014-01-10 11:11:11', '2014-01-11 00:00:00', 'saturday'), // Fr
+			array('2014-01-11 00:00:00', '2014-01-11 00:00:00', 'saturday'), // Sa
+			array('2014-01-11 11:11:11', '2014-01-11 00:00:00', 'saturday'), // Sa
+			array('2014-01-12 00:00:00', '2014-01-11 00:00:00', 'saturday'), // Su
+			array('2014-01-12 11:11:11', '2014-01-11 00:00:00', 'saturday'), // Su
+
+			# sunday
+			array('2014-01-06 00:00:00', '2014-01-12 00:00:00', 'sunday'), // Mo
+			array('2014-01-06 11:11:11', '2014-01-12 00:00:00', 'sunday'), // Mo
+			array('2014-01-07 00:00:00', '2014-01-12 00:00:00', 'sunday'), // Tu
+			array('2014-01-07 11:11:11', '2014-01-12 00:00:00', 'sunday'), // Tu
+			array('2014-01-08 00:00:00', '2014-01-12 00:00:00', 'sunday'), // We
+			array('2014-01-08 11:11:11', '2014-01-12 00:00:00', 'sunday'), // We
+			array('2014-01-09 00:00:00', '2014-01-12 00:00:00', 'sunday'), // Th
+			array('2014-01-09 11:11:11', '2014-01-12 00:00:00', 'sunday'), // Th
+			array('2014-01-10 00:00:00', '2014-01-12 00:00:00', 'sunday'), // Fr
+			array('2014-01-10 11:11:11', '2014-01-12 00:00:00', 'sunday'), // Fr
+			array('2014-01-11 00:00:00', '2014-01-12 00:00:00', 'sunday'), // Sa
+			array('2014-01-11 11:11:11', '2014-01-12 00:00:00', 'sunday'), // Sa
+			array('2014-01-12 00:00:00', '2014-01-12 00:00:00', 'sunday'), // Su
+			array('2014-01-12 11:11:11', '2014-01-12 00:00:00', 'sunday'), // Su
+		);
 	}
 
 	public function test_far_past()
