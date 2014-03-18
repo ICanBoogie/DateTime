@@ -59,6 +59,8 @@ class TimeZone extends \DateTimeZone
 			$source = $source->getName();
 		}
 
+		$source = (string) $source;
+
 		if (empty(self::$cache[$source]))
 		{
 			self::$cache[$source] = new static($source);
