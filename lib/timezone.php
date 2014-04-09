@@ -70,11 +70,32 @@ class TimeZone extends \DateTimeZone
 	}
 
 	/**
+	 * The name of the timezone.
+	 *
+	 * Note: This variable is only used to provide information during debugging.
+	 *
+	 * @var string
+	 */
+	private $name;
+
+	/**
 	 * Location of the timezone.
 	 *
 	 * @var TimeZoneLocation
 	 */
 	private $location;
+
+	/**
+	 * Initializes the {@link $name} property.
+	 *
+	 * @param string $timezone
+	 */
+	public function __construct($timezone)
+	{
+		parent::__construct($timezone);
+
+		$this->name = $this->getName();
+	}
 
 	/**
 	 * Returns the {@link $location}, {@link $name} and {@link $offset} properties.
@@ -96,7 +117,7 @@ class TimeZone extends \DateTimeZone
 
 			case 'name':
 
-				return $this->getName();
+				return $this->name;
 
 			case 'offset':
 
@@ -127,6 +148,6 @@ class TimeZone extends \DateTimeZone
 	 */
 	public function __toString()
 	{
-		return $this->getName();
+		return $this->name;
 	}
 }
