@@ -17,11 +17,12 @@
 		"issues": "https://github.com/ICanBoogie/DateTime/issues",
 		"source": "https://github.com/ICanBoogie/DateTime"
 	},
+	"minimum-stability": "dev",
 	"require": {
 		"php": ">=5.3.0"
 	},
 	"require-dev": {
-		"icanboogie/common": "@dev"
+		"icanboogie/common": "*"
 	},
 	"suggest": {
 		"icanboogie/common": "Allows finer exceptions to be thrown"

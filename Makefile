@@ -1,26 +1,20 @@
-install:
-	@if [ ! -f "composer.phar" ] ; then \
-		echo "Installing composer..." ; \
-		curl -s https://getcomposer.org/installer | php ; \
-	fi
-	
+vendor: composer.phar
 	@php composer.phar install --prefer-source --dev
 
-update:
+composer.phar:
+	@echo "Installing composer..."
+	@curl -s https://getcomposer.org/installer | php
+
+update: vendor
 	@php composer.phar update --prefer-source --dev
 
-test:
-	@if [ ! -d "vendor" ] ; then \
-		make install ; \
-	fi
+autoload: vendor
+	@php composer.phar dump-autoload
 
+test: vendor
 	@phpunit
 
-doc:
-	@if [ ! -d "vendor" ] ; then \
-		make install ; \
-	fi
-
+doc: vendor
 	@mkdir -p "docs"
 
 	@apigen \
