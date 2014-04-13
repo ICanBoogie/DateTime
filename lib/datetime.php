@@ -212,7 +212,7 @@ class DateTime extends \DateTime
 	 */
 	static public function from($source, $timezone=null)
 	{
-		if ($source instanceof self)
+		if ($source instanceof static)
 		{
 			return clone $source;
 		}

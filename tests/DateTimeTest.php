@@ -12,6 +12,7 @@
 namespace Tests\ICanBoogie\Time;
 
 use ICanBoogie\DateTime;
+use ICanBoogie\DateTimeTest\MyDateTime;
 
 class DateTimeTest extends \PHPUnit_Framework_TestCase
 {
@@ -79,6 +80,17 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$d = DateTime::from('2001-01-01 01:01:01');
 		$this->assertEquals(date_default_timezone_get(), $d->zone->name);
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
+	}
+
+	public function test_from_instance()
+	{
+		$d = new \DateTime;
+		$this->assertInstanceOf('ICanBoogie\DateTime', DateTime::from($d));
+		$this->assertInstanceOf('ICanBoogie\DateTimeTest\MyDateTime', MyDateTime::from($d));
+
+		$d = new DateTime;
+		$this->assertInstanceOf('ICanBoogie\DateTime', DateTime::from($d));
+		$this->assertInstanceOf('ICanBoogie\DateTimeTest\MyDateTime', MyDateTime::from($d));
 	}
 
 	public function test_change()
@@ -1195,4 +1207,11 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$d = DateTime::now();
 		$d->as_time = true;
 	}
+}
+
+namespace ICanBoogie\DateTimeTest;
+
+class MyDateTime extends \ICanBoogie\DateTime
+{
+
 }
