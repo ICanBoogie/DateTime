@@ -1,4 +1,4 @@
-# DateTime [![Build Status](https://travis-ci.org/ICanBoogie/DateTime.png?branch=master)](https://travis-ci.org/ICanBoogie/DateTime)
+# DateTime [![Build Status](https://travis-ci.org/ICanBoogie/DateTime.svg?branch=master)](https://travis-ci.org/ICanBoogie/DateTime)
 
 This package extends the features of PHP [DateTime](http://www.php.net/manual/en/class.datetime.php)
 and [DateTimeZone](http://www.php.net/manual/en/class.datetimezone.php) classes to ease the
@@ -280,7 +280,7 @@ directory can later be cleaned with the `make clean` command.
 
 The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
-[![Build Status](https://travis-ci.org/ICanBoogie/DateTime.png?branch=master)](https://travis-ci.org/ICanBoogie/DateTime)
+[![Build Status](https://travis-ci.org/ICanBoogie/DateTime.svg?branch=master)](https://travis-ci.org/ICanBoogie/DateTime)
 
 
 
