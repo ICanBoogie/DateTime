@@ -579,10 +579,13 @@ class DateTime extends \DateTime
 
 	/**
 	 * Returns the datetime formated as {@link ISO8601}.
+	 *
+	 * @return The instance rendered as an {@link ISO8601} string, or an empty string if the
+	 * datetime is empty.
 	 */
 	public function __toString()
 	{
-		return $this->as_iso8601;
+		return $this->is_empty ? "" : $this->as_iso8601;
 	}
 
 	/**

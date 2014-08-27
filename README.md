@@ -83,6 +83,7 @@ echo $time;                             // -0001-11-30T00:00:00Z
 echo $time->is_empty;                   // true
 echo $time->as_date;                    // 0000-00-00
 echo $time->as_db;                      // 0000-00-00 00:00:00
+echo $time;                             // ""
 ```
 
 

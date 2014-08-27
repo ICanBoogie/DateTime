@@ -41,10 +41,12 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(-1, $d->year);
 		$this->assertEquals(11, $d->month);
 		$this->assertEquals(30, $d->day);
+		$this->assertSame("", (string) $d);
 
 		$d = DateTime::none('Asia/Tokyo');
 		$this->assertEquals('Asia/Tokyo', $d->zone->name);
 		$this->assertTrue($d->is_empty);
+		$this->assertSame("", (string) $d);
 
 		$d = DateTime::none(new \DateTimeZone('Asia/Tokyo'));
 		$this->assertEquals('Asia/Tokyo', $d->zone->name);
