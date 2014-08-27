@@ -145,6 +145,72 @@ $time->sunday->weekday;                      // 7
 
 
 
+## Comparing DateTime instances
+
+[DateTime][] Instances are compared using standard comparison operations:
+
+```php
+<?php
+
+use ICanBoogie\DateTime;
+
+$d1 = DateTime::now();
+$d2 = DateTime::now();
+
+$d1 == $d2; // true
+$d1 >= $d2; // true
+$d1 <= $d2; // true
+$d1 != $d2; // false
+$d1 > $d2;  // false
+$d1 < $d2;  // false
+
+$d2->second++;
+$d1 != $d2; // true
+$d1 < $d2;  // true
+$d2 > $d1;  // true
+$d1 == $d2; // false
+$d1 >= $d2; // false
+$d2 <= $d1; // false
+```
+
+To determine if an instance is between two other instances you just need two comparisons:
+
+```php
+<?php
+
+use ICanBoogie\DateTime;
+
+$now = DateTime::now();
+
+$now > $now->yesterday && $now < $now->tomorrow; // true
+```
+
+To determine which instance is the most recent, or the most late, simply use PHP's `min()`
+and `max()` functions:
+
+```php
+<?php
+
+use ICanBoogie\DateTime;
+
+$now = DateTime::now();
+$yesterday = $now->yesterday;
+$tomorrow = $now->tomorrow;
+
+$yesterday === min($now, $yesterday, $tomorrow); // true
+$tomorrow  === max($now, $yesterday, $tomorrow); // true
+```
+
+
+
+
+
+----------
+
+
+
+
+
 ## Requirement
 
 The package requires PHP 5.3 or later.
@@ -196,11 +262,11 @@ dependencies can be generated with the `make doc` command. The documentation is 
 the `docs` directory using [ApiGen](http://apigen.org/). The package directory can later by
 cleaned with the `make clean` command.
 
-The following classes are documented: 
+The following classes are documented:
 
-- [DateTime](http://icanboogie.org/docs/class-ICanBoogie.DateTime.html)
-- [TimeZone](http://icanboogie.org/docs/class-ICanBoogie.TimeZone.html)
-- [TimeZoneLocation](http://icanboogie.org/docs/class-ICanBoogie.TimeZoneLocation.html)
+- [DateTime][]
+- [TimeZone][]
+- [TimeZoneLocation][]
 
 
 
@@ -223,3 +289,11 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 ## License
 
 ICanBoogie/DateTime is licensed under the New BSD License - See the [LICENSE](https://raw.github.com/ICanBoogie/DateTime/master/LICENSE) file for details.
+
+
+
+
+
+[DateTime]: http://icanboogie.org/docs/class-ICanBoogie.DateTime.html
+[TimeZone]: http://icanboogie.org/docs/class-ICanBoogie.TimeZone.html)
+[TimeZoneLocation]: http://icanboogie.org/docs/class-ICanBoogie.TimeZoneLocation.html

@@ -1209,6 +1209,35 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$d = DateTime::now();
 		$d->as_time = true;
 	}
+
+	public function test_compare()
+	{
+		$d1 = DateTime::now();
+		$d2 = DateTime::now();
+
+		$this->assertTrue($d1 == $d2);
+		$this->assertTrue($d1 >= $d2);
+		$this->assertTrue($d1 <= $d2);
+		$this->assertFalse($d1 != $d2);
+		$this->assertFalse($d1 > $d2);
+		$this->assertFalse($d1 < $d2);
+
+		$d2->second++;
+		$this->assertTrue($d1 != $d2);
+		$this->assertTrue($d1 < $d2);
+		$this->assertTrue($d2 > $d1);
+		$this->assertFalse($d1 == $d2);
+		$this->assertFalse($d1 >= $d2);
+		$this->assertFalse($d2 <= $d1);
+
+		$now = DateTime::now();
+		$yesterday = $now->yesterday;
+		$tomorrow = $now->tomorrow;
+
+		$this->assertTrue($now > $yesterday && $now < $tomorrow);
+		$this->assertSame($yesterday, min($now, $yesterday, $tomorrow));
+		$this->assertSame($tomorrow, max($now, $yesterday, $tomorrow));
+	}
 }
 
 namespace ICanBoogie\DateTimeTest;
