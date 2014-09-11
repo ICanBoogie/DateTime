@@ -35,6 +35,12 @@ class TimeZoneTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($z->getOffset($utc), $z->offset);
 	}
 
+	public function test_utc_case()
+	{
+		$this->assertEquals('UTC', TimeZone::from('utc')->name);
+		$this->assertEquals('UTC', TimeZone::from('UTC')->name);
+	}
+
 	public function test_reuse()
 	{
 		$z1 = TimeZone::from('utc');

@@ -94,7 +94,14 @@ class TimeZone extends \DateTimeZone
 	{
 		parent::__construct($timezone);
 
-		$this->name = $this->getName();
+		$name = $this->getName();
+
+		if ($name == 'utc')
+		{
+			$name = 'UTC';
+		}
+
+		$this->name = $name;
 	}
 
 	/**
