@@ -164,6 +164,15 @@ namespace ICanBoogie;
 class DateTime extends \DateTime
 {
 	/**
+	 * We redefine the constant to make sure that the cookie uses a valid pattern.
+	 *
+	 * @see http://grokbase.com/t/php/php-bugs/111xynxd6m/php-bug-bug-53879-new-datetime-createfromformat-fails-to-parse-cookie-expiration-date
+	 *
+	 * @var string
+	 */
+	const COOKIE = 'l, d-M-Y H:i:s T';
+
+	/**
 	 * DB (example: 2013-02-03 20:59:03)
 	 *
 	 * @var string

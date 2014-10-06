@@ -882,6 +882,9 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	{
 		$now = DateTime::now();
 		$this->assertEquals($now->format(DateTime::COOKIE), $now->as_cookie);
+
+		$date = new DateTime('2013-11-04 20:21:22 UTC');
+		$this->assertEquals("Monday, 04-Nov-2013 20:21:22 UTC", $date->as_cookie);
 	}
 
 	/**
