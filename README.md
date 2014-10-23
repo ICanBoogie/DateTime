@@ -221,17 +221,10 @@ The package requires PHP 5.3 or later.
 
 ## Installation
 
-The recommended way to install this package is through [composer](http://getcomposer.org/).
-Create a `composer.json` file and run `php composer.phar install` command to install it:
+The recommended way to install this package is through [Composer]:
 
-```json
-{
-	"minimum-stability": "dev",
-	"require":
-	{
-		"icanboogie/datetime": "*"
-	}
-}
+```
+$ composer require icanboogie/datetime
 ```
 
 The package [icanboogie/common](https://packagist.org/packages/icanboogie/common) is suggested to
@@ -248,7 +241,7 @@ If the package is not included, `RunTimeException` instances are thrown instead.
 The package is [available on GitHub](https://github.com/ICanBoogie/DateTime), its repository can be
 cloned with the following command line:
 
-	$ git clone git://github.com/ICanBoogie/DateTime.git
+	$ git clone https://github.com/ICanBoogie/DateTime.git
 
 
 
@@ -288,7 +281,7 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
 ## License
 
-ICanBoogie/DateTime is licensed under the New BSD License - See the [LICENSE](https://raw.github.com/ICanBoogie/DateTime/master/LICENSE) file for details.
+ICanBoogie/DateTime is licensed under the New BSD License - See the [LICENSE](LICENSE) file for details.
 
 
 
