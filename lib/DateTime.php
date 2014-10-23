@@ -161,7 +161,7 @@ namespace ICanBoogie;
  *
  * @see http://en.wikipedia.org/wiki/ISO_8601
  */
-class DateTime extends \DateTime
+class DateTime extends \DateTime implements \JsonSerializable
 {
 	/**
 	 * We redefine the constant to make sure that the cookie uses a valid pattern.
@@ -595,6 +595,16 @@ class DateTime extends \DateTime
 	public function __toString()
 	{
 		return $this->is_empty ? "" : $this->as_iso8601;
+	}
+
+	/**
+	 * Returns a {@link ISO8601} representation of the instance.
+	 *
+	 * @return string
+	 */
+	public function jsonSerialize()
+	{
+		return (string) $this;
 	}
 
 	/**

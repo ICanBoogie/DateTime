@@ -205,6 +205,25 @@ $tomorrow  === max($now, $yesterday, $tomorrow); // true
 
 
 
+## DateTime and JSON
+
+Starting with 1.1.0, [DateTime][] instances implements the [JsonSerializable interface][]
+and are serialized into ISO-8601 strings.
+
+```php
+<?php
+
+$date = new DateTime("2014-10-23 13:50:10", "Europe/Paris");
+
+echo json_encode([ 'date' => $date ]);
+// {"date":"2014-10-23T13:50:10+0200"}
+```
+
+
+
+
+
+
 ----------
 
 
@@ -213,7 +232,11 @@ $tomorrow  === max($now, $yesterday, $tomorrow); // true
 
 ## Requirement
 
-The package requires PHP 5.3 or later.
+The package requires PHP 5.4 or later.
+
+Starting with 1.1.0 the package implements the [JsonSerializable interface][]
+ and thus requires PHP 5.4+. If you only have access to PHP 5.3, use the branch
+ [1.0.x](https://github.com/ICanBoogie/DateTime/tree/1.0) instead.
 
 
 
@@ -295,6 +318,7 @@ ICanBoogie/DateTime is licensed under the New BSD License - See the [LICENSE](ht
 
 
 [DateTime]: http://icanboogie.org/docs/class-ICanBoogie.DateTime.html
+[JsonSerializable interface]: http://php.net/manual/en/class.jsonserializable.php
 [TimeZone]: http://icanboogie.org/docs/class-ICanBoogie.TimeZone.html)
 [TimeZoneLocation]: http://icanboogie.org/docs/class-ICanBoogie.TimeZoneLocation.html
 

@@ -1241,6 +1241,12 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($yesterday, min($now, $yesterday, $tomorrow));
 		$this->assertSame($tomorrow, max($now, $yesterday, $tomorrow));
 	}
+
+	public function test_json_serialize()
+	{
+		$date = new DateTime("2014-10-23 13:50:10", "Europe/Paris");
+		$this->assertEquals('{"date":"2014-10-23T13:50:10+0200"}', json_encode([ 'date' => $date ]));
+	}
 }
 
 namespace ICanBoogie\DateTimeTest;
