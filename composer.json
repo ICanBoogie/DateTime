@@ -22,7 +22,7 @@
 		"php": ">=5.3.0"
 	},
 	"require-dev": {
-		"icanboogie/common": "*"
+		"icanboogie/common": "~1.2"
 	},
 	"suggest": {
 		"icanboogie/common": "Allows finer exceptions to be thrown"
@@ -31,3 +31,4 @@
 		"classmap": [ "lib/" ]
 	}
 }
+

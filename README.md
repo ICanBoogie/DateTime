@@ -297,3 +297,4 @@ ICanBoogie/DateTime is licensed under the New BSD License - See the [LICENSE](ht
 [DateTime]: http://icanboogie.org/docs/class-ICanBoogie.DateTime.html
 [TimeZone]: http://icanboogie.org/docs/class-ICanBoogie.TimeZone.html)
 [TimeZoneLocation]: http://icanboogie.org/docs/class-ICanBoogie.TimeZoneLocation.html
+

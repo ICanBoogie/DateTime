@@ -1,15 +1,11 @@
-vendor: composer.phar
-	@php composer.phar install --prefer-source --dev
+vendor:
+	@composer install --prefer-source --dev
 
-composer.phar:
-	@echo "Installing composer..."
-	@curl -s https://getcomposer.org/installer | php
-
-update: vendor
-	@php composer.phar update --prefer-source --dev
+update:
+	@composer update --prefer-source --dev
 
 autoload: vendor
-	@php composer.phar dump-autoload
+	@composer dump-autoload
 
 test: vendor
 	@phpunit
@@ -29,3 +25,4 @@ clean:
 	@rm -fR vendor
 	@rm -f composer.lock
 	@rm -f composer.phar
+
