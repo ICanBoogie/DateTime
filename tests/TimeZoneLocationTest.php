@@ -36,7 +36,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
 		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
+		new TimeZoneLocation($location);
 	}
 
 	public function test_get_coutry_code()
@@ -49,7 +49,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_country_code()
 	{
@@ -70,7 +70,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_latitude()
 	{
@@ -91,7 +91,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_longitude()
 	{
@@ -112,7 +112,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_comments()
 	{
@@ -124,7 +124,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotDefined
+	 * @expectedException \ICanBoogie\PropertyNotDefined
 	 */
 	public function test_get_unsupported_property()
 	{
@@ -136,7 +136,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_unsupported_property()
 	{

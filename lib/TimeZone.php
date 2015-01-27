@@ -46,7 +46,7 @@ class TimeZone extends \DateTimeZone
 	 *
 	 * @param mixed $source Source of the timezone.
 	 *
-	 * @return \ICanBoogie\Time\Zone
+	 * @return TimeZone
 	 */
 	static public function from($source)
 	{

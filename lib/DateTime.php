@@ -104,21 +104,21 @@ namespace ICanBoogie;
  * @property-read bool $is_wednesday `true` if the instance represents Wednesday.
  * @property-read bool $is_thursday `true` if the instance represents Thursday.
  * @property-read bool $is_friday `true` if the instance represents Friday.
- * @property-read bool $is_saturday `true` if the instance represents Satruday.
+ * @property-read bool $is_saturday `true` if the instance represents Saturday.
  * @property-read bool $is_sunday `true` if the instance represents Sunday.
  * @property-read bool $is_today `true` if the instance is today.
  * @property-read bool $is_past `true` if the instance lies in the past.
  * @property-read bool $is_future `true` if the instance lies in the future.
  * @property-read bool $is_empty `true` if the instance represents an empty date such as "0000-00-00" or "0000-00-00 00:00:00".
- * @property-read DateTime $tomorrow A new instance representing the next day. Time is reseted to 00:00:00.
- * @property-read DateTime $yesterday A new instance representing the previous day. Time is reseted to 00:00:00.
- * @property-read DateTime $monday A new instance representing Monday of the week. Time is reseted to 00:00:00.
- * @property-read DateTime $tuesday A new instance representing Tuesday of the week. Time is reseted to 00:00:00.
- * @property-read DateTime $wednesday A new instance representing Wednesday of the week. Time is reseted to 00:00:00.
- * @property-read DateTime $thursday A new instance representing Thursday of the week. Time is reseted to 00:00:00.
- * @property-read DateTime $friday A new instance representing Friday of the week. Time is reseted to 00:00:00.
- * @property-read DateTime $saturday A new instance representing Saturday of the week. Time is reseted to 00:00:00.
- * @property-read DateTime $sunday A new instance representing Sunday of the week. Time is reseted to 00:00:00.
+ * @property-read DateTime $tomorrow A new instance representing the next day. Time is reset to 00:00:00.
+ * @property-read DateTime $yesterday A new instance representing the previous day. Time is reset to 00:00:00.
+ * @property-read DateTime $monday A new instance representing Monday of the week. Time is reset to 00:00:00.
+ * @property-read DateTime $tuesday A new instance representing Tuesday of the week. Time is reset to 00:00:00.
+ * @property-read DateTime $wednesday A new instance representing Wednesday of the week. Time is reset to 00:00:00.
+ * @property-read DateTime $thursday A new instance representing Thursday of the week. Time is reset to 00:00:00.
+ * @property-read DateTime $friday A new instance representing Friday of the week. Time is reset to 00:00:00.
+ * @property-read DateTime $saturday A new instance representing Saturday of the week. Time is reset to 00:00:00.
+ * @property-read DateTime $sunday A new instance representing Sunday of the week. Time is reset to 00:00:00.
  *
  * @property-read string $as_atom The instance formatted according to {@link ATOM}.
  * @property-read string $as_cookie The instance formatted according to {@link COOKIE}.
@@ -217,7 +217,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * @param mixed $timezone The time zone to use to create the time. The value is ignored if the
 	 * source is an instance of {@link \DateTime}.
 	 *
-	 * @return \ICanBoogie\DateTime
+	 * @return DateTime
 	 */
 	static public function from($source, $timezone=null)
 	{
@@ -236,7 +236,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns an instance with the current local time and the local time zone.
 	 *
-	 * @return \ICanBoogie\DateTime
+	 * @return DateTime
 	 */
 	static public function now()
 	{
@@ -263,7 +263,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * @param \DateTimeZone|string $timezone The time zone in which the empty date is created.
 	 * Defaults to "UTC".
 	 *
-	 * @return \ICanBoogie\DateTime
+	 * @return DateTime
 	 */
 	static public function none($timezone='utc')
 	{
@@ -411,7 +411,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns Monday of the week.
 	 *
-	 * @return \ICanBoogie\DateTime
+	 * @return DateTime
 	 */
 	protected function get_monday()
 	{
@@ -431,7 +431,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns Tuesday of the week.
 	 *
-	 * @return \ICanBoogie\DateTime
+	 * @return DateTime
 	 */
 	protected function get_tuesday()
 	{
@@ -441,7 +441,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns Wednesday of the week.
 	 *
-	 * @return \ICanBoogie\DateTime
+	 * @return DateTime
 	 */
 	protected function get_wednesday()
 	{
@@ -451,7 +451,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns Thursday of the week.
 	 *
-	 * @return \ICanBoogie\DateTime
+	 * @return DateTime
 	 */
 	protected function get_thursday()
 	{
@@ -461,7 +461,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns Friday of the week.
 	 *
-	 * @return \ICanBoogie\DateTime
+	 * @return DateTime
 	 */
 	protected function get_friday()
 	{
@@ -471,7 +471,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns Saturday of the week.
 	 *
-	 * @return \ICanBoogie\DateTime
+	 * @return DateTime
 	 */
 	protected function get_saturday()
 	{
@@ -481,7 +481,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns Sunday of the week.
 	 *
-	 * @return \ICanBoogie\DateTime
+	 * @return DateTime
 	 */
 	protected function get_sunday()
 	{
@@ -504,6 +504,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @throws PropertyNotWritable in attempt to set a read-only property.
 	 * @throws PropertyNotDefined in attempt to set an unsupported property.
+	 *
+	 * @inheritdoc
 	 */
 	public function __set($property, $value)
 	{
@@ -562,6 +564,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * is replaced by `Z` according to the specs.
 	 *
 	 * @throws \BadMethodCallException in attempt to call an unsupported method.
+	 *
+	 * @inheritdoc
 	 */
 	public function __call($method, $arguments)
 	{
@@ -587,9 +591,9 @@ class DateTime extends \DateTime implements \JsonSerializable
 	}
 
 	/**
-	 * Returns the datetime formated as {@link ISO8601}.
+	 * Returns the datetime formatted as {@link ISO8601}.
 	 *
-	 * @return The instance rendered as an {@link ISO8601} string, or an empty string if the
+	 * @return string The instance rendered as an {@link ISO8601} string, or an empty string if the
 	 * datetime is empty.
 	 */
 	public function __toString()
@@ -612,6 +616,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * If the timezone is `local` the timezone returned by {@link date_default_timezone_get()} is
 	 * used instead.
+	 *
+	 * @inheritdoc
 	 */
 	public function setTimezone($timezone)
 	{
@@ -629,7 +635,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	}
 
 	/**
-	 * Modifies the properties of the instance occording to the options.
+	 * Modifies the properties of the instance according to the options.
 	 *
 	 * The following properties can be updated: {@link $year}, {@link $month}, {@link $day},
 	 * {@link $hour}, {@link $minute} and {@link $second}.
@@ -647,8 +653,10 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @param array $options
 	 * @param bool $cascade If `true`, time options (`hour`, `minute`, `second`) reset
-	 * cascadingly, so if only the hour is passed, then minute and second is set to 0. If the hour
+	 * cascading, so if only the hour is passed, then minute and second is set to 0. If the hour
 	 * and minute is passed, then second is set to 0.
+	 *
+	 * @return DateTime
 	 */
 	public function change(array $options, $cascade=false)
 	{
@@ -662,7 +670,16 @@ class DateTime extends \DateTime implements \JsonSerializable
 			'second' => null
 		);
 
-		extract(array_intersect_key($options + $default_options, $default_options));
+		$options = array_intersect_key($options + $default_options, $default_options);
+
+		$year = null;
+		$month = null;
+		$day = null;
+		$hour = null;
+		$minute = null;
+		$second = null;
+
+		extract($options);
 
 		if ($cascade)
 		{
@@ -703,22 +720,17 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * If the instance represents an empty date and the format is {@link DATE} or {@link DB},
 	 * an empty date is returned, respectively "0000-00-00" and "0000-00-00 00:00:00". Note that
-	 * the time information is discarted for {@link DB}. This only apply to {@link DATE} and
+	 * the time information is discarded for {@link DB}. This only apply to {@link DATE} and
 	 * {@link DB} formats. For instance {@link RSS} will return the following string:
 	 * "Wed, 30 Nov -0001 00:00:00 +0000".
+	 *
+	 * @inheritdoc
 	 */
 	public function format($format)
 	{
 		if (($format == self::DATE || $format == self::DB) && $this->is_empty)
 		{
-			if ($format == self::DATE)
-			{
-				return '0000-00-00';
-			}
-			else
-			{
-				return '0000-00-00 00:00:00';
-			}
+			return $format == self::DATE ? '0000-00-00' : '0000-00-00 00:00:00';
 		}
 
 		return parent::format($format);

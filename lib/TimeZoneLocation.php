@@ -74,9 +74,9 @@ class TimeZoneLocation
 	 * Returns the {@link $country_code}, {@link $latitude}, {@link $longitude} and
 	 * {@link $comments} properties.
 	 *
-	 * @param string $property
-	 *
 	 * @throws PropertyNotDefined in attempt to get an unsupported property.
+	 *
+	 * @inheritdoc
 	 */
 	public function __get($property)
 	{
@@ -97,6 +97,8 @@ class TimeZoneLocation
 
 	/**
 	 * @throws PropertyNotWritable in attempt to set an unsupported property.
+	 *
+	 * @inheritdoc
 	 */
 	public function __set($property, $value)
 	{

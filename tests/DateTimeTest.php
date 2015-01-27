@@ -193,7 +193,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_quarter()
 	{
@@ -227,7 +227,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_week()
 	{
@@ -244,7 +244,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_year_day()
 	{
@@ -274,7 +274,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_weekday()
 	{
@@ -351,7 +351,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_monday()
 	{
@@ -372,7 +372,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_tuesday()
 	{
@@ -393,7 +393,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_wednesday()
 	{
@@ -414,7 +414,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_thursday()
 	{
@@ -435,7 +435,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_friday()
 	{
@@ -456,7 +456,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_saturday()
 	{
@@ -477,7 +477,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_sunday()
 	{
@@ -495,7 +495,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_today()
 	{
@@ -514,7 +514,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_past()
 	{
@@ -533,7 +533,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_future()
 	{
@@ -556,7 +556,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_empty()
 	{
@@ -570,7 +570,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_tomorrow()
 	{
@@ -585,7 +585,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_yesterday()
 	{
@@ -595,7 +595,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @dataProvider provide_writeonly_property
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_writeonly_property($property)
 	{
@@ -760,7 +760,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_utc()
 	{
@@ -778,7 +778,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_utc()
 	{
@@ -796,7 +796,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_local()
 	{
@@ -814,7 +814,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_local()
 	{
@@ -831,7 +831,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_is_dst()
 	{
@@ -844,7 +844,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$empty = DateTime::none();
 		$this->assertEquals('0000-00-00', $empty->format(DateTime::DATE));
 		$this->assertEquals('0000-00-00 00:00:00', $empty->format(DateTime::DB));
-		$this->assertEquals('Wed, 30 Nov -0001 00:00:00 +0000', $empty->format(DateTime::RSS));
+		$this->assertStringEndsWith('30 Nov -0001 00:00:00 +0000', $empty->format(DateTime::RSS));
 	}
 
 	/*
@@ -864,7 +864,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_atom()
 	{
@@ -888,7 +888,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_cookie()
 	{
@@ -921,7 +921,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_iso8601()
 	{
@@ -954,7 +954,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_rfc822()
 	{
@@ -975,7 +975,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_rfc850()
 	{
@@ -996,7 +996,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_rfc1036()
 	{
@@ -1029,7 +1029,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_rfc1123()
 	{
@@ -1050,7 +1050,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_rfc2822()
 	{
@@ -1071,7 +1071,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_rfc3339()
 	{
@@ -1092,7 +1092,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_rss()
 	{
@@ -1113,7 +1113,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_w3c()
 	{
@@ -1138,7 +1138,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_db()
 	{
@@ -1159,7 +1159,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_number()
 	{
@@ -1184,7 +1184,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_date()
 	{
@@ -1205,7 +1205,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException ICanBoogie\PropertyNotWritable
+	 * @expectedException \ICanBoogie\PropertyNotWritable
 	 */
 	public function test_set_as_time()
 	{
@@ -1245,7 +1245,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_json_serialize()
 	{
 		$date = new DateTime("2014-10-23 13:50:10", "Europe/Paris");
-		$this->assertEquals('{"date":"2014-10-23T13:50:10+0200"}', json_encode([ 'date' => $date ]));
+		$this->assertEquals('{"date":"2014-10-23T13:50:10+0200"}', json_encode(array('date' => $date)));
 	}
 }
 
