@@ -17,7 +17,6 @@
 		"issues": "https://github.com/ICanBoogie/DateTime/issues",
 		"source": "https://github.com/ICanBoogie/DateTime"
 	},
-	"minimum-stability": "dev",
 	"require": {
 		"php": ">=5.4.0"
 	},
@@ -31,4 +30,3 @@
 		"classmap": [ "lib/" ]
 	}
 }
-

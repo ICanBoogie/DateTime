@@ -78,14 +78,16 @@ namespace ICanBoogie;
  * <pre>
  * <?php
  *
+ * use ICanBoogie\DateTime;
+ *
  * $time = new DateTime('0000-00-00', 'utc');
  * // or
  * $time = DateTime::none();
- * echo $time;                             // -0001-11-30T00:00:00Z
+ *
  * echo $time->is_empty;                   // true
  * echo $time->as_date;                    // 0000-00-00
  * echo $time->as_db;                      // 0000-00-00 00:00:00
- *
+ * echo $time;                             // ""
  * </pre>
  *
  * @property int $timestamp Unix timestamp.

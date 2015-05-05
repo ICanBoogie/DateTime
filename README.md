@@ -1,4 +1,10 @@
-# DateTime [![Build Status](https://travis-ci.org/ICanBoogie/DateTime.svg?branch=master)](https://travis-ci.org/ICanBoogie/DateTime)
+# DateTime
+
+[![Release](https://img.shields.io/packagist/v/ICanBoogie/DateTime.svg)](https://packagist.org/packages/icanboogie/datetime)
+[![Build Status](https://img.shields.io/travis/ICanBoogie/DateTime.svg)](http://travis-ci.org/ICanBoogie/DateTime)
+[![HHVM](https://img.shields.io/hhvm/icanboogie/datetime.svg)](http://hhvm.h4cc.de/package/icanboogie/datetime)
+[![Code Coverage](https://img.shields.io/coveralls/ICanBoogie/DateTime.svg)](https://coveralls.io/r/ICanBoogie/DateTime)
+[![Packagist](https://img.shields.io/packagist/dt/icanboogie/datetime.svg)](https://packagist.org/packages/icanboogie/datetime)
 
 This package extends the features of PHP [DateTime](http://www.php.net/manual/en/class.datetime.php)
 and [DateTimeZone](http://www.php.net/manual/en/class.datetimezone.php) classes to ease the
@@ -76,10 +82,12 @@ Empty dates are also supported:
 ```php
 <?php
 
+use ICanBoogie\DateTime;
+
 $time = new DateTime('0000-00-00', 'utc');
 // or
 $time = DateTime::none();
-echo $time;                             // -0001-11-30T00:00:00Z
+
 echo $time->is_empty;                   // true
 echo $time->as_date;                    // 0000-00-00
 echo $time->as_db;                      // 0000-00-00 00:00:00
@@ -213,6 +221,8 @@ and are serialized into ISO-8601 strings.
 ```php
 <?php
 
+use ICanBoogie\DateTime;
+
 $date = new DateTime("2014-10-23 13:50:10", "Europe/Paris");
 
 echo json_encode([ 'date' => $date ]);
@@ -281,7 +291,7 @@ spl_object_hash($now) == spl_object_hash($next_year);   // false
 
 The package requires PHP 5.4 or later.
 
-Starting with 1.1.0 the package implements the [JsonSerializable interface][]
+Starting with v1.1.0 the package implements the [JsonSerializable interface][]
  and thus requires PHP 5.4+. If you only have access to PHP 5.3, use the branch
  [1.0.x](https://github.com/ICanBoogie/DateTime/tree/1.0) instead.
 
@@ -291,7 +301,7 @@ Starting with 1.1.0 the package implements the [JsonSerializable interface][]
 
 ## Installation
 
-The recommended way to install this package is through [Composer]:
+The recommended way to install this package is through [Composer](https://getcomposer.org/):
 
 ```
 $ composer require icanboogie/datetime
@@ -322,7 +332,7 @@ cloned with the following command line:
 The package is documented as part of the [ICanBoogie](http://icanboogie.org/) framework
 [documentation](http://icanboogie.org/docs/). The documentation for the package and its
 dependencies can be generated with the `make doc` command. The documentation is generated in
-the `docs` directory using [ApiGen](http://apigen.org/). The package directory can later by
+the `build/docs` directory using [ApiGen](http://apigen.org/). The package directory can later by
 cleaned with the `make clean` command.
 
 The following classes are documented:
@@ -343,7 +353,8 @@ directory can later be cleaned with the `make clean` command.
 
 The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
-[![Build Status](https://travis-ci.org/ICanBoogie/DateTime.svg?branch=master)](https://travis-ci.org/ICanBoogie/DateTime)
+[![Build Status](https://travis-ci.org/ICanBoogie/DateTime.svg)](https://travis-ci.org/ICanBoogie/DateTime)
+[![Code Coverage](https://img.shields.io/coveralls/ICanBoogie/DateTime.svg)](https://coveralls.io/r/ICanBoogie/DateTime)
 
 
 
@@ -351,7 +362,7 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
 ## License
 
-ICanBoogie/DateTime is licensed under the New BSD License - See the [LICENSE](LICENSE) file for details.
+**ICanBoogie/DateTime** is licensed under the New BSD License - See the [LICENSE](LICENSE) file for details.
 
 
 
