@@ -308,7 +308,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	{
 		if (strpos($property, 'as_') === 0)
 		{
-			return call_user_func(array($this, 'format_' . $property));
+			return call_user_func([ $this, 'format_' . $property ]);
 		}
 
 		switch ($property)
@@ -402,7 +402,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 		if (class_exists('ICanBoogie\PropertyNotDefined'))
 		{
-			throw new PropertyNotDefined(array($property, $this));
+			throw new PropertyNotDefined([ $property, $this ]);
 		}
 		else
 		{
@@ -511,8 +511,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 */
 	public function __set($property, $value)
 	{
-		static $readonly = array('quarter', 'week', 'year_day', 'weekday',
-		'tomorrow', 'yesterday', 'utc', 'local');
+		static $readonly = [ 'quarter', 'week', 'year_day', 'weekday',
+		'tomorrow', 'yesterday', 'utc', 'local' ];
 
 		switch ($property)
 		{
@@ -522,7 +522,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 			case 'hour':
 			case 'minute':
 			case 'second':
-				$this->change(array($property => $value));
+				$this->change([ $property => $value ]);
 				return;
 
 			case 'timestamp':
@@ -538,7 +538,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 		{
 			if (class_exists('ICanBoogie\PropertyNotWritable'))
 			{
-				throw new PropertyNotWritable(array($property, $this));
+				throw new PropertyNotWritable([ $property, $this ]);
 			}
 			else
 			{
@@ -548,7 +548,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 		if (class_exists('ICanBoogie\PropertyNotDefined'))
 		{
-			throw new PropertyNotDefined(array($property, $this));
+			throw new PropertyNotDefined([ $property, $this ]);
 		}
 		else
 		{
@@ -650,7 +650,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * use ICanBoogie\DateTime;
 	 *
 	 * $time = new DateTime('now');
-	 * $time->change(array('year' => 2000, 'second' => 0));
+	 * $time->change([ 'year' => 2000, 'second' => 0 ]);
 	 * </pre>
 	 *
 	 * @param array $options
@@ -662,15 +662,16 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 */
 	public function change(array $options, $cascade=false)
 	{
-		static $default_options = array
-		(
+		static $default_options = [
+
 			'year' => null,
 			'month' => null,
 			'day' => null,
 			'hour' => null,
 			'minute' => null,
 			'second' => null
-		);
+
+		];
 
 		$options = array_intersect_key($options + $default_options, $default_options);
 

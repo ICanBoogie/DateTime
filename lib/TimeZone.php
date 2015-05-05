@@ -140,7 +140,7 @@ class TimeZone extends \DateTimeZone
 
 		if (class_exists('ICanBoogie\PropertyNotDefined'))
 		{
-			throw new PropertyNotDefined(array($property, $this));
+			throw new PropertyNotDefined([ $property, $this ]);
 		}
 		else
 		{

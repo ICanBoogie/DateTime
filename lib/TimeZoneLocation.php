@@ -87,7 +87,7 @@ class TimeZoneLocation
 
 		if (class_exists('ICanBoogie\PropertyNotDefined'))
 		{
-			throw new PropertyNotDefined(array($property, $this));
+			throw new PropertyNotDefined([ $property, $this ]);
 		}
 		else
 		{
@@ -104,7 +104,7 @@ class TimeZoneLocation
 	{
 		if (class_exists('ICanBoogie\PropertyNotWritable'))
 		{
-			throw new PropertyNotWritable(array($property, $this));
+			throw new PropertyNotWritable([ $property, $this ]);
 		}
 		else
 		{
