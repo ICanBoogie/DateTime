@@ -718,6 +718,21 @@ class DateTime extends \DateTime implements \JsonSerializable
 	}
 
 	/**
+	 * Instantiate a new instance with changes properties.
+	 *
+	 * @param array $options
+	 * @param bool $cascade
+	 *
+	 * @return DateTime
+	 */
+	public function with(array $options, $cascade=false)
+	{
+		$dt = clone $this;
+
+		return $dt->change($options, $cascade);
+	}
+
+	/**
 	 * If the instance represents an empty date and the format is {@link DATE} or {@link DB},
 	 * an empty date is returned, respectively "0000-00-00" and "0000-00-00 00:00:00". Note that
 	 * the time information is discarded for {@link DB}. This only apply to {@link DATE} and

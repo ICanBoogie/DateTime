@@ -147,6 +147,18 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('2001-01-01 00:00:00', $d->change(array('hour' => 0), true)->as_db);
 	}
 
+	public function test_with()
+	{
+		$d = new DateTime('2001-01-01 01:01:01');
+		$e = $d->with(array( 'year' => 2015, 'month' => 5, 'day' => 5));
+
+		$this->assertNotSame($d, $e);
+		$this->assertEquals(2001, $d->year);
+		$this->assertEquals(2015, $e->year);
+		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
+		$this->assertEquals('2015-05-05 01:01:01', $e->as_db);
+	}
+
 	public function test_get_year()
 	{
 		$d = new DateTime('2012-12-16 15:00:00');

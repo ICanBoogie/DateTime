@@ -223,6 +223,53 @@ echo json_encode([ 'date' => $date ]);
 
 
 
+## Changing multiple properties
+
+The `change()` method is used to change multiple properties at once.
+
+**Note:** Values exceeding ranges are added to their parent values.
+
+```php
+<?php
+
+use ICanBoogie\DateTime;
+
+$date = DateTime::now()->change([ 'year' => 2015, 'month' => 5, 'hour' => 12 ]);
+```
+
+Using the `$cascade` parameter, setting the hour resets the minute and second to 0, and setting the minute resets the second to 0.
+
+```php
+<?php
+
+use ICanBoogie\DateTime;
+
+echo DateTime::from("2015-05-05 12:13:14")->change([ 'hour' => 13 ], true);   // 2015-05-05 13:00:00
+```
+
+
+
+
+
+## Creating a new instance with changed properties
+
+The `with()` method is similar to the `change()` method as it is used to define multiple properties at once, the difference is that the method creates a new instance, leaving the original instance intact.
+
+```php
+<?php
+
+use ICanBoogie\DateTime;
+
+$now = DateTime::now();
+$next_year = $now->with([ 'year' => $now->year + 1 ]);
+
+spl_object_hash($now) == spl_object_hash($next_year);   // false
+```
+
+
+
+
+
 
 ----------
 
