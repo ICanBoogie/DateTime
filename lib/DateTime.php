@@ -203,6 +203,13 @@ class DateTime extends \DateTime implements \JsonSerializable
 	const TIME = 'H:i:s';
 
 	/**
+	 * Callable used to create localized instances.
+	 *
+	 * @var callable
+	 */
+	static public $localizer = null;
+
+	/**
 	 * Creates a {@link DateTime} instance from a source.
 	 *
 	 * <pre>
@@ -752,5 +759,26 @@ class DateTime extends \DateTime implements \JsonSerializable
 		}
 
 		return parent::format($format);
+	}
+
+	/**
+	 * Returns a localized instance.
+	 *
+	 * @param string $locale
+	 *
+	 * @return mixed
+	 *
+	 * @throws \RuntimeException if {@link $localizer} is not defined.
+	 */
+	public function localize($locale = 'en')
+	{
+		$localizer = self::$localizer;
+
+		if (!$localizer)
+		{
+			throw new \RuntimeException("Localizer is not defined yet.");
+		}
+
+		return $localizer($this, $locale);
 	}
 }

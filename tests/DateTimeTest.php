@@ -1258,6 +1258,21 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$date = new DateTime("2014-10-23 13:50:10", "Europe/Paris");
 		$this->assertEquals('{"date":"2014-10-23T13:50:10+0200"}', json_encode([ 'date' => $date ]));
 	}
+
+	public function test_localize()
+	{
+		$invoked = false;
+		$reference = DateTime::now();
+
+		DateTime::$localizer = function(DateTime $datetime, $locale) use (&$invoked, &$reference) {
+
+			$this->assertSame($datetime, $reference);
+			$this->assertEquals('fr', $locale);
+
+		};
+
+		$reference->localize('fr');
+	}
 }
 
 namespace ICanBoogie\DateTimeTest;

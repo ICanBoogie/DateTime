@@ -215,8 +215,7 @@ $tomorrow  === max($now, $yesterday, $tomorrow); // true
 
 ## DateTime and JSON
 
-Starting with 1.1.0, [DateTime][] instances implements the [JsonSerializable interface][]
-and are serialized into ISO-8601 strings.
+Starting with v1.1.0, [DateTime][] instances implements the [JsonSerializable interface][] and are serialized into ISO-8601 strings.
 
 ```php
 <?php
@@ -274,6 +273,47 @@ $now = DateTime::now();
 $next_year = $now->with([ 'year' => $now->year + 1 ]);
 
 spl_object_hash($now) == spl_object_hash($next_year);   // false
+```
+
+
+
+
+
+## Localized formatting
+
+Localized formatting is outside of this package scope, still a _localizer_ can be provided to the [DateTime][] class to localize its instances, but of course the result depends on the implementation.
+
+The following example demonstrates how to localize instances using [ICanBoogie/CLDR][] which uses Unicode's Common Locale Data Repository to format [DateTime][] instances.
+
+```php
+<?php
+
+use ICanBoogie\CLDR\FileProvider;
+use ICanBoogie\CLDR\Repository;
+use ICanBoogie\CLDR\RunTimeProvider;
+use ICanBoogie\CLDR\WebProvider;
+use ICanBoogie\DateTime;
+
+$provider = new RunTimeProvider
+(
+    new FileProvider
+    (
+        new WebProvider, "/path/to/storage"
+    )
+);
+
+$repository = new Repository($provider);
+
+DateTime::$localizer = function(DateTime $instance, $locale) use ($repository) {
+
+	return $repository->locales[$locale]->localize($instance);
+
+};
+
+$date = DateTime::from('2015-05-05 23:21:05', 'UTC');
+
+echo $date->localize('fr')->format('long');   // mardi 5 mai 2015 23:13:05 UTC
+echo $date->localize('fr')->as_medium;        // 5 mai 2015 23:13:05
 ```
 
 
@@ -369,6 +409,7 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
 
 [DateTime]: http://icanboogie.org/docs/class-ICanBoogie.DateTime.html
+[ICanBoogie/CLDR]: https://github.com/ICanBoogie/CLDR
 [JsonSerializable interface]: http://php.net/manual/en/class.jsonserializable.php
 [TimeZone]: http://icanboogie.org/docs/class-ICanBoogie.TimeZone.html)
 [TimeZoneLocation]: http://icanboogie.org/docs/class-ICanBoogie.TimeZoneLocation.html
