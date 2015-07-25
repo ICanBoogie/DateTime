@@ -100,8 +100,8 @@ echo $time;                             // ""
 
 ### Acknowledgements
 
-The implementation of the [DateTime](http://icanboogie.org/docs/class-ICanBoogie.DateTime.html)
-class is vastly inspired by Ruby's [Time](http://www.ruby-doc.org/core-1.9.3/Time.html) class.
+The implementation of the [DateTime][] class is vastly inspired by Ruby's
+[Time](http://www.ruby-doc.org/core-1.9.3/Time.html) class.
 
 
 
@@ -215,7 +215,8 @@ $tomorrow  === max($now, $yesterday, $tomorrow); // true
 
 ## DateTime and JSON
 
-Starting with v1.1.0, [DateTime][] instances implements the [JsonSerializable interface][] and are serialized into ISO-8601 strings.
+Starting with v1.1.0, [DateTime][] instances implements the [JsonSerializable interface][] and
+are serialized into ISO-8601 strings.
 
 ```php
 <?php
@@ -281,26 +282,20 @@ spl_object_hash($now) == spl_object_hash($next_year);   // false
 
 ## Localized formatting
 
-Localized formatting is outside of this package scope, still a _localizer_ can be provided to the [DateTime][] class to localize its instances, but of course the result depends on the implementation.
+Localized formatting is outside of this package scope, still a _localizer_ can be provided to the
+[DateTime][] class to localize its instances, but of course the result depends on the
+implementation.
 
-The following example demonstrates how to localize instances using [ICanBoogie/CLDR][] which uses Unicode's Common Locale Data Repository to format [DateTime][] instances.
+The following example demonstrates how to localize instances using [ICanBoogie/CLDR][] which uses
+Unicode's Common Locale Data Repository to format [DateTime][] instances.
 
 ```php
 <?php
 
-use ICanBoogie\CLDR\FileProvider;
 use ICanBoogie\CLDR\Repository;
-use ICanBoogie\CLDR\RunTimeProvider;
-use ICanBoogie\CLDR\WebProvider;
 use ICanBoogie\DateTime;
 
-$provider = new RunTimeProvider
-(
-    new FileProvider
-    (
-        new WebProvider, "/path/to/storage"
-    )
-);
+// …
 
 $repository = new Repository($provider);
 
@@ -347,9 +342,8 @@ The recommended way to install this package is through [Composer](https://getcom
 $ composer require icanboogie/datetime
 ```
 
-The package [icanboogie/common](https://packagist.org/packages/icanboogie/common) is suggested to
-provide finer exceptions, such as [PropertyNotDefined](http://icanboogie.org/docs/class-ICanBoogie.PropertyNotDefined.html)
-and [PropertyNotWriteable](http://icanboogie.org/docs/class-ICanBoogie.PropertyNotWritable.html).
+The package [icanboogie/common](https://github.com/ICanBoogie/Common) is suggested to
+provide finer exceptions, such as [PropertyNotDefined][] and [PropertyNotWritable][].
 If the package is not included, `RunTimeException` instances are thrown instead.
 
 
@@ -370,7 +364,7 @@ cloned with the following command line:
 ## Documentation
 
 The package is documented as part of the [ICanBoogie](http://icanboogie.org/) framework
-[documentation](http://icanboogie.org/docs/). The documentation for the package and its
+[documentation](http://api.icanboogie.org/datetime/1.1/). The documentation for the package and its
 dependencies can be generated with the `make doc` command. The documentation is generated in
 the `build/docs` directory using [ApiGen](http://apigen.org/). The package directory can later by
 cleaned with the `make clean` command.
@@ -402,15 +396,16 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
 ## License
 
-**ICanBoogie/DateTime** is licensed under the New BSD License - See the [LICENSE](LICENSE) file for details.
+**icanboogie/datetime** is licensed under the New BSD License - See the [LICENSE](LICENSE) file for details.
 
 
 
 
 
-[DateTime]: http://icanboogie.org/docs/class-ICanBoogie.DateTime.html
-[ICanBoogie/CLDR]: https://github.com/ICanBoogie/CLDR
+[ICanBoogie/CLDR]:            https://github.com/ICanBoogie/CLDR
 [JsonSerializable interface]: http://php.net/manual/en/class.jsonserializable.php
-[TimeZone]: http://icanboogie.org/docs/class-ICanBoogie.TimeZone.html)
-[TimeZoneLocation]: http://icanboogie.org/docs/class-ICanBoogie.TimeZoneLocation.html
-
+[DateTime]:                   http://api.icanboogie.org/datetime/1.1/class-ICanBoogie.DateTime.html
+[TimeZone]:                   http://api.icanboogie.org/datetime/1.1/class-ICanBoogie.TimeZone.html)
+[TimeZoneLocation]:           http://api.icanboogie.org/datetime/1.1/class-ICanBoogie.TimeZoneLocation.html
+[PropertyNotDefined]:         http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotDefined.html
+[PropertyNotWritable]:        http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotWritable.html
