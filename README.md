@@ -389,7 +389,7 @@ cloned with the following command line:
 ## Documentation
 
 The package is documented as part of the [ICanBoogie](http://icanboogie.org/) framework
-[documentation](http://api.icanboogie.org/datetime/1.1/). The documentation for the package and its
+[documentation][]. The documentation for the package and its
 dependencies can be generated with the `make doc` command. The documentation is generated in
 the `build/docs` directory using [ApiGen](http://apigen.org/). The package directory can later by
 cleaned with the `make clean` command.
@@ -429,8 +429,9 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
 [ICanBoogie/CLDR]:            https://github.com/ICanBoogie/CLDR
 [JsonSerializable interface]: http://php.net/manual/en/class.jsonserializable.php
-[DateTime]:                   http://api.icanboogie.org/datetime/1.1/class-ICanBoogie.DateTime.html
-[TimeZone]:                   http://api.icanboogie.org/datetime/1.1/class-ICanBoogie.TimeZone.html)
-[TimeZoneLocation]:           http://api.icanboogie.org/datetime/1.1/class-ICanBoogie.TimeZoneLocation.html
+[documentation]:              http://api.icanboogie.org/datetime/latest/
+[DateTime]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.DateTime.html
+[TimeZone]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZone.html)
+[TimeZoneLocation]:           http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZoneLocation.html
 [PropertyNotDefined]:         http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotDefined.html
 [PropertyNotWritable]:        http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotWritable.html
