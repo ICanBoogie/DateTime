@@ -153,6 +153,31 @@ $time->sunday->weekday;                      // 7
 
 
 
+## `now()` and `right_now()`
+
+`DateTime::now()` returns a new instance with the current local time and the local time zone. Subsequent calls return equal times, event if they are minutes apart. _now_ actually refers to the `REQUEST_TIME` or, if it is not available, to the first time the method was invoked.
+
+On the other hand, `DateTime::right_now()` returns a new instance with the _real_ current local time and the local time zone.
+
+The following example demonstrates the difference:
+
+```php
+<?php
+
+use ICanBoogie\DateTime;
+
+$now = DateTime::now();
+
+sleep(2);
+
+$now == DateTime::now();         // true
+$now == DateTime::right_now();   // false
+```
+
+
+
+
+
 ## Comparing DateTime instances
 
 [DateTime][] Instances are compared using standard comparison operations:

@@ -228,13 +228,14 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @return DateTime
 	 */
-	static public function from($source, $timezone=null)
+	static public function from($source, $timezone = null)
 	{
 		if ($source instanceof static)
 		{
 			return clone $source;
 		}
-		else if ($source instanceof \DateTime)
+
+		if ($source instanceof \DateTime)
 		{
 			return new static($source->format(self::DB), $source->getTimezone());
 		}
@@ -245,11 +246,36 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns an instance with the current local time and the local time zone.
 	 *
-	 * @return DateTime
+	 * **Note:** Subsequent calls return equal times, event if they are minutes apart. _now_
+	 * actually refers to the `REQUEST_TIME` or, if it is now available, to the first time
+	 * the method was invoked.
+	 *
+	 * @return static
 	 */
 	static public function now()
 	{
-		return new static();
+		static $now;
+
+		if (!$now)
+		{
+			$now = empty($_SERVER['REQUEST_TIME'])
+				? new static
+				: (new static('@' . $_SERVER['REQUEST_TIME']))->local;
+		}
+
+		return clone $now;
+	}
+
+	/**
+	 * Returns an instance with the current local time and the local time zone.
+	 *
+	 * **Note:** Subsequent calls may return different times.
+	 *
+	 * @return static
+	 */
+	static public function right_now()
+	{
+		return new static;
 	}
 
 	/**

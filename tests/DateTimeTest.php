@@ -24,7 +24,8 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_now()
 	{
 		$d = DateTime::now();
-		$now = new \DateTime('now');
+		$now = new \DateTime('@' . $_SERVER['REQUEST_TIME']);
+		$now->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 		$this->assertEquals(date_default_timezone_get(), $d->zone->name);
 		$this->assertEquals($d->year, $now->format('Y'));
 		$this->assertEquals($d->month, $now->format('m'));
@@ -32,6 +33,11 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($d->hour, $now->format('H'));
 		$this->assertEquals($d->minute, $now->format('i'));
 		$this->assertEquals($d->second, $now->format('s'));
+
+		sleep(2);
+
+		$this->assertEquals($d, DateTime::now());
+		$this->assertGreaterThan($d, DateTime::right_now());
 	}
 
 	public function test_none()
