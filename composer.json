@@ -27,6 +27,8 @@
 		"icanboogie/common": "Allows finer exceptions to be thrown"
 	},
 	"autoload": {
-		"classmap": [ "lib/" ]
+		"psr-4": {
+			"ICanBoogie\\": "lib/"
+		}
 	}
 }
