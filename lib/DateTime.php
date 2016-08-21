@@ -258,9 +258,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 		if (!$now)
 		{
-			$now = empty($_SERVER['REQUEST_TIME'])
-				? new static
-				: (new static('@' . $_SERVER['REQUEST_TIME']))->local;
+			$now = empty($_SERVER['REQUEST_TIME']) ? new static : (new static('@' . $_SERVER['REQUEST_TIME']))->local;
 		}
 
 		return clone $now;
@@ -300,7 +298,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @return DateTime
 	 */
-	static public function none($timezone='utc')
+	static public function none($timezone = 'utc')
 	{
 		return new static('0000-00-00', $timezone);
 	}
@@ -322,7 +320,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * @param string $time Defaults to "now".
 	 * @param \DateTimeZone|string|null $timezone
 	 */
-	public function __construct($time='now', $timezone=null)
+	public function __construct($time = 'now', $timezone = null)
 	{
 		if (is_string($timezone))
 		{
@@ -337,11 +335,14 @@ class DateTime extends \DateTime implements \JsonSerializable
 		$timezone === null ? parent::__construct($time) : parent::__construct($time, $timezone);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function __get($property)
 	{
 		if (strpos($property, 'as_') === 0)
 		{
-			return call_user_func([ $this, 'format_' . $property ]);
+			return $this->{ 'format_' . $property }();
 		}
 
 		switch ($property)
@@ -604,25 +605,27 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 */
 	public function __call($method, $arguments)
 	{
-		if (strpos($method, 'format_as_') === 0)
+		if (strpos($method, 'format_as_') !== 0)
 		{
-			$as = strtoupper(substr($method, strlen('format_as_')));
-			$format = constant(__CLASS__ . '::' . $as);
-			$value = $this->format($format);
-
-			if ($as == 'RFC822' || $as == 'RFC1123')
-			{
-				$value = str_replace('+0000', 'GMT', $value);
-			}
-			else if ($as == 'ISO8601')
-			{
-				$value = str_replace('+0000', 'Z', $value);
-			}
-
-			return $value;
+			throw new \BadMethodCallException("Unsupported method: $method.");
 		}
 
-		throw new \BadMethodCallException("Unsupported method: $method.");
+		$as = strtoupper(substr($method, strlen('format_as_')));
+		$format = constant(__CLASS__ . '::' . $as);
+		$value = $this->format($format);
+
+		switch ($as)
+		{
+			case 'RFC822':
+			case 'RFC1123':
+				return str_replace('+0000', 'GMT', $value);
+
+			case 'ISO8601':
+				return str_replace('+0000', 'Z', $value);
+
+			default:
+				return $value;
+		}
 	}
 
 	/**
@@ -661,7 +664,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 			$timezone = date_default_timezone_get();
 		}
 
-		if (!($timezone instanceof \DateTimeZone))
+		if (!$timezone instanceof \DateTimeZone)
 		{
 			$timezone = new \DateTimeZone($timezone);
 		}
@@ -761,7 +764,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @return DateTime
 	 */
-	public function with(array $options, $cascade=false)
+	public function with(array $options, $cascade = false)
 	{
 		$dt = clone $this;
 

@@ -1280,15 +1280,15 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$reference->localize('fr');
 	}
 
-    /**
-     * @expectedException \RuntimeException
-     */
+	/**
+	 * @expectedException \RuntimeException
+	 */
 	public function test_getting_undefined_property_should_throw_exception()
-    {
-        $date = DateTime::now();
-        $property = uniqid();
-        $date->$property;
-    }
+	{
+		$date = DateTime::now();
+		$property = uniqid();
+		$date->$property;
+	}
 }
 
 namespace ICanBoogie\DateTimeTest;

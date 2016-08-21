@@ -108,6 +108,8 @@ class TimeZone extends \DateTimeZone
 	 * Returns the {@link $location}, {@link $name} and {@link $offset} properties.
 	 *
 	 * @throws PropertyNotDefined in attempt to get an unsupported  property.
+	 *
+	 * @inheritdoc
 	 */
 	public function __get($property)
 	{

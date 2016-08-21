@@ -39,18 +39,18 @@ class TimeZoneTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals('UTC', TimeZone::from('utc')->name);
 		$this->assertEquals('UTC', TimeZone::from('UTC')->name);
-        $this->assertEquals('UTC', (new TimeZone('utc'))->name);
-        $this->assertEquals('UTC', (new TimeZone('UTC'))->name);
+		$this->assertEquals('UTC', (new TimeZone('utc'))->name);
+		$this->assertEquals('UTC', (new TimeZone('UTC'))->name);
 	}
 
 	public function test_should_create_from_php_datetimezone()
-    {
-        $name = 'Europe/Paris';
-        $z1 = new \DateTimeZone($name);
-        $z2 = TimeZone::from($z1);
+	{
+		$name = 'Europe/Paris';
+		$z1 = new \DateTimeZone($name);
+		$z2 = TimeZone::from($z1);
 
-        $this->assertSame($name, $z2->name);
-    }
+		$this->assertSame($name, $z2->name);
+	}
 
 	public function test_should_reuse_instance()
 	{
@@ -60,29 +60,29 @@ class TimeZoneTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($z1, $z2);
 	}
 
-    public function test_should_reuse_timezone()
-    {
-        $z1 = TimeZone::from('Europe/Paris');
-        $z2 = TimeZone::from($z1);
+	public function test_should_reuse_timezone()
+	{
+		$z1 = TimeZone::from('Europe/Paris');
+		$z2 = TimeZone::from($z1);
 
-        $this->assertSame($z1, $z2);
-    }
+		$this->assertSame($z1, $z2);
+	}
 
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function test_getting_undefined_property_should_throw_exception()
-    {
-        $property = uniqid();
-        $z1 = TimeZone::from('utc');
-        $z1->$property;
-    }
+	/**
+	 * @expectedException \RuntimeException
+	 */
+	public function test_getting_undefined_property_should_throw_exception()
+	{
+		$property = uniqid();
+		$z1 = TimeZone::from('utc');
+		$z1->$property;
+	}
 
-    public function test_to_string()
-    {
-        $name = 'Europe/Paris';
-        $z1 = TimeZone::from($name);
+	public function test_to_string()
+	{
+		$name = 'Europe/Paris';
+		$z1 = TimeZone::from($name);
 
-        $this->assertSame($name, (string) $z1);
-    }
+		$this->assertSame($name, (string) $z1);
+	}
 }

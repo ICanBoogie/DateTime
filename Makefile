@@ -1,7 +1,7 @@
 # customization
 
 PACKAGE_NAME = ICanBoogie/DateTime
-PACKAGE_VERSION = v1.1.0
+PACKAGE_VERSION = v1.2
 
 # do not edit the following lines
 
