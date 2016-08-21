@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/travis/ICanBoogie/DateTime.svg)](http://travis-ci.org/ICanBoogie/DateTime)
 [![HHVM](https://img.shields.io/hhvm/icanboogie/datetime.svg)](http://hhvm.h4cc.de/package/icanboogie/datetime)
 [![Code Coverage](https://img.shields.io/coveralls/ICanBoogie/DateTime.svg)](https://coveralls.io/r/ICanBoogie/DateTime)
-[![Packagist](https://img.shields.io/packagist/dt/icanboogie/datetime.svg)](https://packagist.org/packages/icanboogie/datetime)
+[![Packagist](https://img.shields.io/packagist/dm/icanboogie/datetime.svg?maxAge=2592000)](https://packagist.org/packages/icanboogie/datetime)
 
 This package extends the features of PHP [DateTime](http://www.php.net/manual/en/class.datetime.php)
 and [DateTimeZone](http://www.php.net/manual/en/class.datetimezone.php) classes to ease the
