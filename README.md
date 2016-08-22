@@ -60,16 +60,75 @@ echo $time->yesterday;                  // 2013-02-02T00:00:00+0100
 echo $time->yesterday->is_past          // true
 echo $time->monday;                     // 2013-01-28T00:00:00+0100
 echo $time->sunday;                     // 2013-02-03T00:00:00+0100
-
 echo $time->timestamp;                  // 1359921825
-echo $time;                             // 2013-02-03T21:03:45+0100
-$time->timestamp += 3600 * 4;
-echo $time;                             // 2013-02-04T01:03:45+0100
 
 echo $time->zone;                       // Europe/Paris
 echo $time->zone->offset;               // 3600
 echo $time->zone->location;             // FR,48.86667,2.33333
 echo $time->zone->location->latitude;   // 48.86667
+```
+
+### Acknowledgements
+
+The implementation of the [DateTime][] class is vastly inspired by Ruby's
+[Time](http://www.ruby-doc.org/core-1.9.3/Time.html) class.
+
+
+
+
+
+## DateTime is a value object
+
+Starting from v2.0, date time instances are immutable [value
+objects](https://en.wikipedia.org/wiki/Value_object). A class to create mutable date time instances
+is available, but it's important to remember the difference with PHP implementation. Thus,
+[ICanBoogie\DateTime][] extends [\DateTimeImmutable][] and [ICanBoogie\MutableDateTime][] extends
+[\DateTime][].
+
+You can switch from immutable to mutable instances using the `mutable` and `immutable` properties,
+or the static `from()` method:
+
+```php
+<?php
+
+use ICanBoogie\DateTime;
+use ICanBoogie\MutableDateTime;
+
+$immutable = DateTime::now();
+$mutable = $immutable->mutable;
+$mutable->hour += 1;
+$immutable = $mutable->immutable;
+
+$mutable = MutableDateTime::from($immutable);
+$immutable = DateTime::from($mutable);
+```
+
+
+
+
+
+### Mutable date time
+
+Mutable date time instances are created with the `mutable` property, `new MutableDateTime`, or
+`MutableDataTime::form()`.
+
+The following properties can be used to alter the instance: `year`, `month`, `day`, `hour`,
+`minute`, `second`, `timestamp`, and `zone`.
+
+```php
+<?php
+
+use ICanBoogie\DateTime;
+
+date_default_timezone_set('EST'); // set local time zone to Eastern Standard Time
+
+$time = new MutableDateTime('now', 'Europe/Paris');
+
+echo $time;                             // 2013-02-03T21:03:45+0100
+$time->timestamp += 3600 * 4;
+echo $time;                             // 2013-02-04T01:03:45+0100
+
+echo $time->zone;                       // Europe/Paris
 $time->zone = 'Asia/Tokyo';
 echo $time;                             // 2013-02-04T09:03:45+0900
 
@@ -77,7 +136,11 @@ $time->hour += 72;
 echo "Rendez-vous in 72 hours: $time";  // Rendez-vous in 72 hours: 2013-02-07T05:03:45+0900
 ```
 
-Empty dates are also supported:
+
+
+
+
+## Empty dates
 
 ```php
 <?php
@@ -98,66 +161,14 @@ echo $time;                             // ""
 
 
 
-### Acknowledgements
-
-The implementation of the [DateTime][] class is vastly inspired by Ruby's
-[Time](http://www.ruby-doc.org/core-1.9.3/Time.html) class.
-
-
-
-
-
-## Day of week
-
-```php
-<?php
-
-use ICanBoogie\DateTime:
-
-$time = new DateTime('2014-01-06 11:11:11', 'utc'); // a monday at 11:11:11 UTC
-
-echo $time->monday;                          // 2014-01-06T00:00:00Z
-echo $time->tuesday;                         // 2014-01-07T00:00:00Z
-echo $time->wednesday;                       // 2014-01-08T00:00:00Z
-echo $time->thursday;                        // 2014-01-09T00:00:00Z
-echo $time->friday;                          // 2014-01-10T00:00:00Z
-echo $time->saturday;                        // 2014-01-11T00:00:00Z
-echo $time->sunday;                          // 2014-01-12T00:00:00Z
-
-$time->monday->is_monday;                    // true
-$time->tuesday->is_tuesday;                  // true
-$time->wednesday->is_wednesday;              // true
-$time->thursday->is_thursday;                // true
-$time->friday->is_friday;                    // true
-$time->saturday->is_saturday;                // true
-$time->sunday->is_sunday;                    // true
-
-$time->monday->is_tuesday;                   // false
-$time->tuesday->is_wednesday;                // false
-$time->wednesday->is_thursday;               // false
-$time->thursday->is_friday;                  // false
-$time->friday->is_saturday;                  // false
-$time->saturday->is_sunday;                  // false
-$time->sunday->is_monday;                    // false
-
-$time->monday->weekday;                      // 1
-$time->tuesday->weekday;                     // 2
-$time->wednesday->weekday;                   // 3
-$time->thursday->weekday;                    // 4
-$time->friday->weekday;                      // 5
-$time->saturday->weekday;                    // 6
-$time->sunday->weekday;                      // 7
-```
-
-
-
-
-
 ## `now()` and `right_now()`
 
-`DateTime::now()` returns a new instance with the current local time and the local time zone. Subsequent calls return equal times, event if they are minutes apart. _now_ actually refers to the `REQUEST_TIME` or, if it is not available, to the first time the method was invoked.
+`DateTime::now()` returns an instance with the current local time and the local time zone.
+Subsequent calls return equal times, event if they are minutes apart. _now_ actually refers to the
+`REQUEST_TIME` or, if it is not available, to the first time the method was invoked.
 
-On the other hand, `DateTime::right_now()` returns a new instance with the _real_ current local time and the local time zone.
+On the other hand, `DateTime::right_now()` returns a new instance with the _real_ current local time
+and the local time zone.
 
 The following example demonstrates the difference:
 
@@ -240,8 +251,8 @@ $tomorrow  === max($now, $yesterday, $tomorrow); // true
 
 ## DateTime and JSON
 
-Starting with v1.1.0, [DateTime][] instances implements the [JsonSerializable interface][] and
-are serialized into ISO-8601 strings.
+[DateTime][] instances implements the [JsonSerializable interface][] and are serialized into
+ISO-8601 strings.
 
 ```php
 <?php
@@ -260,9 +271,11 @@ echo json_encode([ 'date' => $date ]);
 
 ## Changing multiple properties
 
-The `change()` method is used to change multiple properties at once.
+The `change()` method changes multiple properties at once. Invoked on a [DateTime][] instance, a new
+[DateTime][] instance with modified properties is returned. Invoked on a [MutableDateTime][]
+instance, the instance is updated and the same instance is returned.
 
-**Note:** Values exceeding ranges are added to their parent values.
+> **Note:** Values exceeding ranges are added to their parent values.
 
 ```php
 <?php
@@ -272,7 +285,8 @@ use ICanBoogie\DateTime;
 $date = DateTime::now()->change([ 'year' => 2015, 'month' => 5, 'hour' => 12 ]);
 ```
 
-Using the `$cascade` parameter, setting the hour resets the minute and second to 0, and setting the minute resets the second to 0.
+Using the `$cascade` parameter, setting the hour resets the minute and second to 0, and setting the
+minute resets the second to 0.
 
 ```php
 <?php
@@ -288,7 +302,9 @@ echo DateTime::from("2015-05-05 12:13:14")->change([ 'hour' => 13 ], true);   //
 
 ## Creating a new instance with changed properties
 
-The `with()` method is similar to the `change()` method as it is used to define multiple properties at once, the difference is that the method creates a new instance, leaving the original instance intact.
+The `with()` method is similar to the `change()` method as it is used to define multiple properties
+at once, the difference is that the method creates a new instance, leaving the original instance
+intact.
 
 ```php
 <?php
@@ -299,6 +315,52 @@ $now = DateTime::now();
 $next_year = $now->with([ 'year' => $now->year + 1 ]);
 
 spl_object_hash($now) == spl_object_hash($next_year);   // false
+```
+
+
+
+
+
+## Day of week
+
+```php
+<?php
+
+use ICanBoogie\DateTime:
+
+$time = new DateTime('2014-01-06 11:11:11', 'utc'); // a monday at 11:11:11 UTC
+
+echo $time->monday;                          // 2014-01-06T00:00:00Z
+echo $time->tuesday;                         // 2014-01-07T00:00:00Z
+echo $time->wednesday;                       // 2014-01-08T00:00:00Z
+echo $time->thursday;                        // 2014-01-09T00:00:00Z
+echo $time->friday;                          // 2014-01-10T00:00:00Z
+echo $time->saturday;                        // 2014-01-11T00:00:00Z
+echo $time->sunday;                          // 2014-01-12T00:00:00Z
+
+$time->monday->is_monday;                    // true
+$time->tuesday->is_tuesday;                  // true
+$time->wednesday->is_wednesday;              // true
+$time->thursday->is_thursday;                // true
+$time->friday->is_friday;                    // true
+$time->saturday->is_saturday;                // true
+$time->sunday->is_sunday;                    // true
+
+$time->monday->is_tuesday;                   // false
+$time->tuesday->is_wednesday;                // false
+$time->wednesday->is_thursday;               // false
+$time->thursday->is_friday;                  // false
+$time->friday->is_saturday;                  // false
+$time->saturday->is_sunday;                  // false
+$time->sunday->is_monday;                    // false
+
+$time->monday->weekday;                      // 1
+$time->tuesday->weekday;                     // 2
+$time->wednesday->weekday;                   // 3
+$time->thursday->weekday;                    // 4
+$time->friday->weekday;                      // 5
+$time->saturday->weekday;                    // 6
+$time->sunday->weekday;                      // 7
 ```
 
 
@@ -349,11 +411,7 @@ echo $date->localize('fr')->as_medium;        // 5 mai 2015 23:13:05
 
 ## Requirement
 
-The package requires PHP 5.4 or later.
-
-Starting with v1.1.0 the package implements the [JsonSerializable interface][]
- and thus requires PHP 5.4+. If you only have access to PHP 5.3, use the branch
- [1.0.x](https://github.com/ICanBoogie/DateTime/tree/1.0) instead.
+The package requires PHP 5.5 or later.
 
 
 
@@ -430,8 +488,13 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 [ICanBoogie/CLDR]:            https://github.com/ICanBoogie/CLDR
 [JsonSerializable interface]: http://php.net/manual/en/class.jsonserializable.php
 [documentation]:              http://api.icanboogie.org/datetime/latest/
-[DateTime]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.DateTime.html
-[TimeZone]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZone.html)
-[TimeZoneLocation]:           http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZoneLocation.html
+[\DateTime]:                  http://php.net/manual/en/class.datetime.php
+[\DateTimeImmutable]:         http://php.net/manual/en/class.datetimeimmutable.php
+[DateTime]:                   http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.DateTime.html
+[ICanBoogie\DateTime]:        http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.DateTime.html
+[ICanBoogie\MutableDateTime]: http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.MutableDateTime.html
+[MutableDateTime]:            http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.MutableDateTime.html
+[TimeZone]:                   http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.TimeZone.html
+[TimeZoneLocation]:           http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.TimeZoneLocation.html
 [PropertyNotDefined]:         http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotDefined.html
 [PropertyNotWritable]:        http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotWritable.html

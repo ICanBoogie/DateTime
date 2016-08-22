@@ -13,6 +13,7 @@ namespace Tests\ICanBoogie\Time;
 
 use ICanBoogie\DateTime;
 use ICanBoogie\DateTimeTest\MyDateTime;
+use ICanBoogie\MutableDateTime;
 
 class DateTimeTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,6 +37,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
 		sleep(2);
 
+		$this->assertSame($d, DateTime::now());
 		$this->assertEquals($d, DateTime::now());
 		$this->assertGreaterThan($d, DateTime::right_now());
 	}
@@ -105,20 +107,26 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	{
 		$d = new DateTime('2001-01-01 01:01:01');
 
-		$this->assertEquals('2009-01-01 01:01:01', $d->change([ 'year' => 2009 ])->as_db);
+		$d = $d->change([ 'year' => 2009 ]);
+		$this->assertEquals('2009-01-01 01:01:01', $d->as_db);
 		$this->assertEquals(2009, $d->year);
-		$this->assertEquals('2009-09-01 01:01:01', $d->change([ 'month' => 9 ])->as_db);
+		$d = $d->change([ 'month' => 9 ]);
+		$this->assertEquals('2009-09-01 01:01:01', $d->as_db);
 		$this->assertEquals(9, $d->month);
-		$this->assertEquals('2009-09-09 01:01:01', $d->change([ 'day' => 9 ])->as_db);
+		$d = $d->change([ 'day' => 9 ]);
+		$this->assertEquals('2009-09-09 01:01:01', $d->as_db);
 		$this->assertEquals(9, $d->day);
-		$this->assertEquals('2009-09-09 09:01:01', $d->change([ 'hour' => 9 ])->as_db);
+		$d = $d->change([ 'hour' => 9 ]);
+		$this->assertEquals('2009-09-09 09:01:01', $d->as_db);
 		$this->assertEquals(9, $d->hour);
-		$this->assertEquals('2009-09-09 09:09:01', $d->change([ 'minute' => 9 ])->as_db);
+		$d = $d->change([ 'minute' => 9 ]);
+		$this->assertEquals('2009-09-09 09:09:01', $d->as_db);
 		$this->assertEquals(9, $d->minute);
-		$this->assertEquals('2009-09-09 09:09:09', $d->change([ 'second' => 9 ])->as_db);
+		$d = $d->change([ 'second' => 9 ]);
+		$this->assertEquals('2009-09-09 09:09:09', $d->as_db);
 		$this->assertEquals(9, $d->second);
 
-		$d->change([
+		$d = $d->change([
 
 			'year' => 2001,
 			'month' => 1,
@@ -173,13 +181,6 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(9999, $d->year);
 	}
 
-	public function test_set_year()
-	{
-		$d = new DateTime('2001-01-01 01:01:01');
-		$d->year = 2009;
-		$this->assertEquals('2009-01-01 01:01:01', $d->as_db);
-	}
-
 	public function test_get_quarter()
 	{
 		$d = new DateTime('2012-01-16 15:00:00');
@@ -225,13 +226,6 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(6, $d->month);
 		$d = new DateTime('2012-12-16 15:00:00');
 		$this->assertEquals(12, $d->month);
-	}
-
-	public function test_set_month()
-	{
-		$d = new DateTime('2001-01-01 01:01:01');
-		$d->month = 9;
-		$this->assertEquals('2001-09-01 01:01:01', $d->as_db);
 	}
 
 	public function test_get_week()
@@ -308,24 +302,10 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(1, $d->day);
 	}
 
-	public function test_set_day()
-	{
-		$d = new DateTime('2001-01-01 01:01:01');
-		$d->day = 9;
-		$this->assertEquals('2001-01-09 01:01:01', $d->as_db);
-	}
-
 	public function test_get_hour()
 	{
 		$d = new DateTime('2013-01-01 01:23:45');
 		$this->assertEquals(1, $d->hour);
-	}
-
-	public function test_set_hour()
-	{
-		$d = new DateTime('2001-01-01 01:01:01');
-		$d->hour = 9;
-		$this->assertEquals('2001-01-01 09:01:01', $d->as_db);
 	}
 
 	public function test_get_minute()
@@ -334,24 +314,10 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(23, $d->minute);
 	}
 
-	public function test_set_minute()
-	{
-		$d = new DateTime('2001-01-01 01:01:01');
-		$d->minute = 9;
-		$this->assertEquals('2001-01-01 01:09:01', $d->as_db);
-	}
-
 	public function test_get_second()
 	{
 		$d = new DateTime('2013-01-01 01:23:45');
 		$this->assertEquals(45, $d->second);
-	}
-
-	public function test_set_second()
-	{
-		$d = new DateTime('2001-01-01 01:01:01');
-		$d->second = 9;
-		$this->assertEquals('2001-01-01 01:01:09', $d->as_db);
 	}
 
 	public function test_get_is_monday()
@@ -503,8 +469,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
 	public function test_get_is_today()
 	{
-		$d = DateTime::now();
-		$d->zone = 'Asia/Tokyo';
+		$d = DateTime::now()->setTimezone('Asia/Tokyo');
 		$this->assertTrue($d->is_today);
 		$this->assertFalse($d->tomorrow->is_today);
 		$this->assertFalse($d->yesterday->is_today);
@@ -521,12 +486,9 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
 	public function test_get_is_past()
 	{
-		$d = DateTime::now();
-		$d->zone = 'Asia/Tokyo';
-		$d->timestamp -= 3600;
-		$this->assertTrue($d->is_past);
-		$d->timestamp += 7200;
-		$this->assertFalse($d->is_past);
+		$d = DateTime::now()->setTimezone('Asia/Tokyo');
+		$this->assertTrue($d->modify('-3600 second')->is_past);
+		$this->assertFalse($d->modify('+3500 second')->is_past);
 	}
 
 	/**
@@ -540,12 +502,9 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
 	public function test_get_is_future()
 	{
-		$d = DateTime::now();
-		$d->zone = 'Asia/Tokyo';
-		$d->timestamp -= 3600;
-		$this->assertFalse($d->is_future);
-		$d->timestamp += 7200;
-		$this->assertTrue($d->is_future);
+		$d = DateTime::now()->setTimezone('Asia/Tokyo');
+		$this->assertFalse($d->modify('-3600 second')->is_future);
+		$this->assertTrue($d->modify('+3600 second')->is_future);
 	}
 
 	/**
@@ -618,11 +577,14 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		DateTime::now()->$property = null;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function provide_writeonly_property()
 	{
-		$properties = 'monday|tuesday|wednesday|thursday|friday|saturday|sunday';
+		$properties = 'monday tuesday wednesday thursday friday saturday sunday';
 
-		return array_map(function($v) { return (array) $v; }, explode('|', $properties));
+		return array_map(function($v) { return (array) $v; }, explode(' ', $properties));
 	}
 
 	/**
@@ -634,6 +596,9 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($expected, $d->$day->as_db);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function provide_test_day_instance()
 	{
 		return [
@@ -787,11 +752,9 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
 	public function test_get_is_utc()
 	{
-		$d = DateTime::now();
-		$d->zone = 'Asia/Tokyo';
+		$d = DateTime::now()->setTimezone('Asia/Tokyo');
 		$this->assertFalse($d->is_utc);
-		$d->zone = 'UTC';
-		$this->assertTrue($d->is_utc);
+		$this->assertTrue($d->setTimezone('UTC')->is_utc);
 	}
 
 	/**
@@ -824,10 +787,8 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_get_is_local()
 	{
 		$d = DateTime::now();
-		$d->zone = date_default_timezone_get() == 'UTC' ? 'Asia/Tokyo' : 'UTC';
-		$this->assertFalse($d->is_local);
-		$d->zone = date_default_timezone_get();
-		$this->assertTrue($d->is_local);
+		$this->assertFalse($d->setTimezone(date_default_timezone_get() == 'UTC' ? 'Asia/Tokyo' : 'UTC')->is_local);
+		$this->assertTrue($d->setTimezone(date_default_timezone_get())->is_local);
 	}
 
 	/**
@@ -1233,7 +1194,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_compare()
 	{
 		$d1 = DateTime::now();
-		$d2 = DateTime::now();
+		$d2 = MutableDateTime::now();
 
 		$this->assertTrue($d1 == $d2);
 		$this->assertTrue($d1 >= $d2);
@@ -1265,6 +1226,14 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('{"date":"2014-10-23T13:50:10+0200"}', json_encode([ 'date' => $date ]));
 	}
 
+	/**
+	 * @expectedException \RuntimeException
+	 */
+	public function test_localize_should_throw_an_exception_if_the_localizer_is_not_defined_yet()
+	{
+		DateTime::now()->localize('fr');
+	}
+
 	public function test_localize()
 	{
 		$invoked = false;
@@ -1288,6 +1257,38 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 		$date = DateTime::now();
 		$property = uniqid();
 		$date->$property;
+	}
+
+	/**
+	 * @expectedException \BadMethodCallException
+	 */
+	public function test_calling_undefined_method_should_throw_exception()
+	{
+		$date = DateTime::now();
+		$method = uniqid();
+		$date->$method();
+	}
+
+	/**
+	 * @dataProvider provide_test_should_be_same_class
+	 *
+	 * @param string $property
+	 */
+	public function test_should_be_same_class($property)
+	{
+		$this->assertInstanceOf(DateTime::class, DateTime::now()->$property);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function provide_test_should_be_same_class()
+	{
+		return array_map(function ($class) {
+
+			return [ $class ];
+
+		}, explode(' ', 'utc local'));
 	}
 }
 

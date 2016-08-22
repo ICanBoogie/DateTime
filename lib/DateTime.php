@@ -11,6 +11,8 @@
 
 namespace ICanBoogie;
 
+use ICanBoogie\DateTime\AdditionalFormats;
+
 /**
  * Representation of a date and time.
  *
@@ -90,81 +92,38 @@ namespace ICanBoogie;
  * echo $time;                             // ""
  * </pre>
  *
- * @property int $timestamp Unix timestamp.
- * @property int $day Day of the month.
- * @property int $hour Hour of the day.
- * @property int $minute Minute of the hour.
- * @property int $month Month of the year.
  * @property-read int $quarter Quarter of the year.
- * @property int $second Second of the minute.
  * @property-read int $week Week of the year.
  * @property-read int $weekday Day of the week.
- * @property int $year Year.
  * @property-read int $year_day Day of the year.
- * @property-read bool $is_monday `true` if the instance represents Monday.
- * @property-read bool $is_tuesday `true` if the instance represents Tuesday.
- * @property-read bool $is_wednesday `true` if the instance represents Wednesday.
- * @property-read bool $is_thursday `true` if the instance represents Thursday.
- * @property-read bool $is_friday `true` if the instance represents Friday.
- * @property-read bool $is_saturday `true` if the instance represents Saturday.
- * @property-read bool $is_sunday `true` if the instance represents Sunday.
- * @property-read bool $is_today `true` if the instance is today.
- * @property-read bool $is_past `true` if the instance lies in the past.
- * @property-read bool $is_future `true` if the instance lies in the future.
- * @property-read bool $is_empty `true` if the instance represents an empty date such as "0000-00-00" or "0000-00-00 00:00:00".
- * @property-read DateTime $tomorrow A new instance representing the next day. Time is reset to 00:00:00.
- * @property-read DateTime $yesterday A new instance representing the previous day. Time is reset to 00:00:00.
- * @property-read DateTime $monday A new instance representing Monday of the week. Time is reset to 00:00:00.
- * @property-read DateTime $tuesday A new instance representing Tuesday of the week. Time is reset to 00:00:00.
- * @property-read DateTime $wednesday A new instance representing Wednesday of the week. Time is reset to 00:00:00.
- * @property-read DateTime $thursday A new instance representing Thursday of the week. Time is reset to 00:00:00.
- * @property-read DateTime $friday A new instance representing Friday of the week. Time is reset to 00:00:00.
- * @property-read DateTime $saturday A new instance representing Saturday of the week. Time is reset to 00:00:00.
- * @property-read DateTime $sunday A new instance representing Sunday of the week. Time is reset to 00:00:00.
  *
- * @property-read string $as_atom The instance formatted according to {@link ATOM}.
- * @property-read string $as_cookie The instance formatted according to {@link COOKIE}.
- * @property-read string $as_iso8601 The instance formatted according to {@link ISO8601}.
- * @property-read string $as_rfc822 The instance formatted according to {@link RFC822}.
- * @property-read string $as_rfc850 The instance formatted according to {@link RFC850}.
- * @property-read string $as_rfc1036 The instance formatted according to {@link RFC1036}.
- * @property-read string $as_rfc1123 The instance formatted according to {@link RFC1123}.
- * @property-read string $as_rfc2822 The instance formatted according to {@link RFC2822}.
- * @property-read string $as_rfc3339 The instance formatted according to {@link RFC3339}.
- * @property-read string $as_rss The instance formatted according to {@link RSS}.
- * @property-read string $as_w3c The instance formatted according to {@link W3C}.
- * @property-read string $as_db The instance formatted according to {@link DB}.
- * @property-read string $as_number The instance formatted according to {@link NUMBER}.
- * @property-read string $as_date The instance formatted according to {@link DATE}.
- * @property-read string $as_time The instance formatted according to {@link TIME}.
- *
- * @property TimeZone $zone The timezone of the instance.
  * @property-read DateTime $utc A new instance in the UTC timezone.
  * @property-read DateTime $local A new instance in the local timezone.
- * @property-read bool $is_utc `true` if the instance is in the UTC timezone.
- * @property-read bool $is_local `true` if the instance is in the local timezone.
- * @property-read bool $is_dst `true` if time occurs during Daylight Saving Time in its time zone.
  *
- * @method string format_as_atom() format_as_atom() Formats the instance according to {@link ATOM}.
- * @method string format_as_cookie() format_as_cookie() Formats the instance according to {@link COOKIE}.
- * @method string format_as_iso8601() format_as_iso8601() Formats the instance according to {@link ISO8601}.
- * @method string format_as_rfc822() format_as_rfc822() Formats the instance according to {@link RFC822}.
- * @method string format_as_rfc850() format_as_rfc850() Formats the instance according to {@link RFC850}.
- * @method string format_as_rfc1036() format_as_rfc1036() Formats the instance according to {@link RFC1036}.
- * @method string format_as_rfc1123() format_as_rfc1123() Formats the instance according to {@link RFC1123}.
- * @method string format_as_rfc2822() format_as_rfc2822() Formats the instance according to {@link RFC2822}.
- * @method string format_as_rfc3339() format_as_rfc3339() Formats the instance according to {@link RFC3339}.
- * @method string format_as_rss() format_as_rss() Formats the instance according to {@link RSS}.
- * @method string format_as_w3c() format_as_w3c() Formats the instance according to {@link W3C}.
- * @method string format_as_db() format_as_db() Formats the instance according to {@link DB}.
- * @method string format_as_number() format_as_number() Formats the instance according to {@link NUMBER}.
- * @method string format_as_date() format_as_date() Formats the instance according to {@link DATE}.
- * @method string format_as_time() format_as_time() Formats the instance according to {@link TIME}.
+ * @method DateTime setTimezone(mixed $timezone)
+ * @method DateTime change(array $options, $cascade = false)
  *
  * @see http://en.wikipedia.org/wiki/ISO_8601
  */
-class DateTime extends \DateTime implements \JsonSerializable
+class DateTime extends \DateTimeImmutable implements \JsonSerializable, AdditionalFormats
 {
+	use DateTime\Shared;
+	use DateTime\Readers;
+
+	/*
+	 * The following constants need to be defined because they are only defined by \DateTimeImmutable
+	 */
+	const ATOM = \DateTime::ATOM;
+	const RSS = \DateTime::RSS;
+	const ISO8601 = \DateTime::ISO8601;
+	const RFC822 = \DateTime::RFC822;
+	const RFC850 = \DateTime::RFC850;
+	const RFC1036 = \DateTime::RFC1036;
+	const RFC1123 = \DateTime::RFC1123;
+	const RFC2822 = \DateTime::RFC2822;
+	const RFC3339 = \DateTime::RFC3339;
+	const W3C = \DateTime::W3C;
+
 	/**
 	 * We redefine the constant to make sure that the cookie uses a valid pattern.
 	 *
@@ -175,73 +134,11 @@ class DateTime extends \DateTime implements \JsonSerializable
 	const COOKIE = 'l, d-M-Y H:i:s T';
 
 	/**
-	 * DB (example: 2013-02-03 20:59:03)
-	 *
-	 * @var string
-	 */
-	const DB = 'Y-m-d H:i:s';
-
-	/**
-	 * Number (example: 20130203205903)
-	 *
-	 * @var string
-	 */
-	const NUMBER = 'YmdHis';
-
-	/**
-	 * Date (example: 2013-02-03)
-	 *
-	 * @var string
-	 */
-	const DATE = 'Y-m-d';
-
-	/**
-	 * Time (example: 20:59:03)
-	 *
-	 * @var string
-	 */
-	const TIME = 'H:i:s';
-
-	/**
 	 * Callable used to create localized instances.
 	 *
 	 * @var callable
 	 */
 	static public $localizer = null;
-
-	/**
-	 * Creates a {@link DateTime} instance from a source.
-	 *
-	 * <pre>
-	 * <?php
-	 *
-	 * use ICanBoogie\DateTime;
-	 *
-	 * DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')));
-	 * DateTime::from('2001-01-01 01:01:01', 'Europe/Paris');
-	 * DateTime::from('now');
-	 * </pre>
-	 *
-	 * @param mixed $source
-	 * @param mixed $timezone The time zone to use to create the time. The value is ignored if the
-	 * source is an instance of {@link \DateTime}.
-	 *
-	 * @return DateTime
-	 */
-	static public function from($source, $timezone = null)
-	{
-		if ($source instanceof static)
-		{
-			return clone $source;
-		}
-
-		if ($source instanceof \DateTime)
-		{
-			return new static($source->format(self::DB), $source->getTimezone());
-		}
-
-		return new static($source, $timezone);
-	}
 
 	/**
 	 * Returns an instance with the current local time and the local time zone.
@@ -261,19 +158,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 			$now = empty($_SERVER['REQUEST_TIME']) ? new static : (new static('@' . $_SERVER['REQUEST_TIME']))->local;
 		}
 
-		return clone $now;
-	}
-
-	/**
-	 * Returns an instance with the current local time and the local time zone.
-	 *
-	 * **Note:** Subsequent calls may return different times.
-	 *
-	 * @return static
-	 */
-	static public function right_now()
-	{
-		return new static;
+		return $now;
 	}
 
 	/**
@@ -304,456 +189,18 @@ class DateTime extends \DateTime implements \JsonSerializable
 	}
 
 	/**
-	 * If the time zone is specified as a string a {@link \DateTimeZone} instance is created and
-	 * used instead.
-	 *
-	 * <pre>
-	 * <?php
-	 *
-	 * use ICanBoogie\DateTime;
-	 *
-	 * new DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')));
-	 * new DateTime('2001-01-01 01:01:01', 'Europe/Paris');
-	 * new DateTime;
-	 * </pre>
-	 *
-	 * @param string $time Defaults to "now".
-	 * @param \DateTimeZone|string|null $timezone
-	 */
-	public function __construct($time = 'now', $timezone = null)
-	{
-		if (is_string($timezone))
-		{
-			$timezone = new \DateTimeZone($timezone);
-		}
-
-		#
-		# PHP 5.3.3 considers null $timezone as an error and will complain that it is not
-		# a \DateTimeZone instance.
-		#
-
-		$timezone === null ? parent::__construct($time) : parent::__construct($time, $timezone);
-	}
-
-	/**
 	 * @inheritdoc
-	 */
-	public function __get($property)
-	{
-		if (strpos($property, 'as_') === 0)
-		{
-			return $this->{ 'format_' . $property }();
-		}
-
-		switch ($property)
-		{
-			case 'timestamp':
-				return $this->getTimestamp();
-
-			case 'year':
-				return (int) $this->format('Y');
-			case 'quarter':
-				return floor(($this->month - 1) / 3) + 1;
-			case 'month':
-				return (int) $this->format('m');
-			case 'week':
-				return (int) $this->format('W');
-			case 'year_day':
-				return (int) $this->format('z') + 1;
-			case 'weekday':
-				return (int) $this->format('w') ?: 7;
-			case 'day':
-				return (int) $this->format('d');
-			case 'hour':
-				return (int) $this->format('H');
-			case 'minute':
-				return (int) $this->format('i');
-			case 'second':
-				return (int) $this->format('s');
-			case 'is_monday':
-				return $this->weekday == 1;
-			case 'is_tuesday':
-				return $this->weekday == 2;
-			case 'is_wednesday':
-				return $this->weekday == 3;
-			case 'is_thursday':
-				return $this->weekday == 4;
-			case 'is_friday':
-				return $this->weekday == 5;
-			case 'is_saturday':
-				return $this->weekday == 6;
-			case 'is_sunday':
-				return $this->weekday == 7;
-			case 'is_today':
-				$now = new static('now', $this->zone);
-				return $this->as_date === $now->as_date;
-			case 'is_past':
-				return $this < new static('now', $this->zone);
-			case 'is_future':
-				return $this > new static('now', $this->zone);
-			case 'is_empty':
-				return $this->year == -1 && $this->month == 11 && $this->day == 30;
-			case 'tomorrow':
-				$time = clone $this;
-				$time->modify('+1 day');
-				$time->setTime(0, 0, 0);
-				return $time;
-			case 'yesterday':
-				$time = clone $this;
-				$time->modify('-1 day');
-				$time->setTime(0, 0, 0);
-				return $time;
-
-			/*
-			 * days
-			 */
-			case 'monday':
-			case 'tuesday':
-			case 'wednesday':
-			case 'thursday':
-			case 'friday':
-			case 'saturday':
-			case 'sunday':
-
-				return $this->{ 'get_' . $property }();
-
-			case 'zone':
-				return TimeZone::from($this->getTimezone());
-			case 'utc':
-			case 'local':
-				$time = clone $this;
-				$time->setTimezone($property);
-				return $time;
-			case 'is_utc':
-				return $this->zone->name == 'UTC';
-			case 'is_local':
-				return $this->zone->name == date_default_timezone_get();
-			case 'is_dst':
-				$timestamp = $this->timestamp;
-				$transitions = $this->zone->getTransitions($timestamp, $timestamp);
-				return $transitions[0]['isdst'];
-		}
-
-		if (class_exists('ICanBoogie\PropertyNotDefined'))
-		{
-			throw new PropertyNotDefined([ $property, $this ]);
-		}
-		else
-		{
-			throw new \RuntimeException("Property is not defined: $property.");
-		}
-	}
-
-	/**
-	 * Returns Monday of the week.
 	 *
-	 * @return DateTime
-	 */
-	protected function get_monday()
-	{
-		$time = clone $this;
-		$day = $time->weekday;
-
-		if ($day != 1)
-		{
-			$time->modify('-' . ($day - 1) . ' day');
-		}
-
-		$time->setTime(0, 0, 0);
-
-		return $time;
-	}
-
-	/**
-	 * Returns Tuesday of the week.
-	 *
-	 * @return DateTime
-	 */
-	protected function get_tuesday()
-	{
-		return $this->monday->modify('+1 day');
-	}
-
-	/**
-	 * Returns Wednesday of the week.
-	 *
-	 * @return DateTime
-	 */
-	protected function get_wednesday()
-	{
-		return $this->monday->modify('+2 day');
-	}
-
-	/**
-	 * Returns Thursday of the week.
-	 *
-	 * @return DateTime
-	 */
-	protected function get_thursday()
-	{
-		return $this->monday->modify('+3 day');
-	}
-
-	/**
-	 * Returns Friday of the week.
-	 *
-	 * @return DateTime
-	 */
-	protected function get_friday()
-	{
-		return $this->monday->modify('+4 day');
-	}
-
-	/**
-	 * Returns Saturday of the week.
-	 *
-	 * @return DateTime
-	 */
-	protected function get_saturday()
-	{
-		return $this->monday->modify('+5 day');
-	}
-
-	/**
-	 * Returns Sunday of the week.
-	 *
-	 * @return DateTime
-	 */
-	protected function get_sunday()
-	{
-		$time = clone $this;
-		$day = $time->weekday;
-
-		if ($day != 7)
-		{
-			$time->modify('+' . (7 - $day) . ' day');
-		}
-
-		$time->setTime(0, 0, 0);
-
-		return $time;
-	}
-
-	/**
-	 * Sets the {@link $year}, {@link $month}, {@link $day}, {@link $hour}, {@link $minute},
-	 * {@link $second}, {@link $timestamp} and {@link $zone} properties.
-	 *
-	 * @throws PropertyNotWritable in attempt to set a read-only property.
-	 * @throws PropertyNotDefined in attempt to set an unsupported property.
-	 *
-	 * @inheritdoc
+	 * @throws \RuntimeException in attempt to set a property.
 	 */
 	public function __set($property, $value)
 	{
-		static $readonly = [ 'quarter', 'week', 'year_day', 'weekday',
-		'tomorrow', 'yesterday', 'utc', 'local' ];
-
-		switch ($property)
+		if (class_exists('ICanBoogie\PropertyNotWritable'))
 		{
-			case 'year':
-			case 'month':
-			case 'day':
-			case 'hour':
-			case 'minute':
-			case 'second':
-				$this->change([ $property => $value ]);
-				return;
-
-			case 'timestamp':
-				$this->setTimestamp($value);
-				return;
-
-			case 'zone':
-				$this->setTimezone($value);
-				return;
+			throw new PropertyNotWritable([ $property, $this ]);
 		}
 
-		if (strpos($property, 'is_') === 0 || strpos($property, 'as_') === 0 || in_array($property, $readonly) || method_exists($this, 'get_' . $property))
-		{
-			if (class_exists('ICanBoogie\PropertyNotWritable'))
-			{
-				throw new PropertyNotWritable([ $property, $this ]);
-			}
-			else
-			{
-				throw new \RuntimeException("Property is not writeable: $property.");
-			}
-		}
-
-		if (class_exists('ICanBoogie\PropertyNotDefined'))
-		{
-			throw new PropertyNotDefined([ $property, $this ]);
-		}
-		else
-		{
-			throw new \RuntimeException("Property is not defined: $property.");
-		}
-	}
-
-	/**
-	 * Handles the `format_as_*` methods.
-	 *
-	 * If the format is {@link RFC822} or {@link RFC1123} and the time zone is equivalent to GMT,
-	 * the offset `+0000` is replaced by `GMT` according to the specs.
-	 *
-	 * If the format is {@link ISO8601} and the time zone is equivalent to UTC, the offset `+0000`
-	 * is replaced by `Z` according to the specs.
-	 *
-	 * @throws \BadMethodCallException in attempt to call an unsupported method.
-	 *
-	 * @inheritdoc
-	 */
-	public function __call($method, $arguments)
-	{
-		if (strpos($method, 'format_as_') !== 0)
-		{
-			throw new \BadMethodCallException("Unsupported method: $method.");
-		}
-
-		$as = strtoupper(substr($method, strlen('format_as_')));
-		$format = constant(__CLASS__ . '::' . $as);
-		$value = $this->format($format);
-
-		switch ($as)
-		{
-			case 'RFC822':
-			case 'RFC1123':
-				return str_replace('+0000', 'GMT', $value);
-
-			case 'ISO8601':
-				return str_replace('+0000', 'Z', $value);
-
-			default:
-				return $value;
-		}
-	}
-
-	/**
-	 * Returns the datetime formatted as {@link ISO8601}.
-	 *
-	 * @return string The instance rendered as an {@link ISO8601} string, or an empty string if the
-	 * datetime is empty.
-	 */
-	public function __toString()
-	{
-		return $this->is_empty ? "" : $this->as_iso8601;
-	}
-
-	/**
-	 * Returns a {@link ISO8601} representation of the instance.
-	 *
-	 * @return string
-	 */
-	public function jsonSerialize()
-	{
-		return (string) $this;
-	}
-
-	/**
-	 * The timezone can be specified as a string.
-	 *
-	 * If the timezone is `local` the timezone returned by {@link date_default_timezone_get()} is
-	 * used instead.
-	 *
-	 * @inheritdoc
-	 */
-	public function setTimezone($timezone)
-	{
-		if ($timezone === 'local')
-		{
-			$timezone = date_default_timezone_get();
-		}
-
-		if (!$timezone instanceof \DateTimeZone)
-		{
-			$timezone = new \DateTimeZone($timezone);
-		}
-
-		return parent::setTimezone($timezone);
-	}
-
-	/**
-	 * Modifies the properties of the instance according to the options.
-	 *
-	 * The following properties can be updated: {@link $year}, {@link $month}, {@link $day},
-	 * {@link $hour}, {@link $minute} and {@link $second}.
-	 *
-	 * Note: Values exceeding ranges are added to their parent values.
-	 *
-	 * <pre>
-	 * <?php
-	 *
-	 * use ICanBoogie\DateTime;
-	 *
-	 * $time = new DateTime('now');
-	 * $time->change([ 'year' => 2000, 'second' => 0 ]);
-	 * </pre>
-	 *
-	 * @param array $options
-	 * @param bool $cascade If `true`, time options (`hour`, `minute`, `second`) reset
-	 * cascading, so if only the hour is passed, then minute and second is set to 0. If the hour
-	 * and minute is passed, then second is set to 0.
-	 *
-	 * @return DateTime
-	 */
-	public function change(array $options, $cascade=false)
-	{
-		static $default_options = [
-
-			'year' => null,
-			'month' => null,
-			'day' => null,
-			'hour' => null,
-			'minute' => null,
-			'second' => null
-
-		];
-
-		$options = array_intersect_key($options + $default_options, $default_options);
-
-		$year = null;
-		$month = null;
-		$day = null;
-		$hour = null;
-		$minute = null;
-		$second = null;
-
-		extract($options);
-
-		if ($cascade)
-		{
-			if ($hour !== null && $minute === null)
-			{
-				$minute = 0;
-			}
-
-			if ($minute !== null && $second === null)
-			{
-				$second = 0;
-			}
-		}
-
-		if ($year !== null || $month !== null || $day !== null)
-		{
-			$this->setDate
-			(
-				$year === null ? $this->year : $year,
-				$month === null ? $this->month : $month,
-				$day === null ? $this->day : $day
-			);
-		}
-
-		if ($hour !== null || $minute !== null || $second !== null)
-		{
-			$this->setTime
-			(
-				$hour === null ? $this->hour : $hour,
-				$minute === null ? $this->minute : $minute,
-				$second === null ? $this->second : $second
-			);
-		}
-
-		return $this;
+		throw new \RuntimeException("Property is not writable: $property."); // @codeCoverageIgnore
 	}
 
 	/**
@@ -769,45 +216,5 @@ class DateTime extends \DateTime implements \JsonSerializable
 		$dt = clone $this;
 
 		return $dt->change($options, $cascade);
-	}
-
-	/**
-	 * If the instance represents an empty date and the format is {@link DATE} or {@link DB},
-	 * an empty date is returned, respectively "0000-00-00" and "0000-00-00 00:00:00". Note that
-	 * the time information is discarded for {@link DB}. This only apply to {@link DATE} and
-	 * {@link DB} formats. For instance {@link RSS} will return the following string:
-	 * "Wed, 30 Nov -0001 00:00:00 +0000".
-	 *
-	 * @inheritdoc
-	 */
-	public function format($format)
-	{
-		if (($format == self::DATE || $format == self::DB) && $this->is_empty)
-		{
-			return $format == self::DATE ? '0000-00-00' : '0000-00-00 00:00:00';
-		}
-
-		return parent::format($format);
-	}
-
-	/**
-	 * Returns a localized instance.
-	 *
-	 * @param string $locale
-	 *
-	 * @return mixed
-	 *
-	 * @throws \RuntimeException if {@link $localizer} is not defined.
-	 */
-	public function localize($locale = 'en')
-	{
-		$localizer = self::$localizer;
-
-		if (!$localizer)
-		{
-			throw new \RuntimeException("Localizer is not defined yet.");
-		}
-
-		return $localizer($this, $locale);
 	}
 }

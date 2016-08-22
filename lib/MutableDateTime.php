@@ -1,0 +1,144 @@
+<?php
+
+/*
+ * This file is part of the ICanBoogie package.
+ *
+ * (c) Olivier Laviale <olivier.laviale@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace ICanBoogie;
+
+use ICanBoogie\DateTime\AdditionalFormats;
+
+/**
+ * @property int $year Year.
+ * @property int $month Month of the year.
+ * @property int $day Day of the month.
+ * @property int $hour Hour of the day.
+ * @property int $minute Minute of the hour.
+ * @property int $second Second of the minute.
+ * @property int $timestamp Unix timestamp.
+ *
+ * @property TimeZone $zone The timezone of the instance.
+ * @property-read MutableDateTime $utc A new instance in the UTC timezone.
+ * @property-read MutableDateTime $local A new instance in the local timezone.
+ *
+ * @method $this change(array $options, $cascade = false)
+ */
+class MutableDateTime extends \DateTime implements \JsonSerializable, AdditionalFormats
+{
+	use DateTime\Shared;
+	use DateTime\Readers;
+
+	/**
+	 * We redefine the constant to make sure that the cookie uses a valid pattern.
+	 *
+	 * @see http://grokbase.com/t/php/php-bugs/111xynxd6m/php-bug-bug-53879-new-datetime-createfromformat-fails-to-parse-cookie-expiration-date
+	 *
+	 * @var string
+	 */
+	const COOKIE = 'l, d-M-Y H:i:s T';
+
+	/**
+	 * Returns an instance with the current local time and the local time zone.
+	 *
+	 * **Note:** Subsequent calls return equal times, event if they are minutes apart. _now_
+	 * actually refers to the `REQUEST_TIME` or, if it is now available, to the first time
+	 * the method was invoked.
+	 *
+	 * @return static
+	 */
+	static public function now()
+	{
+		return empty($_SERVER['REQUEST_TIME']) ? new static : (new static('@' . $_SERVER['REQUEST_TIME']))->local;
+	}
+
+	/**
+	 * @return MutableDateTime
+	 */
+	protected function get_local()
+	{
+		$time = clone $this;
+		$time->setTimezone(date_default_timezone_get());
+
+		return $time;
+	}
+
+	/**
+	 * @return MutableDateTime
+	 */
+	protected function get_tomorrow()
+	{
+		$time = clone $this;
+		$time->modify('+1 day');
+		$time->setTime(0, 0, 0);
+
+		return $time;
+	}
+
+	/**
+	 * @return MutableDateTime
+	 */
+	protected function get_yesterday()
+	{
+		$time = clone $this;
+		$time->modify('-1 day');
+		$time->setTime(0, 0, 0);
+
+		return $time;
+	}
+
+	/**
+	 * Sets the {@link $year}, {@link $month}, {@link $day}, {@link $hour}, {@link $minute},
+	 * {@link $second}, {@link $timestamp} and {@link $zone} properties.
+	 *
+	 * @throws PropertyNotWritable in attempt to set a read-only property.
+	 * @throws PropertyNotDefined in attempt to set an unsupported property.
+	 *
+	 * @inheritdoc
+	 */
+	public function __set($property, $value)
+	{
+		static $readonly = [ 'quarter', 'week', 'year_day', 'weekday', 'tomorrow', 'yesterday', 'utc', 'local' ];
+
+		switch ($property)
+		{
+			case 'year':
+			case 'month':
+			case 'day':
+			case 'hour':
+			case 'minute':
+			case 'second':
+				$this->change([ $property => $value ]);
+				return;
+
+			case 'timestamp':
+				$this->setTimestamp($value);
+				return;
+
+			case 'zone':
+				$this->setTimezone($value);
+				return;
+		}
+
+		if (strpos($property, 'is_') === 0 || strpos($property, 'as_') === 0 || in_array($property, $readonly))
+		{
+			if (class_exists(PropertyNotWritable::class))
+			{
+				throw new PropertyNotWritable([ $property, $this ]);
+			}
+
+			throw new \RuntimeException("Property is not writable: $property."); // @codeCoverageIgnore
+		}
+
+		if (class_exists(PropertyNotDefined::class))
+		{
+			throw new PropertyNotDefined([ $property, $this ]);
+		}
+
+		throw new \RuntimeException("Property is not defined: $property."); // @codeCoverageIgnore
+	}
+}
