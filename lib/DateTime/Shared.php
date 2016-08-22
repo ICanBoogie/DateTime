@@ -67,6 +67,33 @@ trait Shared
 	}
 
 	/**
+	 * Returns an instance representing an empty date ("0000-00-00").
+	 *
+	 * <pre>
+	 * <?php
+	 *
+	 * use ICanBoogie\DateTime;
+	 *
+	 * $d = DateTime::none();
+	 * $d->is_empty;                      // true
+	 * $d->zone->name;                    // "UTC"
+	 *
+	 * $d = DateTime::none('Asia/Tokyo');
+	 * $d->is_empty;                      // true
+	 * $d->zone->name;                    // "Asia/Tokio"
+	 * </pre>
+	 *
+	 * @param \DateTimeZone|string $timezone The time zone in which the empty date is created.
+	 * Defaults to "UTC".
+	 *
+	 * @return DateTime
+	 */
+	static public function none($timezone = 'utc')
+	{
+		return new static('0000-00-00', $timezone);
+	}
+
+	/**
 	 * Returns an instance with the current local time and the local time zone.
 	 *
 	 * **Note:** Subsequent calls may return different times.

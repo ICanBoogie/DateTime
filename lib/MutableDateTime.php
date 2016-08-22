@@ -124,7 +124,7 @@ class MutableDateTime extends \DateTime implements \JsonSerializable, Additional
 				return;
 		}
 
-		if (strpos($property, 'is_') === 0 || strpos($property, 'as_') === 0 || in_array($property, $readonly))
+		if (strpos($property, 'is_') === 0 || strpos($property, 'as_') === 0 || in_array($property, $readonly) || method_exists($this, 'get_' . $property))
 		{
 			if (class_exists(PropertyNotWritable::class))
 			{
@@ -140,5 +140,21 @@ class MutableDateTime extends \DateTime implements \JsonSerializable, Additional
 		}
 
 		throw new \RuntimeException("Property is not defined: $property."); // @codeCoverageIgnore
+	}
+
+
+	/**
+	 * Instantiate a new instance with changes properties.
+	 *
+	 * @param array $options
+	 * @param bool $cascade
+	 *
+	 * @return MutableDateTime
+	 */
+	public function with(array $options, $cascade = false)
+	{
+		$dt = clone $this;
+
+		return $dt->change($options, $cascade);
 	}
 }
