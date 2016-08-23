@@ -107,46 +107,20 @@ class TimeZone extends \DateTimeZone
 	}
 
 	/**
-	 * Returns the {@link $location}, {@link $name} and {@link $offset} properties.
-	 *
-	 * @throws \LogicException in attempt to get an unsupported  property.
+	 * @throws \LogicException in attempt to get an undefined property.
 	 *
 	 * @inheritdoc
 	 */
 	public function __get($property)
 	{
-		switch ($property)
+		$getter = "get_$property";
+
+		if (!method_exists($this, $getter))
 		{
-			case 'location':
-
-				if (!$this->location)
-				{
-					$this->location = TimeZoneLocation::from($this);
-				}
-
-				return $this->location;
-
-			case 'name':
-
-				return $this->name;
-
-			case 'offset':
-
-				$utc_time = self::$utc_time;
-
-				if (!$utc_time)
-				{
-					self::$utc_time = $utc_time = new \DateTime('now', new \DateTimeZone('utc'));
-				}
-
-				return $this->getOffset($utc_time);
-
-			case 'is_utc':
-			case 'is_local':
-				return $this->{ 'get_' . $property }();
+			throw new \LogicException("Property no defined: $property.");
 		}
 
-		throw new \LogicException("Property no defined: $property.");
+		return $this->$getter();
 	}
 
 	/**
@@ -157,6 +131,39 @@ class TimeZone extends \DateTimeZone
 	public function __set($property, $value)
 	{
 		throw new \LogicException("Property no writable: $property.");
+	}
+
+	/**
+	 * @return TimeZoneLocation
+	 */
+	protected function get_location()
+	{
+		$location = &$this->location;
+
+		return $location ?: $location = TimeZoneLocation::from($this);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function get_name()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return int
+	 */
+	protected function get_offset()
+	{
+		$utc_time = &self::$utc_time;
+
+		if (!$utc_time)
+		{
+			$utc_time = new \DateTime('now', new \DateTimeZone('utc'));
+		}
+
+		return $this->getOffset($utc_time);
 	}
 
 	/**
