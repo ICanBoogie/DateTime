@@ -30,6 +30,7 @@ namespace ICanBoogie;
  * @property-read TimeZoneLocation $location Location information for the timezone.
  * @property-read string $name Name of the timezone.
  * @property-read int $offset Timezone offset from UTC.
+ * @property-read bool $is_utc `true` Time zone is `UTC`, `false` otherwise.
  */
 class TimeZone extends \DateTimeZone
 {
@@ -138,9 +139,30 @@ class TimeZone extends \DateTimeZone
 				}
 
 				return $this->getOffset($utc_time);
+
+			case 'is_utc':
+				return $this->{ 'get_' . $property }();
 		}
 
 		throw new \LogicException("Property no defined: $property.");
+	}
+
+	/**
+	 * @inheritdoc
+	 *
+	 * @throws \LogicException in attempt to write any property.
+	 */
+	public function __set($property, $value)
+	{
+		throw new \LogicException("Property no writable: $property.");
+	}
+
+	/**
+	 * @return bool `true` if time zone is `UTC`, `false` otherwise.
+	 */
+	protected function get_is_utc()
+	{
+		return $this->name === 'UTC';
 	}
 
 	/**

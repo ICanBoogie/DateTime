@@ -9,10 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\ICanBoogie\Time;
+namespace ICanBoogie;
 
-use ICanBoogie\TimeZone;
-
+/**
+ * @group datetime
+ * @group timezone
+ */
 class TimeZoneTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_get_location()
@@ -68,21 +70,37 @@ class TimeZoneTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($z1, $z2);
 	}
 
-	/**
-	 * @expectedException \LogicException
-	 */
-	public function test_getting_undefined_property_should_throw_exception()
-	{
-		$property = uniqid();
-		$z1 = TimeZone::from('utc');
-		$z1->$property;
-	}
-
 	public function test_to_string()
 	{
 		$name = 'Europe/Paris';
 		$z1 = TimeZone::from($name);
 
 		$this->assertSame($name, (string) $z1);
+	}
+
+	/**
+	 * @dataProvider provide_read_only_or_undefined_property
+	 * @expectedException \LogicException
+	 *
+	 * @param string $property
+	 */
+	public function test_setting_undefined_or_read_only_property_should_throw_exception($property)
+	{
+		$tz = TimeZone::from('utc');
+		$tz->$property = uniqid();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function provide_read_only_or_undefined_property()
+	{
+		$undefined = uniqid();
+
+		return array_map(function ($property) {
+
+			return [ $property ];
+
+		}, explode(' ', "$undefined location name offset is_utc"));
 	}
 }
