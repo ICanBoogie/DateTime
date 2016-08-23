@@ -69,7 +69,7 @@ class TimeZoneTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \RuntimeException
+	 * @expectedException \LogicException
 	 */
 	public function test_getting_undefined_property_should_throw_exception()
 	{

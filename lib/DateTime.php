@@ -164,16 +164,11 @@ class DateTime extends \DateTimeImmutable implements \JsonSerializable, Addition
 	/**
 	 * @inheritdoc
 	 *
-	 * @throws \RuntimeException in attempt to set a property.
+	 * @throws \LogicException in attempt to set a property.
 	 */
 	public function __set($property, $value)
 	{
-		if (class_exists(PropertyNotWritable::class))
-		{
-			throw new PropertyNotWritable([ $property, $this ]);
-		}
-
-		throw new \RuntimeException("Property is not writable: $property."); // @codeCoverageIgnore
+		throw new \LogicException("Property is not writable: $property.");
 	}
 
 	/**

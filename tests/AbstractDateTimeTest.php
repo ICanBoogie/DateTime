@@ -227,7 +227,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 */
 	public function test_set_quarter()
 	{
@@ -254,7 +254,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 */
 	public function test_set_week()
 	{
@@ -292,7 +292,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 */
 	public function test_set_weekday()
 	{
@@ -605,7 +605,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 */
 	public function test_set_utc()
 	{
@@ -630,7 +630,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 */
 	public function test_set_local()
 	{
@@ -953,7 +953,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \RuntimeException
+	 * @expectedException \LogicException
 	 */
 	public function test_getting_undefined_property_should_throw_exception()
 	{
@@ -974,7 +974,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @dataProvider provide_read_only_properties
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 *
 	 * @param $property
 	 */

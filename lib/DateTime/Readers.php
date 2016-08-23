@@ -81,7 +81,7 @@ trait Readers
 	 *
 	 * @return mixed
 	 *
-	 * @throws \RuntimeException in attempt to obtain an undefined property.
+	 * @throws \LogicException in attempt to obtain an undefined property.
 	 */
 	public function __get($property)
 	{
@@ -172,12 +172,7 @@ trait Readers
 				return $transitions[0]['isdst'];
 		}
 
-		if (class_exists(PropertyNotDefined::class))
-		{
-			throw new PropertyNotDefined([ $property, $this ]);
-		}
-
-		throw new \RuntimeException("Property is not defined: $property."); // @codeCoverageIgnore
+		throw new \LogicException("Property is not defined: $property.");
 	}
 
 	/**

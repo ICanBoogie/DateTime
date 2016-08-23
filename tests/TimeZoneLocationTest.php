@@ -49,7 +49,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 */
 	public function test_set_country_code()
 	{
@@ -70,7 +70,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 */
 	public function test_set_latitude()
 	{
@@ -91,7 +91,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 */
 	public function test_set_longitude()
 	{
@@ -112,7 +112,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 */
 	public function test_set_comments()
 	{
@@ -124,7 +124,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotDefined
+	 * @expectedException \LogicException
 	 */
 	public function test_get_unsupported_property()
 	{
@@ -136,7 +136,7 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedException \LogicException
 	 */
 	public function test_set_unsupported_property()
 	{

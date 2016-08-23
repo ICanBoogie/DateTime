@@ -74,7 +74,7 @@ class TimeZoneLocation
 	 * Returns the {@link $country_code}, {@link $latitude}, {@link $longitude} and
 	 * {@link $comments} properties.
 	 *
-	 * @throws PropertyNotDefined in attempt to get an unsupported property.
+	 * @throws \LogicException in attempt to read an undefined property.
 	 *
 	 * @inheritdoc
 	 */
@@ -85,29 +85,17 @@ class TimeZoneLocation
 			return $this->location[$property];
 		}
 
-		if (class_exists(PropertyNotDefined::class))
-		{
-			throw new PropertyNotDefined([ $property, $this ]);
-		}
-		else
-		{
-			throw new \RuntimeException("Property is not defined: $property.");
-		}
+		throw new \LogicException("Property is not defined: $property.");
 	}
 
 	/**
-	 * @throws PropertyNotWritable in attempt to set an unsupported property.
+	 * @throws \LogicException in attempt to write an undefined property.
 	 *
 	 * @inheritdoc
 	 */
 	public function __set($property, $value)
 	{
-		if (class_exists(PropertyNotWritable::class))
-		{
-			throw new PropertyNotWritable([ $property, $this ]);
-		}
-
-		throw new \RuntimeException("Property is not writable: $property."); // @codeCoverageIgnore
+		throw new \LogicException("Property is not defined: $property.");
 	}
 
 	/**

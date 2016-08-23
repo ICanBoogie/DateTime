@@ -180,7 +180,7 @@ class MutableDateTimeTest extends AbstractDateTimeTest
 	}
 
 	/**
-	 * @expectedException \ICanBoogie\PropertyNotDefined
+	 * @expectedException \LogicException
 	 */
 	public function test_setting_undefined_property_should_throw_exception()
 	{

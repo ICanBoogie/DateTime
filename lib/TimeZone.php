@@ -107,7 +107,7 @@ class TimeZone extends \DateTimeZone
 	/**
 	 * Returns the {@link $location}, {@link $name} and {@link $offset} properties.
 	 *
-	 * @throws PropertyNotDefined in attempt to get an unsupported  property.
+	 * @throws \LogicException in attempt to get an unsupported  property.
 	 *
 	 * @inheritdoc
 	 */
@@ -140,12 +140,7 @@ class TimeZone extends \DateTimeZone
 				return $this->getOffset($utc_time);
 		}
 
-		if (class_exists(PropertyNotDefined::class))
-		{
-			throw new PropertyNotDefined([ $property, $this ]);
-		}
-
-		throw new \RuntimeException("Property no defined: $property."); // @codeCoverageIgnore
+		throw new \LogicException("Property no defined: $property.");
 	}
 
 	/**

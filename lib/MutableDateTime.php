@@ -95,8 +95,7 @@ class MutableDateTime extends \DateTime implements \JsonSerializable, Additional
 	 * Sets the {@link $year}, {@link $month}, {@link $day}, {@link $hour}, {@link $minute},
 	 * {@link $second}, {@link $timestamp} and {@link $zone} properties.
 	 *
-	 * @throws PropertyNotWritable in attempt to set a read-only property.
-	 * @throws PropertyNotDefined in attempt to set an unsupported property.
+	 * @throws \LogicException in attempt to set a read-only or undefined property.
 	 *
 	 * @inheritdoc
 	 */
@@ -126,20 +125,10 @@ class MutableDateTime extends \DateTime implements \JsonSerializable, Additional
 
 		if (strpos($property, 'is_') === 0 || strpos($property, 'as_') === 0 || in_array($property, $readonly) || method_exists($this, 'get_' . $property))
 		{
-			if (class_exists(PropertyNotWritable::class))
-			{
-				throw new PropertyNotWritable([ $property, $this ]);
-			}
-
-			throw new \RuntimeException("Property is not writable: $property."); // @codeCoverageIgnore
+			throw new \LogicException("Property is not writable: $property.");
 		}
 
-		if (class_exists(PropertyNotDefined::class))
-		{
-			throw new PropertyNotDefined([ $property, $this ]);
-		}
-
-		throw new \RuntimeException("Property is not defined: $property."); // @codeCoverageIgnore
+		throw new \LogicException("Property is not defined: $property.");
 	}
 
 
