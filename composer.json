@@ -20,12 +20,6 @@
 	"require": {
 		"php": ">=5.5.0"
 	},
-	"require-dev": {
-		"icanboogie/common": "~1.2"
-	},
-	"suggest": {
-		"icanboogie/common": "Allows finer exceptions to be thrown"
-	},
 	"autoload": {
 		"psr-4": {
 			"ICanBoogie\\": "lib/"

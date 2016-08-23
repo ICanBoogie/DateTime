@@ -425,10 +425,6 @@ The recommended way to install this package is through [Composer](https://getcom
 $ composer require icanboogie/datetime
 ```
 
-The package [icanboogie/common](https://github.com/ICanBoogie/Common) is suggested to
-provide finer exceptions, such as [PropertyNotDefined][] and [PropertyNotWritable][].
-If the package is not included, `RunTimeException` instances are thrown instead.
-
 
 
 
