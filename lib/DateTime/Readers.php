@@ -98,9 +98,6 @@ trait Readers
 
 		switch ($property)
 		{
-			case 'timestamp':
-				return $this->getTimestamp();
-
 			case 'year':
 				return (int) $this->format('Y');
 			case 'month':
@@ -146,22 +143,6 @@ trait Readers
 			case 'is_empty':
 				return $this->year == -1 && $this->month == 11 && $this->day == 30;
 
-			/*
-			 * days
-			 */
-			case 'monday':
-			case 'tuesday':
-			case 'wednesday':
-			case 'thursday':
-			case 'friday':
-			case 'saturday':
-			case 'sunday':
-			case 'tomorrow':
-			case 'yesterday':
-			case 'mutable':
-			case 'immutable':
-				return $this->{ 'get_' . $property }();
-
 			case 'zone':
 				return TimeZone::from($this->getTimezone());
 			case 'utc':
@@ -171,13 +152,24 @@ trait Readers
 			case 'is_utc':
 			case 'is_local':
 				return $this->zone->$property;
-			case 'is_dst':
-				$timestamp = $this->timestamp;
-				$transitions = $this->zone->getTransitions($timestamp, $timestamp);
-				return $transitions[0]['isdst'];
 		}
 
-		throw new \LogicException("Property is not defined: $property.");
+		$getter = "get_$property";
+
+		if (!method_exists($this, $getter))
+		{
+			throw new \LogicException("Property is not defined: $property.");
+		}
+
+		return $this->{ 'get_' . $property }();
+	}
+
+	/**
+	 * @return int
+	 */
+	protected function get_timestamp()
+	{
+		return $this->getTimestamp();
 	}
 
 	/**
@@ -300,5 +292,16 @@ trait Readers
 	protected function get_immutable()
 	{
 		return DateTime::from($this);
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function get_is_dst()
+	{
+		$timestamp = $this->timestamp;
+		$transitions = $this->zone->getTransitions($timestamp, $timestamp);
+
+		return $transitions[0]['isdst'];
 	}
 }
