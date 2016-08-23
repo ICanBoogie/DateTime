@@ -993,6 +993,22 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 
 			return [ $property ];
 
-		}, explode(' ', 'quarter week weekday year_day is_monday is_tuesday is_wednesday is_thursday is_friday is_saturday is_sunday is_today is_past is_future is_empty tomorrow yesterday monday tuesday wednesday thursday friday saturday sunday is_utc is_local is_dst as_atom as_cookie as_iso8601 as_rfc822 as_rfc850 as_rfc1036 as_rfc1123 as_rfc2822 as_rfc3339 as_rss as_w3c as_db as_number as_date as_time utc local'));
+		}, explode(' ', 'quarter week weekday year_day is_monday is_tuesday is_wednesday is_thursday is_friday is_saturday is_sunday is_today is_past is_future is_empty tomorrow yesterday monday tuesday wednesday thursday friday saturday sunday is_utc is_local is_dst as_atom as_cookie as_iso8601 as_rfc822 as_rfc850 as_rfc1036 as_rfc1123 as_rfc2822 as_rfc3339 as_rss as_w3c as_db as_number as_date as_time utc local mutable immutable'));
+	}
+
+	public function test_get_mutable()
+	{
+		$datetime = $this->create();
+		$mutable = $datetime->mutable;
+		$this->assertNotSame($datetime, $mutable);
+		$this->assertInstanceOf(MutableDateTime::class, $mutable);
+	}
+
+	public function test_get_immutable()
+	{
+		$datetime = $this->create();
+		$immutable = $datetime->immutable;
+		$this->assertNotSame($datetime, $immutable);
+		$this->assertInstanceOf(DateTime::class, $immutable);
 	}
 }

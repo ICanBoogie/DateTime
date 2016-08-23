@@ -12,6 +12,7 @@
 namespace ICanBoogie\DateTime;
 
 use ICanBoogie\DateTime;
+use ICanBoogie\MutableDateTime;
 use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\TimeZone;
 
@@ -69,6 +70,9 @@ use ICanBoogie\TimeZone;
  * @property-read bool $is_utc `true` if the instance is in the UTC timezone.
  * @property-read bool $is_local `true` if the instance is in the local timezone.
  * @property-read bool $is_dst `true` if time occurs during Daylight Saving Time in its time zone.
+ *
+ * @property-read DateTime $immutable An immutable representation of the instance.
+ * @property-read MutableDateTime $mutable A mutable representation of the instance.
  */
 trait Readers
 {
@@ -148,6 +152,8 @@ trait Readers
 			case 'sunday':
 			case 'tomorrow':
 			case 'yesterday':
+			case 'mutable':
+			case 'immutable':
 				return $this->{ 'get_' . $property }();
 
 			case 'zone':
@@ -278,5 +284,21 @@ trait Readers
 		return $this
 			->modify('-1 day')
 			->setTime(0, 0, 0);
+	}
+
+	/**
+	 * @return MutableDateTime
+	 */
+	protected function get_mutable()
+	{
+		return MutableDateTime::from($this);
+	}
+
+	/**
+	 * @return DateTime
+	 */
+	protected function get_immutable()
+	{
+		return DateTime::from($this);
 	}
 }
