@@ -346,7 +346,7 @@ trait Shared
 	 *
 	 * @return mixed
 	 *
-	 * @throws \RuntimeException if {@link $localizer} is not defined.
+	 * @throws \LogicException if {@link $localizer} is not defined.
 	 */
 	public function localize($locale = 'en')
 	{
@@ -354,7 +354,7 @@ trait Shared
 
 		if (!$localizer)
 		{
-			throw new \RuntimeException("Localizer is not defined yet.");
+			throw new \LogicException("Localizer is not defined yet.");
 		}
 
 		return $localizer($this, $locale);

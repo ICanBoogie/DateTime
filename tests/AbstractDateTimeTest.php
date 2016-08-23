@@ -928,7 +928,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \RuntimeException
+	 * @expectedException \LogicException
 	 */
 	public function test_localize_should_throw_an_exception_if_the_localizer_is_not_defined_yet()
 	{
