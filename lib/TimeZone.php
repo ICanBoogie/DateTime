@@ -99,13 +99,7 @@ class TimeZone extends \DateTimeZone
 		parent::__construct($timezone);
 
 		$name = $this->getName();
-
-		if ($name == 'utc')
-		{
-			$name = 'UTC'; // @codeCoverageIgnore
-		}
-
-		$this->name = $name;
+		$this->name = $name === 'utc' ? 'UTC' : $name;
 	}
 
 	/**
@@ -119,7 +113,7 @@ class TimeZone extends \DateTimeZone
 
 		if (!method_exists($this, $getter))
 		{
-			throw new \LogicException("Property no defined: $property.");
+			throw new \LogicException("Property not defined: $property.");
 		}
 
 		return $this->$getter();

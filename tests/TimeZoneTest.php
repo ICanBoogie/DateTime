@@ -132,6 +132,16 @@ class TimeZoneTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @expectedException \LogicException
+	 */
+	public function test_getting_undefined_property_should_throw_exception()
+	{
+		$property = uniqid();
+		$tz = TimeZone::from('utc');
+		$tz->$property;
+	}
+
+	/**
 	 * @dataProvider provide_read_only_or_undefined_property
 	 * @expectedException \LogicException
 	 *
