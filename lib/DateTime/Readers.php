@@ -13,7 +13,6 @@ namespace ICanBoogie\DateTime;
 
 use ICanBoogie\DateTime;
 use ICanBoogie\MutableDateTime;
-use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\TimeZone;
 
 /**
