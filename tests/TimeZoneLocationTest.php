@@ -9,150 +9,99 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\ICanBoogie\Time;
-
-use ICanBoogie\TimeZoneLocation;
+namespace ICanBoogie;
 
 class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 {
+	/**
+	 * @var \DateTimeZone
+	 */
+	private $zone;
+
+	/**
+	 * @var array
+	 */
+	private $data;
+
+	/**
+	 * @var TimeZoneLocation
+	 */
+	private $location;
+
+	public function setUp()
+	{
+		$this->zone = $zone = new \DateTimeZone('Europe/Paris');
+		$this->data = $data = $zone->getLocation();
+		$this->location = new TimeZoneLocation($data);
+	}
+
 	public function test_from()
 	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = TimeZoneLocation::from($zone);
+		$location = TimeZoneLocation::from($this->zone);
 
-		$this->assertInstanceOf('ICanBoogie\TimeZoneLocation', $location);
+		$this->assertInstanceOf(TimeZoneLocation::class, $location);
 	}
 
 	public function test_from_cache()
 	{
-		$zone = new \DateTimeZone('Europe/Paris');
+		$zone = $this->zone;
 		$location = TimeZoneLocation::from($zone);
 		$cached = TimeZoneLocation::from($zone);
 
-		$this->assertEquals(spl_object_hash($location), spl_object_hash($cached));
-	}
-
-	public function test_location()
-	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		new TimeZoneLocation($location);
-	}
-
-	public function test_get_coutry_code()
-	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
-
-		$this->assertEquals($location['country_code'], $instance->country_code);
+		$this->assertSame($location, $cached);
 	}
 
 	/**
-	 * @expectedException \LogicException
+	 * @dataProvider provide_mapped_properties
+	 *
+	 * @param string $property
 	 */
-	public function test_set_country_code()
+	public function test_data_mapping($property)
 	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
-
-		$instance->country_code = true;
-	}
-
-	public function test_get_latitude()
-	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
-
-		$this->assertEquals($location['latitude'], $instance->latitude);
+		$this->assertEquals($this->data[$property], $this->location->$property);
 	}
 
 	/**
-	 * @expectedException \LogicException
+	 * @return array
 	 */
-	public function test_set_latitude()
+	public function provide_mapped_properties()
 	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
+		return array_map(function ($property) {
 
-		$instance->latitude = true;
-	}
+			return [ $property ];
 
-	public function test_get_longitude()
-	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
-
-		$this->assertEquals($location['longitude'], $instance->longitude);
-	}
-
-	/**
-	 * @expectedException \LogicException
-	 */
-	public function test_set_longitude()
-	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
-
-		$instance->longitude = true;
-	}
-
-	public function test_get_comments()
-	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
-
-		$this->assertEquals($location['comments'], $instance->comments);
-	}
-
-	/**
-	 * @expectedException \LogicException
-	 */
-	public function test_set_comments()
-	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
-
-		$instance->comments = true;
-	}
-
-	/**
-	 * @expectedException \LogicException
-	 */
-	public function test_get_unsupported_property()
-	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
-
-		$instance->you_know_that_i_m_no_good;
-	}
-
-	/**
-	 * @expectedException \LogicException
-	 */
-	public function test_set_unsupported_property()
-	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
-
-		$instance->unsupported_property = true;
+		}, explode(' ', "country_code latitude longitude comments"));
 	}
 
 	public function test_to_string()
 	{
-		$zone = new \DateTimeZone('Europe/Paris');
-		$location = $zone->getLocation();
-		$instance = new TimeZoneLocation($location);
+		$data = $this->data;
 
-		$this->assertEquals("$location[country_code],$location[latitude],$location[longitude]", (string) $instance);
+		$this->assertEquals("$data[country_code],$data[latitude],$data[longitude]", (string) $this->location);
+	}
+
+	/**
+	 * @dataProvider provide_read_only_or_undefined_property
+	 * @expectedException \LogicException
+	 *
+	 * @param string $property
+	 */
+	public function test_setting_undefined_or_read_only_property_should_throw_exception($property)
+	{
+		$this->location->$property = uniqid();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function provide_read_only_or_undefined_property()
+	{
+		$undefined = uniqid();
+
+		return array_map(function ($property) {
+
+			return [ $property ];
+
+		}, explode(' ', "$undefined country_code latitude longitude comments"));
 	}
 }
