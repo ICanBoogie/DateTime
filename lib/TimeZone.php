@@ -31,6 +31,7 @@ namespace ICanBoogie;
  * @property-read string $name Name of the timezone.
  * @property-read int $offset Timezone offset from UTC.
  * @property-read bool $is_utc `true` Time zone is `UTC`, `false` otherwise.
+ * @property-read bool $is_local `true` if time zone is local, `false` otherwise.
  */
 class TimeZone extends \DateTimeZone
 {
@@ -141,6 +142,7 @@ class TimeZone extends \DateTimeZone
 				return $this->getOffset($utc_time);
 
 			case 'is_utc':
+			case 'is_local':
 				return $this->{ 'get_' . $property }();
 		}
 
@@ -163,6 +165,14 @@ class TimeZone extends \DateTimeZone
 	protected function get_is_utc()
 	{
 		return $this->name === 'UTC';
+	}
+
+	/**
+	 * @return bool `true` if time zone is local, `false` otherwise.
+	 */
+	protected function get_is_local()
+	{
+		return $this->name === date_default_timezone_get();
 	}
 
 	/**

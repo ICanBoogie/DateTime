@@ -79,6 +79,59 @@ class TimeZoneTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @dataProvider provide_test_is_utc
+	 *
+	 * @param string $name
+	 * @param bool $is_utc
+	 */
+	public function test_is_utc($name, $is_utc)
+	{
+		$this->assertSame($is_utc, TimeZone::from($name)->is_utc);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function provide_test_is_utc()
+	{
+		return [
+
+			[ 'Europe/Paris', false ],
+			[ 'GMT', false ],
+			[ 'gmt', false ],
+			[ 'UTC', true ],
+			[ 'utc', true ],
+
+		];
+	}
+
+	/**
+	 * @dataProvider provide_test_is_local
+	 *
+	 * @param string $name
+	 * @param bool $is_local
+	 */
+	public function test_is_local($name, $is_local)
+	{
+		$this->assertSame($is_local, TimeZone::from($name)->is_local);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function provide_test_is_local()
+	{
+		return [
+
+			[ 'Asia/Tokyo', false ],
+			[ 'GMT', false ],
+			[ 'UTC', false ],
+			[ date_default_timezone_get(), true ],
+
+		];
+	}
+
+	/**
 	 * @dataProvider provide_read_only_or_undefined_property
 	 * @expectedException \LogicException
 	 *
@@ -101,6 +154,6 @@ class TimeZoneTest extends \PHPUnit_Framework_TestCase
 
 			return [ $property ];
 
-		}, explode(' ', "$undefined location name offset is_utc"));
+		}, explode(' ', "$undefined location name offset is_utc is_local"));
 	}
 }

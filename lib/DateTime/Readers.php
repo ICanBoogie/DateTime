@@ -169,9 +169,8 @@ trait Readers
 				$datetime = clone $this; // works for immutable and mutable
 				return $datetime->setTimezone($property);
 			case 'is_utc':
-				return $this->zone->is_utc;
 			case 'is_local':
-				return $this->zone->name == date_default_timezone_get();
+				return $this->zone->$property;
 			case 'is_dst':
 				$timestamp = $this->timestamp;
 				$transitions = $this->zone->getTransitions($timestamp, $timestamp);
