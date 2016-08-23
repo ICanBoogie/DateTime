@@ -14,6 +14,17 @@ namespace ICanBoogie\DateTime;
 use ICanBoogie\DateTime;
 
 /**
+ * @property-read int $year Year.
+ * @property-read int $month Month of the year.
+ * @property-read int $day Day of the month.
+ * @property-read int $hour Hour of the day.
+ * @property-read int $minute Minute of the hour.
+ * @property-read int $second Second of the minute.
+ *
+ * @property-read bool $is_empty `true` if the instance represents an empty date such as "0000-00-00" or "0000-00-00 00:00:00".
+ *
+ * @property-read string $as_iso8601 The instance formatted according to {@link ISO8601}.
+ *
  * @method string format_as_atom() format_as_atom() Formats the instance according to {@link ATOM}.
  * @method string format_as_cookie() format_as_cookie() Formats the instance according to {@link COOKIE}.
  * @method string format_as_iso8601() format_as_iso8601() Formats the instance according to {@link ISO8601}.
@@ -32,6 +43,34 @@ use ICanBoogie\DateTime;
  */
 trait Shared
 {
+	/**
+	 * @return int
+	 */
+	abstract public function getTimestamp();
+
+	/**
+	 * @return \DateTimeZone
+	 */
+	abstract public function getTimezone();
+
+	/**
+	 * @param int $year
+	 * @param int $month
+	 * @param int $day
+	 *
+	 * @return \DateTime|\DateTimeImmutable
+	 */
+	abstract public function setDate($year, $month, $day);
+
+	/**
+	 * @param int $hour
+	 * @param int $minute
+	 * @param int|null $second
+	 *
+	 * @return \DateTime|\DateTimeImmutable
+	 */
+	abstract public function setTime($hour, $minute, $second = null);
+
 	/**
 	 * Creates a {@link DateTime} instance from a source.
 	 *

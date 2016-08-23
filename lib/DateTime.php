@@ -168,7 +168,7 @@ class DateTime extends \DateTimeImmutable implements \JsonSerializable, Addition
 	 */
 	public function __set($property, $value)
 	{
-		if (class_exists('ICanBoogie\PropertyNotWritable'))
+		if (class_exists(PropertyNotWritable::class))
 		{
 			throw new PropertyNotWritable([ $property, $this ]);
 		}

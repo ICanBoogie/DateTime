@@ -98,7 +98,7 @@ class TimeZone extends \DateTimeZone
 
 		if ($name == 'utc')
 		{
-			$name = 'UTC';
+			$name = 'UTC'; // @codeCoverageIgnore
 		}
 
 		$this->name = $name;
@@ -140,14 +140,12 @@ class TimeZone extends \DateTimeZone
 				return $this->getOffset($utc_time);
 		}
 
-		if (class_exists('ICanBoogie\PropertyNotDefined'))
+		if (class_exists(PropertyNotDefined::class))
 		{
 			throw new PropertyNotDefined([ $property, $this ]);
 		}
-		else
-		{
-			throw new \RuntimeException("Property no defined: $property.");
-		}
+
+		throw new \RuntimeException("Property no defined: $property."); // @codeCoverageIgnore
 	}
 
 	/**

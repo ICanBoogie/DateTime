@@ -85,7 +85,7 @@ class TimeZoneLocation
 			return $this->location[$property];
 		}
 
-		if (class_exists('ICanBoogie\PropertyNotDefined'))
+		if (class_exists(PropertyNotDefined::class))
 		{
 			throw new PropertyNotDefined([ $property, $this ]);
 		}
@@ -102,14 +102,12 @@ class TimeZoneLocation
 	 */
 	public function __set($property, $value)
 	{
-		if (class_exists('ICanBoogie\PropertyNotWritable'))
+		if (class_exists(PropertyNotWritable::class))
 		{
 			throw new PropertyNotWritable([ $property, $this ]);
 		}
-		else
-		{
-			throw new \RuntimeException("Property is not writable: $property.");
-		}
+
+		throw new \RuntimeException("Property is not writable: $property."); // @codeCoverageIgnore
 	}
 
 	/**
