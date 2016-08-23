@@ -76,6 +76,13 @@ use ICanBoogie\TimeZone;
 trait Readers
 {
 	/**
+	 * @param string $modify
+	 *
+	 * @return DateTime|MutableDateTime
+	 */
+	abstract public function modify($modify);
+
+	/**
 	 * @param string $property
 	 *
 	 * @return mixed
