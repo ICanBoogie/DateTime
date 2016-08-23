@@ -63,6 +63,8 @@ echo $time->sunday;                     // 2013-02-03T00:00:00+0100
 echo $time->timestamp;                  // 1359921825
 
 echo $time->zone;                       // Europe/Paris
+echo $time->zone->is_utc;               // false
+echo $time->zone->is_local;             // true
 echo $time->zone->offset;               // 3600
 echo $time->zone->location;             // FR,48.86667,2.33333
 echo $time->zone->location->latitude;   // 48.86667

@@ -25,6 +25,8 @@ namespace ICanBoogie;
  * echo $zone->offset;             // 3600
  * echo $zone->location;           // FR,48.86667,2.33333
  * echo $zone->location->latitude; // 48.86667
+ * echo $zone->is_utc;             // false
+ * echo $zone->is_local;           // true
  * </pre>
  *
  * @property-read TimeZoneLocation $location Location information for the timezone.
