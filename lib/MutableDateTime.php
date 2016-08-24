@@ -35,15 +35,6 @@ class MutableDateTime extends \DateTime implements \JsonSerializable, Additional
 	use DateTime\Readers;
 
 	/**
-	 * We redefine the constant to make sure that the cookie uses a valid pattern.
-	 *
-	 * @see http://grokbase.com/t/php/php-bugs/111xynxd6m/php-bug-bug-53879-new-datetime-createfromformat-fails-to-parse-cookie-expiration-date
-	 *
-	 * @var string
-	 */
-	const COOKIE = 'l, d-M-Y H:i:s T';
-
-	/**
 	 * Returns an instance with the current local time and the local time zone.
 	 *
 	 * **Note:** Subsequent calls return equal times, event if they are minutes apart. _now_

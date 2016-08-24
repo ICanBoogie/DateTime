@@ -108,9 +108,10 @@ class DateTime extends \DateTimeImmutable implements \JsonSerializable, Addition
 	use DateTime\Readers;
 
 	/*
-	 * The following constants need to be defined because they are only defined by \DateTimeImmutable
+	 * The following constants need to be defined because they are only defined by \DateTime
 	 */
 	const ATOM = \DateTime::ATOM;
+	const COOKIE = \DateTime::COOKIE;
 	const RSS = \DateTime::RSS;
 	const ISO8601 = \DateTime::ISO8601;
 	const RFC822 = \DateTime::RFC822;
@@ -120,15 +121,6 @@ class DateTime extends \DateTimeImmutable implements \JsonSerializable, Addition
 	const RFC2822 = \DateTime::RFC2822;
 	const RFC3339 = \DateTime::RFC3339;
 	const W3C = \DateTime::W3C;
-
-	/**
-	 * We redefine the constant to make sure that the cookie uses a valid pattern.
-	 *
-	 * @see http://grokbase.com/t/php/php-bugs/111xynxd6m/php-bug-bug-53879-new-datetime-createfromformat-fails-to-parse-cookie-expiration-date
-	 *
-	 * @var string
-	 */
-	const COOKIE = 'l, d-M-Y H:i:s T';
 
 	/**
 	 * Callable used to create localized instances.
