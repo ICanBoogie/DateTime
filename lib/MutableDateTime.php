@@ -11,8 +11,6 @@
 
 namespace ICanBoogie;
 
-use ICanBoogie\DateTime\AdditionalFormats;
-
 /**
  * @property int $year Year.
  * @property int $month Month of the year.
@@ -29,19 +27,13 @@ use ICanBoogie\DateTime\AdditionalFormats;
  *
  * @method $this change(array $options, $cascade = false)
  */
-class MutableDateTime extends \DateTime implements \JsonSerializable, AdditionalFormats
+class MutableDateTime extends \DateTime implements \JsonSerializable, Contract\DateTime
 {
 	use DateTime\Shared;
 	use DateTime\Readers;
 
 	/**
-	 * Returns an instance with the current local time and the local time zone.
-	 *
-	 * **Note:** Subsequent calls return equal times, event if they are minutes apart. _now_
-	 * actually refers to the `REQUEST_TIME` or, if it is now available, to the first time
-	 * the method was invoked.
-	 *
-	 * @return static
+	 * @inheritdoc
 	 */
 	static public function now()
 	{
@@ -124,14 +116,8 @@ class MutableDateTime extends \DateTime implements \JsonSerializable, Additional
 		throw new \LogicException("Property is not defined: $property.");
 	}
 
-
 	/**
-	 * Instantiate a new instance with changes properties.
-	 *
-	 * @param array $options
-	 * @param bool $cascade
-	 *
-	 * @return MutableDateTime
+	 * @inheritdoc
 	 */
 	public function with(array $options, $cascade = false)
 	{

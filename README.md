@@ -6,7 +6,9 @@
 [![Code Coverage](https://img.shields.io/coveralls/ICanBoogie/DateTime.svg)](https://coveralls.io/r/ICanBoogie/DateTime)
 [![Packagist](https://img.shields.io/packagist/dm/icanboogie/datetime.svg?maxAge=2592000)](https://packagist.org/packages/icanboogie/datetime)
 
-This package extends the features of PHP [DateTime](http://www.php.net/manual/en/class.datetime.php)
+This package extends the features of PHP
+[DateTime](http://www.php.net/manual/en/class.datetime.php),
+[DateTimeImmutable](http://www.php.net/manual/en/class.datetimeimmutable.php),
 and [DateTimeZone](http://www.php.net/manual/en/class.datetimezone.php) classes to ease the
 handling of times, time zones and time zone locations. Getting the UTC or local representation of
 a time, formatting the time to a predefined format, accessing common properties such as day, month,
@@ -83,11 +85,11 @@ The implementation of the [DateTime][] class is vastly inspired by Ruby's
 
 ## DateTime is a value object
 
-Starting from v2.0, date time instances are immutable [value
-objects](https://en.wikipedia.org/wiki/Value_object). A class to create mutable date time instances
-is available, but it's important to remember the difference with PHP implementation. Thus,
-[ICanBoogie\DateTime][] extends [\DateTimeImmutable][] and [ICanBoogie\MutableDateTime][] extends
-[\DateTime][].
+Starting from v2.0, date time instances are immutable [value objects][]. A class to create mutable
+date time instances is available, but it's important to remember the difference with PHP
+implementation. Thus, [ICanBoogie\DateTime][] extends [\DateTimeImmutable][] and
+[ICanBoogie\MutableDateTime][] extends [\DateTime][]. Alose [ICanBoogie\Contract\DateTime], which is
+implemented by both [DateTime][] and [MutableDateTime][], extends [\DateTimeInterface][].
 
 You can switch from immutable to mutable instances using the `mutable` and `immutable` properties,
 or the static `from()` method:
@@ -485,16 +487,17 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
 
 
-[ICanBoogie/CLDR]:            https://github.com/ICanBoogie/CLDR
-[JsonSerializable interface]: http://php.net/manual/en/class.jsonserializable.php
-[documentation]:              http://api.icanboogie.org/datetime/latest/
-[\DateTime]:                  http://php.net/manual/en/class.datetime.php
-[\DateTimeImmutable]:         http://php.net/manual/en/class.datetimeimmutable.php
-[DateTime]:                   http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.DateTime.html
-[ICanBoogie\DateTime]:        http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.DateTime.html
-[ICanBoogie\MutableDateTime]: http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.MutableDateTime.html
-[MutableDateTime]:            http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.MutableDateTime.html
-[TimeZone]:                   http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.TimeZone.html
-[TimeZoneLocation]:           http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.TimeZoneLocation.html
-[PropertyNotDefined]:         http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotDefined.html
-[PropertyNotWritable]:        http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotWritable.html
+[ICanBoogie/CLDR]:              https://github.com/ICanBoogie/CLDR
+[JsonSerializable interface]:   http://php.net/manual/en/class.jsonserializable.php
+[documentation]:                http://api.icanboogie.org/datetime/latest/
+[\DateTime]:                    http://php.net/manual/en/class.datetime.php
+[\DateTimeImmutable]:           http://php.net/manual/en/class.datetimeimmutable.php
+[\DateTimeInterface]:           http://php.net/manual/en/class.datetimeinterface.php
+[DateTime]:                     http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.DateTime.html
+[ICanBoogie\Contract\DateTime]: http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.Contract.DateTime.html
+[ICanBoogie\DateTime]:          http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.DateTime.html
+[ICanBoogie\MutableDateTime]:   http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.MutableDateTime.html
+[MutableDateTime]:              http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.MutableDateTime.html
+[TimeZone]:                     http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.TimeZone.html
+[TimeZoneLocation]:             http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.TimeZoneLocation.html
+[value objects]:                https://en.wikipedia.org/wiki/Value_object

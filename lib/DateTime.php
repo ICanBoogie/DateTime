@@ -11,8 +11,6 @@
 
 namespace ICanBoogie;
 
-use ICanBoogie\DateTime\AdditionalFormats;
-
 /**
  * Representation of a date and time.
  *
@@ -102,7 +100,7 @@ use ICanBoogie\DateTime\AdditionalFormats;
  *
  * @see http://en.wikipedia.org/wiki/ISO_8601
  */
-class DateTime extends \DateTimeImmutable implements \JsonSerializable, AdditionalFormats
+class DateTime extends \DateTimeImmutable implements \JsonSerializable, Contract\DateTime
 {
 	use DateTime\Shared;
 	use DateTime\Readers;
@@ -130,13 +128,7 @@ class DateTime extends \DateTimeImmutable implements \JsonSerializable, Addition
 	static public $localizer = null;
 
 	/**
-	 * Returns an instance with the current local time and the local time zone.
-	 *
-	 * **Note:** Subsequent calls return equal times, event if they are minutes apart. _now_
-	 * actually refers to the `REQUEST_TIME` or, if it is now available, to the first time
-	 * the method was invoked.
-	 *
-	 * @return static
+	 * @inheritdoc
 	 */
 	static public function now()
 	{
@@ -161,12 +153,7 @@ class DateTime extends \DateTimeImmutable implements \JsonSerializable, Addition
 	}
 
 	/**
-	 * Instantiate a new instance with changes properties.
-	 *
-	 * @param array $options
-	 * @param bool $cascade
-	 *
-	 * @return DateTime
+	 * @inheritdoc
 	 */
 	public function with(array $options, $cascade = false)
 	{
