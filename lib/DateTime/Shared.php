@@ -99,7 +99,7 @@ trait Shared
 
 		if ($source instanceof \DateTimeInterface)
 		{
-			return new static($source->format(self::DB), $source->getTimezone());
+			return new static($source->format('Y-m-d H:i:s.u'), $source->getTimezone());
 		}
 
 		return new static($source, $timezone);

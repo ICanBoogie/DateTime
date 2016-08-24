@@ -118,6 +118,10 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 		$d = $this->from('2001-01-01 01:01:01');
 		$this->assertEquals(date_default_timezone_get(), $d->tz->name);
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
+
+		$r = new DateTime('2001-01-01 01:01:01.012345', 'Asia/Tokyo');
+		$d = $this->from($r);
+		$this->assertSame('2001-01-01 01:01:01.012345', $d->format('Y-m-d H:i:s.u'));
 	}
 
 	public function test_change()
