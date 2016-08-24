@@ -14,19 +14,19 @@ namespace ICanBoogie;
 abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @return DateTime|MutableDateTime
+	 * @return ImmutableDateTime|MutableDateTime
 	 */
 	abstract protected function now();
 
 	/**
-	 * @return DateTime|MutableDateTime
+	 * @return ImmutableDateTime|MutableDateTime
 	 */
 	abstract protected function right_now();
 
 	/**
 	 * @param \DateTimeZone|string|null $timezone
 	 *
-	 * @return DateTime|MutableDateTime
+	 * @return ImmutableDateTime|MutableDateTime
 	 */
 	abstract protected function none($timezone = 'utc');
 
@@ -34,7 +34,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	 * @param mixed $source
 	 * @param \DateTimeZone|string|null $timezone
 	 *
-	 * @return DateTime|MutableDateTime
+	 * @return ImmutableDateTime|MutableDateTime
 	 */
 	abstract protected function from($source, $timezone = null);
 
@@ -42,7 +42,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	 * @param string $time
 	 * @param \DateTimeZone|string|null $timezone
 	 *
-	 * @return DateTime|MutableDateTime
+	 * @return ImmutableDateTime|MutableDateTime
 	 */
 	abstract protected function create($time = 'now', $timezone = null);
 
@@ -67,7 +67,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 		sleep(2);
 
 		$this->assertEquals($d, $this->now());
-		$this->assertGreaterThan($d, DateTime::right_now());
+		$this->assertGreaterThan($d, ImmutableDateTime::right_now());
 	}
 
 	public function test_none()
@@ -119,7 +119,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(date_default_timezone_get(), $d->tz->name);
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 
-		$r = new DateTime('2001-01-01 01:01:01.012345', 'Asia/Tokyo');
+		$r = new ImmutableDateTime('2001-01-01 01:01:01.012345', 'Asia/Tokyo');
 		$d = $this->from($r);
 		$this->assertSame('2001-01-01 01:01:01.012345', $d->format('Y-m-d H:i:s.u'));
 	}
@@ -230,15 +230,6 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(4, $d->quarter);
 	}
 
-	/**
-	 * @expectedException \LogicException
-	 */
-	public function test_set_quarter()
-	{
-		$d = $this->now();
-		$d->quarter = true;
-	}
-
 	public function test_get_month()
 	{
 		$d = $this->create('2012-01-16 15:00:00');
@@ -255,15 +246,6 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(52, $d->week);
 		$d = $this->create('2012-01-16 15:00:00');
 		$this->assertEquals(3, $d->week);
-	}
-
-	/**
-	 * @expectedException \LogicException
-	 */
-	public function test_set_week()
-	{
-		$d = $this->now();
-		$d->week = true;
 	}
 
 	public function test_get_year_day()
@@ -293,15 +275,6 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(6, $d->weekday);
 		$d = $this->create('2012-12-23 15:00:00');
 		$this->assertEquals(7, $d->weekday);
-	}
-
-	/**
-	 * @expectedException \LogicException
-	 */
-	public function test_set_weekday()
-	{
-		$d = $this->now();
-		$d->weekday = true;
 	}
 
 	public function test_get_day()
@@ -660,9 +633,9 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_format()
 	{
 		$empty = $this->none();
-		$this->assertEquals('0000-00-00', $empty->format(DateTime::DATE));
-		$this->assertEquals('0000-00-00 00:00:00', $empty->format(DateTime::DB));
-		$this->assertStringEndsWith('30 Nov -0001 00:00:00 +0000', $empty->format(DateTime::RSS));
+		$this->assertEquals('0000-00-00', $empty->format(ImmutableDateTime::DATE));
+		$this->assertEquals('0000-00-00 00:00:00', $empty->format(ImmutableDateTime::DB));
+		$this->assertStringEndsWith('30 Nov -0001 00:00:00 +0000', $empty->format(ImmutableDateTime::RSS));
 	}
 
 	/*
@@ -672,25 +645,25 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_format_as_atom()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::ATOM), $now->format_as_atom());
+		$this->assertEquals($now->format(ImmutableDateTime::ATOM), $now->format_as_atom());
 	}
 
 	public function test_get_as_atom()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::ATOM), $now->as_atom);
+		$this->assertEquals($now->format(ImmutableDateTime::ATOM), $now->as_atom);
 	}
 
 	public function test_format_as_cookie()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::COOKIE), $now->format_as_cookie());
+		$this->assertEquals($now->format(ImmutableDateTime::COOKIE), $now->format_as_cookie());
 	}
 
 	public function test_get_as_cookie()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::COOKIE), $now->as_cookie);
+		$this->assertEquals($now->format(ImmutableDateTime::COOKIE), $now->as_cookie);
 
 		$date = $this->create('2013-11-04 20:21:22 UTC');
 		$this->assertEquals("Monday, 04-Nov-2013 20:21:22 UTC", $date->as_cookie);
@@ -699,151 +672,151 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_format_as_iso8601()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::ISO8601), $now->format_as_iso8601());
+		$this->assertEquals($now->format(ImmutableDateTime::ISO8601), $now->format_as_iso8601());
 	}
 
 	public function test_format_as_iso8601_utc()
 	{
 		$now = $this->now()->utc;
-		$this->assertEquals(str_replace('+0000', 'Z', $now->format(DateTime::ISO8601)), $now->format_as_iso8601());
+		$this->assertEquals(str_replace('+0000', 'Z', $now->format(ImmutableDateTime::ISO8601)), $now->format_as_iso8601());
 	}
 
 	public function test_get_as_iso8601()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::ISO8601), $now->as_iso8601);
+		$this->assertEquals($now->format(ImmutableDateTime::ISO8601), $now->as_iso8601);
 	}
 
 	public function test_as_iso8601_utc()
 	{
 		$now = $this->now()->utc;
-		$this->assertEquals(str_replace('+0000', 'Z', $now->format(DateTime::ISO8601)), $now->as_iso8601);
+		$this->assertEquals(str_replace('+0000', 'Z', $now->format(ImmutableDateTime::ISO8601)), $now->as_iso8601);
 	}
 
 	public function test_format_as_rfc822()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC822), $now->format_as_rfc822());
+		$this->assertEquals($now->format(ImmutableDateTime::RFC822), $now->format_as_rfc822());
 	}
 
 	public function test_format_as_rfc822_utc()
 	{
 		$now = $this->now()->utc;
-		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTime::RFC822)), $now->format_as_rfc822());
+		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(ImmutableDateTime::RFC822)), $now->format_as_rfc822());
 	}
 
 	public function test_get_as_rfc822()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC822), $now->as_rfc822);
+		$this->assertEquals($now->format(ImmutableDateTime::RFC822), $now->as_rfc822);
 	}
 
 	public function test_get_as_rfc822_utc()
 	{
 		$now = $this->now()->utc;
-		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTime::RFC822)), $now->as_rfc822);
+		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(ImmutableDateTime::RFC822)), $now->as_rfc822);
 	}
 
 	public function test_format_as_rfc850()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC850), $now->format_as_rfc850());
+		$this->assertEquals($now->format(ImmutableDateTime::RFC850), $now->format_as_rfc850());
 	}
 
 	public function test_get_as_rfc850()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC850), $now->as_rfc850);
+		$this->assertEquals($now->format(ImmutableDateTime::RFC850), $now->as_rfc850);
 	}
 
 	public function test_format_as_rfc1036()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC1036), $now->format_as_rfc1036());
+		$this->assertEquals($now->format(ImmutableDateTime::RFC1036), $now->format_as_rfc1036());
 	}
 
 	public function test_get_as_rfc1036()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC1036), $now->as_rfc1036);
+		$this->assertEquals($now->format(ImmutableDateTime::RFC1036), $now->as_rfc1036);
 	}
 
 	public function test_format_as_rfc1123()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC1123), $now->format_as_rfc1123());
+		$this->assertEquals($now->format(ImmutableDateTime::RFC1123), $now->format_as_rfc1123());
 	}
 
 	public function test_format_as_rfc1123_utc()
 	{
 		$now = $this->now()->utc;
-		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTime::RFC1123)), $now->format_as_rfc1123());
+		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(ImmutableDateTime::RFC1123)), $now->format_as_rfc1123());
 	}
 
 	public function test_get_as_rfc1123()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC1123), $now->as_rfc1123);
+		$this->assertEquals($now->format(ImmutableDateTime::RFC1123), $now->as_rfc1123);
 	}
 
 	public function test_get_as_rfc1123_utc()
 	{
 		$now = $this->now()->utc;
-		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTime::RFC1123)), $now->as_rfc1123);
+		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(ImmutableDateTime::RFC1123)), $now->as_rfc1123);
 	}
 
 	public function test_format_as_rfc2822()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC2822), $now->format_as_rfc2822());
+		$this->assertEquals($now->format(ImmutableDateTime::RFC2822), $now->format_as_rfc2822());
 	}
 
 	public function test_get_as_rfc2822()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC2822), $now->as_rfc2822);
+		$this->assertEquals($now->format(ImmutableDateTime::RFC2822), $now->as_rfc2822);
 	}
 
 	public function test_format_as_rfc3339()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC3339), $now->format_as_rfc3339());
+		$this->assertEquals($now->format(ImmutableDateTime::RFC3339), $now->format_as_rfc3339());
 	}
 
 	public function test_get_as_rfc3339()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RFC3339), $now->as_rfc3339);
+		$this->assertEquals($now->format(ImmutableDateTime::RFC3339), $now->as_rfc3339);
 	}
 
 	public function test_format_as_rss()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RSS), $now->format_as_rss());
+		$this->assertEquals($now->format(ImmutableDateTime::RSS), $now->format_as_rss());
 	}
 
 	public function test_get_as_rss()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::RSS), $now->as_rss);
+		$this->assertEquals($now->format(ImmutableDateTime::RSS), $now->as_rss);
 	}
 
 	public function test_format_as_w3c()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::W3C), $now->format_as_w3c());
+		$this->assertEquals($now->format(ImmutableDateTime::W3C), $now->format_as_w3c());
 	}
 
 	public function test_get_as_w3c()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::W3C), $now->as_w3c);
+		$this->assertEquals($now->format(ImmutableDateTime::W3C), $now->as_w3c);
 	}
 
 	public function test_format_as_db()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::DB), $now->format_as_db());
+		$this->assertEquals($now->format(ImmutableDateTime::DB), $now->format_as_db());
 		$empty = $this->none();
 		$this->assertEquals('0000-00-00 00:00:00', $empty->format_as_db());
 	}
@@ -851,7 +824,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_get_as_db()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::DB), $now->as_db);
+		$this->assertEquals($now->format(ImmutableDateTime::DB), $now->as_db);
 		$empty = $this->none();
 		$this->assertEquals('0000-00-00 00:00:00', $empty->as_db);
 	}
@@ -859,19 +832,19 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_format_as_number()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::NUMBER), $now->format_as_number());
+		$this->assertEquals($now->format(ImmutableDateTime::NUMBER), $now->format_as_number());
 	}
 
 	public function test_get_as_number()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::NUMBER), $now->as_number);
+		$this->assertEquals($now->format(ImmutableDateTime::NUMBER), $now->as_number);
 	}
 
 	public function test_format_as_date()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::DATE), $now->format_as_date());
+		$this->assertEquals($now->format(ImmutableDateTime::DATE), $now->format_as_date());
 		$empty = $this->none();
 		$this->assertEquals('0000-00-00', $empty->format_as_date());
 	}
@@ -879,7 +852,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_get_as_date()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::DATE), $now->as_date);
+		$this->assertEquals($now->format(ImmutableDateTime::DATE), $now->as_date);
 		$empty = $this->none();
 		$this->assertEquals('0000-00-00', $empty->as_date);
 	}
@@ -887,13 +860,13 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_format_as_time()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::TIME), $now->format_as_time());
+		$this->assertEquals($now->format(ImmutableDateTime::TIME), $now->format_as_time());
 	}
 
 	public function test_get_as_time()
 	{
 		$now = $this->now();
-		$this->assertEquals($now->format(DateTime::TIME), $now->as_time);
+		$this->assertEquals($now->format(ImmutableDateTime::TIME), $now->as_time);
 	}
 
 	public function test_compare()
@@ -936,7 +909,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_localize_should_throw_an_exception_if_the_localizer_is_not_defined_yet()
 	{
-		DateTime::$localizer = null;
+		ImmutableDateTime::$localizer = null;
 
 		$this->now()->localize('fr');
 	}
@@ -946,7 +919,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 		$invoked = false;
 		$reference = $this->now();
 
-		DateTime::$localizer = function(\DateTimeInterface $datetime, $locale) use (&$invoked, &$reference) {
+		ImmutableDateTime::$localizer = function(\DateTimeInterface $datetime, $locale) use (&$invoked, &$reference) {
 
 			$this->assertSame($datetime, $reference);
 			$this->assertEquals('fr', $locale);
@@ -1013,6 +986,6 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 		$datetime = $this->create();
 		$immutable = $datetime->immutable;
 		$this->assertNotSame($datetime, $immutable);
-		$this->assertInstanceOf(DateTime::class, $immutable);
+		$this->assertInstanceOf(ImmutableDateTime::class, $immutable);
 	}
 }

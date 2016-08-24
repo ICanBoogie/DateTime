@@ -11,7 +11,7 @@
 
 namespace ICanBoogie\DateTime;
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
 /**
  * @property-read int $year Year.
@@ -112,7 +112,7 @@ trait Shared
 	 * <pre>
 	 * <?php
 	 *
-	 * use ICanBoogie\DateTime;
+	 * use ICanBoogie\ImmutableDateTime as DateTime;
 	 *
 	 * new DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')));
 	 * new DateTime('2001-01-01 01:01:01', 'Europe/Paris');
@@ -284,7 +284,7 @@ trait Shared
 	 */
 	public function localize($locale = 'en')
 	{
-		$localizer = DateTime::$localizer;
+		$localizer = ImmutableDateTime::$localizer;
 
 		if (!$localizer)
 		{
@@ -308,7 +308,7 @@ trait Shared
 	private function format_as($as)
 	{
 		$as = strtoupper($as);
-		$format = constant(DateTime::class . '::' . $as);
+		$format = constant(ImmutableDateTime::class . '::' . $as);
 		$value = $this->format($format);
 
 		switch ($as)

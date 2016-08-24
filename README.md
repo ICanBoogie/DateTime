@@ -11,8 +11,16 @@ This package extends the features of PHP
 [DateTimeImmutable](http://www.php.net/manual/en/class.datetimeimmutable.php),
 and [DateTimeZone](http://www.php.net/manual/en/class.datetimezone.php) classes to ease the
 handling of times, time zones and time zone locations. Getting the UTC or local representation of
-a time, formatting the time to a predefined format, accessing common properties such as day, month,
+a time, formatting the time to a predefined format, switching from mutable to immutable instances, accessing common properties such as day, month,
 year, quarter and more has been made especially easy. Also, all instances can be used as strings.
+
+
+
+
+
+### Extending PHP classes
+
+ICanBoogie's naming of date time classes differs from PHP's. [ImmutableDateTime][] extends [PHP's DateTimeImmutable][], [MutableDateTime][] extends [PHP's DateTime][], and [DateTime][] extends [DateTimeInterface][].
 
 
 
@@ -25,11 +33,11 @@ Let's say that _now_ is "2013-02-03 21:03:45" in Paris:
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
 date_default_timezone_set('EST'); // set local time zone to Eastern Standard Time
 
-$time = new DateTime('now', 'Europe/Paris');
+$time = new ImmutableDateTime('now', 'Europe/Paris');
 
 echo $time;                             // 2013-02-03T21:03:45+0100
 echo $time->utc;                        // 2013-02-03T20:03:45Z
@@ -76,20 +84,14 @@ echo $time->tz->location->latitude;     // 48.86667
 
 ### Acknowledgements
 
-The implementation of the [DateTime][] class is vastly inspired by Ruby's
+The implementation of the date time classes is inspired by Ruby's
 [Time](http://www.ruby-doc.org/core-1.9.3/Time.html) class.
 
 
 
 
 
-## DateTime is a value object
-
-Starting from v2.0, date time instances are immutable [value objects][]. A class to create mutable
-date time instances is available, but it's important to remember the difference with PHP
-implementation. Thus, [ICanBoogie\DateTime][] extends [\DateTimeImmutable][] and
-[ICanBoogie\MutableDateTime][] extends [\DateTime][]. Alose [ICanBoogie\Contract\DateTime], which is
-implemented by both [DateTime][] and [MutableDateTime][], extends [\DateTimeInterface][].
+## Mutable and immutable
 
 You can switch from immutable to mutable instances using the `mutable` and `immutable` properties,
 or the static `from()` method:
@@ -97,16 +99,16 @@ or the static `from()` method:
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 use ICanBoogie\MutableDateTime;
 
-$immutable = DateTime::now();
+$immutable = ImmutableDateTime::now();
 $mutable = $immutable->mutable;
 $mutable->hour += 1;
 $immutable = $mutable->immutable;
 
 $mutable = MutableDateTime::from($immutable);
-$immutable = DateTime::from($mutable);
+$immutable = ImmutableDateTime::from($mutable);
 ```
 
 
@@ -124,7 +126,7 @@ The following properties can be used to alter the instance: `year`, `month`, `da
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
 date_default_timezone_set('EST'); // set local time zone to Eastern Standard Time
 
@@ -151,7 +153,7 @@ echo "Rendez-vous in 72 hours: $time";  // Rendez-vous in 72 hours: 2013-02-07T0
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime as DateTime;
 
 $time = new DateTime('0000-00-00', 'utc');
 // or
@@ -181,7 +183,7 @@ The following example demonstrates the difference:
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime as DateTime;
 
 $now = DateTime::now();
 
@@ -197,15 +199,15 @@ $now == DateTime::right_now();   // false
 
 ## Comparing DateTime instances
 
-[DateTime][] Instances are compared using standard comparison operations:
+[DateTime][] instances are compared using standard comparison operations:
 
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
-$d1 = DateTime::now();
-$d2 = DateTime::now();
+$d1 = ImmutableDateTime::now();
+$d2 = ImmutableDateTime::now();
 
 $d1 == $d2; // true
 $d1 >= $d2; // true
@@ -228,9 +230,9 @@ To determine if an instance is between two other instances you just need two com
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
-$now = DateTime::now();
+$now = ImmutableDateTime::now();
 
 $now > $now->yesterday && $now < $now->tomorrow; // true
 ```
@@ -241,9 +243,9 @@ and `max()` functions:
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
-$now = DateTime::now();
+$now = ImmutableDateTime::now();
 $yesterday = $now->yesterday;
 $tomorrow = $now->tomorrow;
 
@@ -255,17 +257,17 @@ $tomorrow  === max($now, $yesterday, $tomorrow); // true
 
 
 
-## DateTime and JSON
+## ImmutableDateTime and JSON
 
-[DateTime][] instances implements the [JsonSerializable interface][] and are serialized into
+[ImmutableDateTime][] instances implements the [JsonSerializable interface][] and are serialized into
 ISO-8601 strings.
 
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
-$date = new DateTime("2014-10-23 13:50:10", "Europe/Paris");
+$date = new ImmutableDateTime("2014-10-23 13:50:10", "Europe/Paris");
 
 echo json_encode([ 'date' => $date ]);
 // {"date":"2014-10-23T13:50:10+0200"}
@@ -277,8 +279,8 @@ echo json_encode([ 'date' => $date ]);
 
 ## Changing multiple properties
 
-The `change()` method changes multiple properties at once. Invoked on a [DateTime][] instance, a new
-[DateTime][] instance with modified properties is returned. Invoked on a [MutableDateTime][]
+The `change()` method changes multiple properties at once. Invoked on a [ImmutableDateTime][] instance, a new
+[ImmutableDateTime][] instance with modified properties is returned. Invoked on a [MutableDateTime][]
 instance, the instance is updated and the same instance is returned.
 
 > **Note:** Values exceeding ranges are added to their parent values.
@@ -286,9 +288,9 @@ instance, the instance is updated and the same instance is returned.
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
-$date = DateTime::now()->change([ 'year' => 2015, 'month' => 5, 'hour' => 12 ]);
+$date = ImmutableDateTime::now()->change([ 'year' => 2015, 'month' => 5, 'hour' => 12 ]);
 ```
 
 Using the `$cascade` parameter, setting the hour resets the minute and second to 0, and setting the
@@ -297,9 +299,9 @@ minute resets the second to 0.
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
-echo DateTime::from("2015-05-05 12:13:14")->change([ 'hour' => 13 ], true);   // 2015-05-05 13:00:00
+echo ImmutableDateTime::from("2015-05-05 12:13:14")->change([ 'hour' => 13 ], true);   // 2015-05-05 13:00:00
 ```
 
 
@@ -315,9 +317,9 @@ intact.
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
-$now = DateTime::now();
+$now = ImmutableDateTime::now();
 $next_year = $now->with([ 'year' => $now->year + 1 ]);
 
 spl_object_hash($now) == spl_object_hash($next_year);   // false
@@ -332,9 +334,9 @@ spl_object_hash($now) == spl_object_hash($next_year);   // false
 ```php
 <?php
 
-use ICanBoogie\DateTime:
+use ICanBoogie\ImmutableDateTime:
 
-$time = new DateTime('2014-01-06 11:11:11', 'utc'); // a monday at 11:11:11 UTC
+$time = new ImmutableDateTime('2014-01-06 11:11:11', 'utc'); // a monday at 11:11:11 UTC
 
 echo $time->monday;                          // 2014-01-06T00:00:00Z
 echo $time->tuesday;                         // 2014-01-07T00:00:00Z
@@ -376,29 +378,29 @@ $time->sunday->weekday;                      // 7
 ## Localized formatting
 
 Localized formatting is outside of this package scope, still a _localizer_ can be provided to the
-[DateTime][] class to localize its instances, but of course the result depends on the
+[ImmutableDateTime][] class to localize its instances, but of course the result depends on the
 implementation.
 
 The following example demonstrates how to localize instances using [ICanBoogie/CLDR][] which uses
-Unicode's Common Locale Data Repository to format [DateTime][] instances.
+Unicode's Common Locale Data Repository to format [ImmutableDateTime][] instances.
 
 ```php
 <?php
 
 use ICanBoogie\CLDR\Repository;
-use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 
 // …
 
 $repository = new Repository($provider);
 
-DateTime::$localizer = function(DateTime $instance, $locale) use ($repository) {
+ImmutableDateTime::$localizer = function(ImmutableDateTime $instance, $locale) use ($repository) {
 
 	return $repository->locales[$locale]->localize($instance);
 
 };
 
-$date = DateTime::from('2015-05-05 23:21:05', 'UTC');
+$date = ImmutableDateTime::from('2015-05-05 23:21:05', 'UTC');
 
 echo $date->localize('fr')->format('long');   // mardi 5 mai 2015 23:13:05 UTC
 echo $date->localize('fr')->as_medium;        // 5 mai 2015 23:13:05
@@ -454,12 +456,6 @@ dependencies can be generated with the `make doc` command. The documentation is 
 the `build/docs` directory using [ApiGen](http://apigen.org/). The package directory can later by
 cleaned with the `make clean` command.
 
-The following classes are documented:
-
-- [DateTime][]
-- [TimeZone][]
-- [TimeZoneLocation][]
-
 
 
 
@@ -490,14 +486,11 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 [ICanBoogie/CLDR]:              https://github.com/ICanBoogie/CLDR
 [JsonSerializable interface]:   http://php.net/manual/en/class.jsonserializable.php
 [documentation]:                http://api.icanboogie.org/datetime/latest/
-[\DateTime]:                    http://php.net/manual/en/class.datetime.php
-[\DateTimeImmutable]:           http://php.net/manual/en/class.datetimeimmutable.php
-[\DateTimeInterface]:           http://php.net/manual/en/class.datetimeinterface.php
+[PHP's DateTime]:               http://php.net/manual/en/class.datetime.php
+[PHP's DateTimeImmutable]:      http://php.net/manual/en/class.datetimeimmutable.php
+[DateTimeInterface]:            http://php.net/manual/en/class.datetimeinterface.php
 [DateTime]:                     http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.DateTime.html
-[ICanBoogie\Contract\DateTime]: http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.Contract.DateTime.html
-[ICanBoogie\DateTime]:          http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.DateTime.html
-[ICanBoogie\MutableDateTime]:   http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.MutableDateTime.html
+[ImmutableDateTime]:            http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.ImmutableDateTime.html
 [MutableDateTime]:              http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.MutableDateTime.html
 [TimeZone]:                     http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.TimeZone.html
 [TimeZoneLocation]:             http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.TimeZoneLocation.html
-[value objects]:                https://en.wikipedia.org/wiki/Value_object

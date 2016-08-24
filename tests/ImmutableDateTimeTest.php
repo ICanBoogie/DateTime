@@ -11,56 +11,59 @@
 
 namespace ICanBoogie;
 
-class DateTimeTest extends AbstractDateTimeTest
+/**
+ * @group datetime
+ */
+class ImmutableDateTimeTest extends AbstractDateTimeTest
 {
 	/**
 	 * @inheritdoc
 	 *
-	 * @return DateTime
+	 * @return ImmutableDateTime
 	 */
 	protected function now()
 	{
-		return DateTime::now();
+		return ImmutableDateTime::now();
 	}
 
 	/**
 	 * @inheritdoc
 	 *
-	 * @return DateTime
+	 * @return ImmutableDateTime
 	 */
 	protected function right_now()
 	{
-		return DateTime::right_now();
+		return ImmutableDateTime::right_now();
 	}
 
 	/**
 	 * @inheritdoc
 	 *
-	 * @return DateTime
+	 * @return ImmutableDateTime
 	 */
 	protected function none($timezone = 'utc')
 	{
-		return DateTime::none($timezone);
+		return ImmutableDateTime::none($timezone);
 	}
 
 	/**
 	 * @inheritdoc
 	 *
-	 * @return DateTime
+	 * @return ImmutableDateTime
 	 */
 	protected function from($source, $timezone = null)
 	{
-		return DateTime::from($source, $timezone);
+		return ImmutableDateTime::from($source, $timezone);
 	}
 
 	/**
 	 * @inheritdoc
 	 *
-	 * @return DateTime
+	 * @return ImmutableDateTime
 	 */
 	protected function create($time = 'now', $timezone = null)
 	{
-		return new DateTime($time, $timezone);
+		return new ImmutableDateTime($time, $timezone);
 	}
 
 	/*
@@ -70,19 +73,19 @@ class DateTimeTest extends AbstractDateTimeTest
 	public function test_from_instance()
 	{
 		$d = new \DateTime;
-		$this->assertInstanceOf(DateTime::class, $this->from($d));
-		$this->assertInstanceOf(ExtendedDateTime::class, ExtendedDateTime::from($d));
+		$this->assertInstanceOf(ImmutableDateTime::class, $this->from($d));
+		$this->assertInstanceOf(ExtendedImmutableDateTime::class, ExtendedImmutableDateTime::from($d));
 
 		$d = $this->create();
-		$this->assertInstanceOf(DateTime::class, $this->from($d));
-		$this->assertInstanceOf(ExtendedDateTime::class, ExtendedDateTime::from($d));
+		$this->assertInstanceOf(ImmutableDateTime::class, $this->from($d));
+		$this->assertInstanceOf(ExtendedImmutableDateTime::class, ExtendedImmutableDateTime::from($d));
 	}
 
 	public function test_now_should_provide_the_same_instance()
 	{
 		$now = $this->now();
 
-		$this->assertSame($now, DateTime::now());
+		$this->assertSame($now, ImmutableDateTime::now());
 	}
 
 	public function test_get_is_past()
@@ -106,7 +109,7 @@ class DateTimeTest extends AbstractDateTimeTest
 	 */
 	public function test_should_be_same_class($property)
 	{
-		$this->assertInstanceOf(DateTime::class, $this->now()->$property);
+		$this->assertInstanceOf(ImmutableDateTime::class, $this->now()->$property);
 	}
 
 	/**

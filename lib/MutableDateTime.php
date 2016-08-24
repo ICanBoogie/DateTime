@@ -20,6 +20,16 @@ namespace ICanBoogie;
  * @property int $second Second of the minute.
  * @property int $timestamp Unix timestamp.
  *
+ * @property-read MutableDateTime $tomorrow A new instance representing the next day. Time is reset to 00:00:00.
+ * @property-read MutableDateTime $yesterday A new instance representing the previous day. Time is reset to 00:00:00.
+ * @property-read MutableDateTime $monday A new instance representing Monday of the week. Time is reset to 00:00:00.
+ * @property-read MutableDateTime $tuesday A new instance representing Tuesday of the week. Time is reset to 00:00:00.
+ * @property-read MutableDateTime $wednesday A new instance representing Wednesday of the week. Time is reset to 00:00:00.
+ * @property-read MutableDateTime $thursday A new instance representing Thursday of the week. Time is reset to 00:00:00.
+ * @property-read MutableDateTime $friday A new instance representing Friday of the week. Time is reset to 00:00:00.
+ * @property-read MutableDateTime $saturday A new instance representing Saturday of the week. Time is reset to 00:00:00.
+ * @property-read MutableDateTime $sunday A new instance representing Sunday of the week. Time is reset to 00:00:00.
+ *
  * @property TimeZone $timezone The timezone of the instance.
  * @property TimeZone $tz The timezone of the instance.
  * @property-read MutableDateTime $utc A new instance in the UTC timezone.
@@ -27,7 +37,7 @@ namespace ICanBoogie;
  *
  * @method $this change(array $options, $cascade = false)
  */
-class MutableDateTime extends \DateTime implements \JsonSerializable, Contract\DateTime
+class MutableDateTime extends \DateTime implements \JsonSerializable, DateTime
 {
 	use DateTime\Shared;
 	use DateTime\Readers;

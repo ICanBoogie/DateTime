@@ -12,6 +12,7 @@
 namespace ICanBoogie\DateTime;
 
 use ICanBoogie\DateTime;
+use ICanBoogie\ImmutableDateTime;
 use ICanBoogie\MutableDateTime;
 use ICanBoogie\TimeZone;
 
@@ -26,6 +27,7 @@ use ICanBoogie\TimeZone;
  * @property-read int $quarter Quarter of the year.
  * @property-read int $week Week of the year.
  * @property-read int $weekday Day of the week.
+ * @property-read int $year_day Day of the year.
  *
  * @property-read DateTime $tomorrow A new instance representing the next day. Time is reset to 00:00:00.
  * @property-read DateTime $yesterday A new instance representing the previous day. Time is reset to 00:00:00.
@@ -71,7 +73,7 @@ use ICanBoogie\TimeZone;
  * @property-read bool $is_local `true` if the instance is in the local timezone.
  * @property-read bool $is_dst `true` if time occurs during Daylight Saving Time in its time zone.
  *
- * @property-read DateTime $immutable An immutable representation of the instance.
+ * @property-read ImmutableDateTime $immutable An immutable representation of the instance.
  * @property-read MutableDateTime $mutable A mutable representation of the instance.
  */
 trait Readers
@@ -79,7 +81,7 @@ trait Readers
 	/**
 	 * @param string $modify
 	 *
-	 * @return DateTime|MutableDateTime
+	 * @return DateTime
 	 */
 	abstract public function modify($modify);
 
@@ -174,7 +176,7 @@ trait Readers
 	/**
 	 * Returns Monday of the week.
 	 *
-	 * @return DateTime
+	 * @return ImmutableDateTime
 	 */
 	protected function get_monday()
 	{
@@ -278,7 +280,7 @@ trait Readers
 	}
 
 	/**
-	 * @return MutableDateTime
+	 * @return DateTime
 	 */
 	protected function get_mutable()
 	{
@@ -290,7 +292,7 @@ trait Readers
 	 */
 	protected function get_immutable()
 	{
-		return DateTime::from($this);
+		return ImmutableDateTime::from($this);
 	}
 
 	/**

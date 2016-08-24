@@ -12,151 +12,156 @@
 namespace ICanBoogie;
 
 /**
- * Representation of a date and time.
- *
- * <pre>
- * <?php
- *
- * // Let's say that _now_ is 2013-02-03 21:03:45 in Paris
- *
- * use ICanBoogie\DateTime;
- *
- * date_default_timezone_set('EST'); // set local time zone to Eastern Standard Time
- *
- * $time = new DateTime('now', 'Europe/Paris');
- *
- * echo $time;                             // 2013-02-03T21:03:45+0100
- * echo $time->utc;                        // 2013-02-03T20:03:45Z
- * echo $time->local;                      // 2013-02-03T15:03:45-0500
- * echo $time->utc->local;                 // 2013-02-03T15:03:45-0500
- * echo $time->utc->is_utc;                // true
- * echo $time->utc->is_local;              // false
- * echo $time->local->is_utc;              // false
- * echo $time->local->is_local;            // true
- * echo $time->is_dst;                     // false
- *
- * echo $time->as_rss;                     // Sun, 03 Feb 2013 21:03:45 +0100
- * echo $time->as_db;                      // 2013-02-03 21:03:45
- *
- * echo $time->as_time;                    // 21:03:45
- * echo $time->utc->as_time;               // 20:03:45
- * echo $time->local->as_time;             // 15:03:45
- * echo $time->utc->local->as_time;        // 15:03:45
- *
- * echo $time->quarter;                    // 1
- * echo $time->week;                       // 5
- * echo $time->day;                        // 3
- * echo $time->minute;                     // 3
- * echo $time->is_monday;                  // false
- * echo $time->is_saturday;                // true
- * echo $time->is_today;                   // true
- * echo $time->tomorrow;                   // 2013-02-04T00:00:00+0100
- * echo $time->tomorrow->is_future         // true
- * echo $time->yesterday;                  // 2013-02-02T00:00:00+0100
- * echo $time->yesterday->is_past          // true
- * echo $time->monday;                     // 2013-01-28T00:00:00+0100
- * echo $time->sunday;                     // 2013-02-03T00:00:00+0100
- *
- * echo $time->timestamp;                  // 1359921825
- * echo $time;                             // 2013-02-03T21:03:45+0100
- * $time->timestamp += 3600 * 4;
- * echo $time;                             // 2013-02-04T01:03:45+0100
- *
- * echo $time->timezone;                   // Europe/Paris
- * // or
- * echo $time->tz;                         // Europe/Paris
- * echo $time->tz->offset;                 // 3600
- * echo $time->tz->location;               // FR,48.86667,2.33333
- * echo $time->tz->location->latitude;     // 48.86667
- * </pre>
- *
- * Empty dates are also supported:
- *
- * <pre>
- * <?php
- *
- * use ICanBoogie\DateTime;
- *
- * $time = new DateTime('0000-00-00', 'utc');
- * // or
- * $time = DateTime::none();
- *
- * echo $time->is_empty;                   // true
- * echo $time->as_date;                    // 0000-00-00
- * echo $time->as_db;                      // 0000-00-00 00:00:00
- * echo $time;                             // ""
- * </pre>
- *
- * @property-read int $quarter Quarter of the year.
- * @property-read int $week Week of the year.
- * @property-read int $weekday Day of the week.
- * @property-read int $year_day Day of the year.
- *
- * @property-read DateTime $utc A new instance in the UTC timezone.
- * @property-read DateTime $local A new instance in the local timezone.
- *
- * @method DateTime setTimezone(mixed $timezone)
- * @method DateTime change(array $options, $cascade = false)
- *
- * @see http://en.wikipedia.org/wiki/ISO_8601
+ * Interface for ICanBoogie's mutable and immutable date time classes.
  */
-class DateTime extends \DateTimeImmutable implements \JsonSerializable, Contract\DateTime
+interface DateTime extends \DateTimeInterface
 {
-	use DateTime\Shared;
-	use DateTime\Readers;
-
-	/*
-	 * The following constants need to be defined because they are only defined by \DateTime
-	 */
-	const ATOM = \DateTime::ATOM;
-	const COOKIE = \DateTime::COOKIE;
-	const RSS = \DateTime::RSS;
-	const ISO8601 = \DateTime::ISO8601;
-	const RFC822 = \DateTime::RFC822;
-	const RFC850 = \DateTime::RFC850;
-	const RFC1036 = \DateTime::RFC1036;
-	const RFC1123 = \DateTime::RFC1123;
-	const RFC2822 = \DateTime::RFC2822;
-	const RFC3339 = \DateTime::RFC3339;
-	const W3C = \DateTime::W3C;
-
 	/**
-	 * Callable used to create localized instances.
+	 * DB (example: 2013-02-03 20:59:03)
 	 *
-	 * @var callable
+	 * @var string
 	 */
-	static public $localizer = null;
+	const DB = 'Y-m-d H:i:s';
 
 	/**
-	 * @inheritdoc
-	 */
-	static public function now()
-	{
-		static $now;
-
-		if (!$now)
-		{
-			$now = empty($_SERVER['REQUEST_TIME']) ? new static : (new static('@' . $_SERVER['REQUEST_TIME']))->local;
-		}
-
-		return $now;
-	}
-
-	/**
-	 * @inheritdoc
+	 * Number (example: 20130203205903)
 	 *
-	 * @throws \LogicException in attempt to set a property.
+	 * @var string
 	 */
-	public function __set($property, $value)
-	{
-		throw new \LogicException("Property is not writable: $property.");
-	}
+	const NUMBER = 'YmdHis';
 
 	/**
-	 * @inheritdoc
+	 * Date (example: 2013-02-03)
+	 *
+	 * @var string
 	 */
-	public function with(array $options, $cascade = false)
-	{
-		return $this->change($options, $cascade);
-	}
+	const DATE = 'Y-m-d';
+
+	/**
+	 * Time (example: 20:59:03)
+	 *
+	 * @var string
+	 */
+	const TIME = 'H:i:s';
+
+	/**
+	 * Creates a {@link DateTime} instance from a source.
+	 *
+	 * <pre>
+	 * <?php
+	 *
+	 * use ICanBoogie\ImmutableDateTime as DateTime;
+	 *
+	 * DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')));
+	 * DateTime::from('2001-01-01 01:01:01', 'Europe/Paris');
+	 * DateTime::from('now');
+	 * </pre>
+	 *
+	 * @param mixed $source
+	 * @param mixed $timezone The time zone to use to create the time. The value is ignored if the
+	 * source is an instance of {@link \DateTime}.
+	 *
+	 * @return static
+	 */
+	static public function from($source, $timezone = null);
+
+	/**
+	 * Returns an instance representing an empty date ("0000-00-00").
+	 *
+	 * <pre>
+	 * <?php
+	 *
+	 * use ICanBoogie\ImmutableDateTime as DateTime;
+	 *
+	 * $d = DateTime::none();
+	 * $d->is_empty;                      // true
+	 * $d->timezone->name;                // "UTC"
+	 *
+	 * $d = DateTime::none('Asia/Tokyo');
+	 * $d->is_empty;                      // true
+	 * $d->timezone->name;                // "Asia/Tokio"
+	 * </pre>
+	 *
+	 * @param \DateTimeZone|string $timezone The time zone in which the empty date is created.
+	 * Defaults to "UTC".
+	 *
+	 * @return static
+	 */
+	static public function none($timezone = 'utc');
+
+	/**
+	 * Returns an instance with the current local time and the local time zone.
+	 *
+	 * **Note:** Subsequent calls return equal times, event if they are minutes apart. _now_
+	 * actually refers to the `REQUEST_TIME` or, if it is now available, to the first time
+	 * the method was invoked.
+	 *
+	 * @return static
+	 */
+	static public function now();
+
+	/**
+	 * Returns an instance with the current local time and the local time zone.
+	 *
+	 * **Note:** Subsequent calls may return different times.
+	 *
+	 * @return static
+	 */
+	static public function right_now();
+
+	/**
+	 * Alters the timestamp.
+	 *
+	 * @param string $modify
+	 *
+	 * @return static
+	 */
+	public function modify($modify);
+
+	/**
+	 * Modifies the properties of the instance according to the options.
+	 *
+	 * The following properties can be updated: {@link $year}, {@link $month}, {@link $day},
+	 * {@link $hour}, {@link $minute} and {@link $second}.
+	 *
+	 * Note: Values exceeding ranges are added to their parent values.
+	 *
+	 * <pre>
+	 * <?php
+	 *
+	 * use ICanBoogie\ImmutableDateTime as DateTime;
+	 *
+	 * $time = new DateTime('now');
+	 * $time->change([ 'year' => 2000, 'second' => 0 ]);
+	 * </pre>
+	 *
+	 * @param array $options
+	 * @param bool $cascade If `true`, time options (`hour`, `minute`, `second`) reset
+	 * cascading, so if only the hour is passed, then minute and second is set to 0. If the hour
+	 * and minute is passed, then second is set to 0.
+	 *
+	 * @return $this
+	 */
+	public function change(array $options, $cascade = false);
+
+	/**
+	 * Returns a new instance with changes properties.
+	 *
+	 * @param array $options
+	 * @param bool $cascade
+	 *
+	 * @return DateTime
+	 */
+	public function with(array $options, $cascade = false);
+
+	/**
+	 * Returns a localized instance.
+	 *
+	 * @param string $locale
+	 *
+	 * @return mixed
+	 *
+	 * @throws \LogicException if the instance cannot be localized.
+	 */
+	public function localize($locale = 'en');
 }
