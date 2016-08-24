@@ -909,7 +909,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_localize_should_throw_an_exception_if_the_localizer_is_not_defined_yet()
 	{
-		ImmutableDateTime::$localizer = null;
+		DateTimeLocalizer::undefine();
 
 		$this->now()->localize('fr');
 	}
@@ -919,12 +919,12 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 		$invoked = false;
 		$reference = $this->now();
 
-		ImmutableDateTime::$localizer = function(\DateTimeInterface $datetime, $locale) use (&$invoked, &$reference) {
+		DateTimeLocalizer::define(function(DateTime $datetime, $locale) use (&$invoked, &$reference) {
 
 			$this->assertSame($datetime, $reference);
 			$this->assertEquals('fr', $locale);
 
-		};
+		});
 
 		$reference->localize('fr');
 	}

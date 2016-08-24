@@ -11,7 +11,9 @@
 
 namespace ICanBoogie\DateTime;
 
+use ICanBoogie\DateTimeLocalizer;
 use ICanBoogie\ImmutableDateTime;
+use ICanBoogie\MutableDateTime;
 
 /**
  * @property-read int $year Year.
@@ -282,16 +284,11 @@ trait Shared
 	/**
 	 * @inheritdoc
 	 */
-	public function localize($locale = 'en')
+	public function localize($locale = DateTimeLocalizer::DEFAULT_LOCALE)
 	{
-		$localizer = ImmutableDateTime::$localizer;
+		/* @var $this ImmutableDateTime|MutableDateTime */
 
-		if (!$localizer)
-		{
-			throw new \LogicException("Localizer is not defined yet.");
-		}
-
-		return $localizer($this, $locale);
+		return DateTimeLocalizer::localize($this, $locale);
 	}
 
 	/**

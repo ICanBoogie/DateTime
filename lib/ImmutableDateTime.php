@@ -126,13 +126,6 @@ class ImmutableDateTime extends \DateTimeImmutable implements \JsonSerializable,
 	const W3C = \DateTime::W3C;
 
 	/**
-	 * Callable used to create localized instances.
-	 *
-	 * @var callable
-	 */
-	static public $localizer = null;
-
-	/**
 	 * @inheritdoc
 	 */
 	static public function now()
