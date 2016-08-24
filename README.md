@@ -62,12 +62,14 @@ echo $time->monday;                     // 2013-01-28T00:00:00+0100
 echo $time->sunday;                     // 2013-02-03T00:00:00+0100
 echo $time->timestamp;                  // 1359921825
 
-echo $time->zone;                       // Europe/Paris
-echo $time->zone->is_utc;               // false
-echo $time->zone->is_local;             // true
-echo $time->zone->offset;               // 3600
-echo $time->zone->location;             // FR,48.86667,2.33333
-echo $time->zone->location->latitude;   // 48.86667
+echo $time->timezone;                   // Europe/Paris
+// or
+echo $time->tz;                         // Europe/Paris
+echo $time->tz->is_utc;                 // false
+echo $time->tz->is_local;               // true
+echo $time->tz->offset;                 // 3600
+echo $time->tz->location;               // FR,48.86667,2.33333
+echo $time->tz->location->latitude;     // 48.86667
 ```
 
 ### Acknowledgements
@@ -130,8 +132,8 @@ echo $time;                             // 2013-02-03T21:03:45+0100
 $time->timestamp += 3600 * 4;
 echo $time;                             // 2013-02-04T01:03:45+0100
 
-echo $time->zone;                       // Europe/Paris
-$time->zone = 'Asia/Tokyo';
+echo $time->timezone;                   // Europe/Paris
+$time->timezone = 'Asia/Tokyo';
 echo $time;                             // 2013-02-04T09:03:45+0900
 
 $time->hour += 72;

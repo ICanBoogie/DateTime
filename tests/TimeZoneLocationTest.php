@@ -11,12 +11,15 @@
 
 namespace ICanBoogie;
 
+/**
+ * @group timezone
+ */
 class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * @var \DateTimeZone
 	 */
-	private $zone;
+	private $tz;
 
 	/**
 	 * @var array
@@ -30,21 +33,21 @@ class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		$this->zone = $zone = new \DateTimeZone('Europe/Paris');
-		$this->data = $data = $zone->getLocation();
+		$this->tz = $tz = new \DateTimeZone('Europe/Paris');
+		$this->data = $data = $tz->getLocation();
 		$this->location = new TimeZoneLocation($data);
 	}
 
 	public function test_from()
 	{
-		$location = TimeZoneLocation::from($this->zone);
+		$location = TimeZoneLocation::from($this->tz);
 
 		$this->assertInstanceOf(TimeZoneLocation::class, $location);
 	}
 
 	public function test_from_cache()
 	{
-		$zone = $this->zone;
+		$zone = $this->tz;
 		$location = TimeZoneLocation::from($zone);
 		$cached = TimeZoneLocation::from($zone);
 

@@ -79,7 +79,7 @@ class MutableDateTimeTest extends AbstractDateTimeTest
 	public function test_get_is_past()
 	{
 		$d = $this->now();
-		$d->zone = 'Asia/Tokyo';
+		$d->timezone = 'Asia/Tokyo';
 		$d->second -= 3600;
 		$this->assertTrue($d->is_past);
 		$d->second += 7200;
@@ -89,7 +89,7 @@ class MutableDateTimeTest extends AbstractDateTimeTest
 	public function test_get_is_future()
 	{
 		$d = $this->now();
-		$d->zone = 'Asia/Tokyo';
+		$d->timezone = 'Asia/Tokyo';
 		$d->second -= 3600;
 		$this->assertFalse($d->is_future);
 		$d->second += 7200;
@@ -175,7 +175,7 @@ class MutableDateTimeTest extends AbstractDateTimeTest
 	{
 		$d = $this->create('1977-06-06T12:00:00', 'Asia/Tokyo');
 		$this->assertSame('1977-06-06T12:00:00+0900', (string) $d);
-		$d->zone = 'Europe/Paris';
+		$d->timezone = 'Europe/Paris';
 		$this->assertSame('1977-06-06T05:00:00+0200', (string) $d);
 	}
 

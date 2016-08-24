@@ -65,7 +65,8 @@ use ICanBoogie\TimeZone;
  * @property-read string $as_date The instance formatted according to {@link DATE}.
  * @property-read string $as_time The instance formatted according to {@link TIME}.
  *
- * @property-read TimeZone $zone The timezone of the instance.
+ * @property-read TimeZone $timezone The timezone of the instance.
+ * @property-read TimeZone $tz The timezone of the instance.
  * @property-read bool $is_utc `true` if the instance is in the UTC timezone.
  * @property-read bool $is_local `true` if the instance is in the local timezone.
  * @property-read bool $is_dst `true` if time occurs during Daylight Saving Time in its time zone.
@@ -134,24 +135,22 @@ trait Readers
 			case 'is_sunday':
 				return $this->weekday == 7;
 			case 'is_today':
-				$now = new static('now', $this->zone);
+				$now = new static('now', $this->tz);
 				return $this->as_date === $now->as_date;
 			case 'is_past':
-				return $this < new static('now', $this->zone);
+				return $this < new static('now', $this->tz);
 			case 'is_future':
-				return $this > new static('now', $this->zone);
+				return $this > new static('now', $this->tz);
 			case 'is_empty':
 				return $this->year == -1 && $this->month == 11 && $this->day == 30;
 
-			case 'zone':
-				return TimeZone::from($this->getTimezone());
 			case 'utc':
 			case 'local':
 				$datetime = clone $this; // works for immutable and mutable
 				return $datetime->setTimezone($property);
 			case 'is_utc':
 			case 'is_local':
-				return $this->zone->$property;
+				return $this->tz->$property;
 		}
 
 		$getter = "get_$property";
@@ -300,8 +299,24 @@ trait Readers
 	protected function get_is_dst()
 	{
 		$timestamp = $this->timestamp;
-		$transitions = $this->zone->getTransitions($timestamp, $timestamp);
+		$transitions = $this->timezone->getTransitions($timestamp, $timestamp);
 
 		return $transitions[0]['isdst'];
+	}
+
+	/**
+	 * @return TimeZone
+	 */
+	protected function get_timezone()
+	{
+		return TimeZone::from($this->getTimezone());
+	}
+
+	/**
+	 * @return TimeZone
+	 */
+	protected function get_tz()
+	{
+		return $this->get_timezone();
 	}
 }

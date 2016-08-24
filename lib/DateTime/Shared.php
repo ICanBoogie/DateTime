@@ -115,11 +115,11 @@ trait Shared
 	 *
 	 * $d = DateTime::none();
 	 * $d->is_empty;                      // true
-	 * $d->zone->name;                    // "UTC"
+	 * $d->timezone->name;                // "UTC"
 	 *
 	 * $d = DateTime::none('Asia/Tokyo');
 	 * $d->is_empty;                      // true
-	 * $d->zone->name;                    // "Asia/Tokio"
+	 * $d->timezone->name;                // "Asia/Tokio"
 	 * </pre>
 	 *
 	 * @param \DateTimeZone|string $timezone The time zone in which the empty date is created.

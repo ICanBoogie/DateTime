@@ -22,7 +22,8 @@ use ICanBoogie\DateTime\AdditionalFormats;
  * @property int $second Second of the minute.
  * @property int $timestamp Unix timestamp.
  *
- * @property TimeZone $zone The timezone of the instance.
+ * @property TimeZone $timezone The timezone of the instance.
+ * @property TimeZone $tz The timezone of the instance.
  * @property-read MutableDateTime $utc A new instance in the UTC timezone.
  * @property-read MutableDateTime $local A new instance in the local timezone.
  *
@@ -118,7 +119,8 @@ class MutableDateTime extends \DateTime implements \JsonSerializable, Additional
 				$this->setTimestamp($value);
 				return;
 
-			case 'zone':
+			case 'timezone':
+			case 'tz':
 				$this->setTimezone($value);
 				return;
 		}
