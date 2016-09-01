@@ -25,17 +25,17 @@ namespace ICanBoogie;
  *
  * $time = new ImmutableDateTime('now', 'Europe/Paris');
  *
- * echo $time;                             // 2013-02-03T21:03:45+0100
+ * echo $time;                             // 2013-02-03T21:03:45+01:00
  * echo $time->utc;                        // 2013-02-03T20:03:45Z
- * echo $time->local;                      // 2013-02-03T15:03:45-0500
- * echo $time->utc->local;                 // 2013-02-03T15:03:45-0500
+ * echo $time->local;                      // 2013-02-03T15:03:45-05:00
+ * echo $time->utc->local;                 // 2013-02-03T15:03:45-05:00
  * echo $time->utc->is_utc;                // true
  * echo $time->utc->is_local;              // false
  * echo $time->local->is_utc;              // false
  * echo $time->local->is_local;            // true
  * echo $time->is_dst;                     // false
  *
- * echo $time->as_rss;                     // Sun, 03 Feb 2013 21:03:45 +0100
+ * echo $time->as_rss;                     // Sun, 03 Feb 2013 21:03:45 +01:00
  * echo $time->as_db;                      // 2013-02-03 21:03:45
  *
  * echo $time->as_time;                    // 21:03:45
@@ -50,17 +50,17 @@ namespace ICanBoogie;
  * echo $time->is_monday;                  // false
  * echo $time->is_saturday;                // true
  * echo $time->is_today;                   // true
- * echo $time->tomorrow;                   // 2013-02-04T00:00:00+0100
+ * echo $time->tomorrow;                   // 2013-02-04T00:00:00+01:00
  * echo $time->tomorrow->is_future         // true
- * echo $time->yesterday;                  // 2013-02-02T00:00:00+0100
+ * echo $time->yesterday;                  // 2013-02-02T00:00:00+01:00
  * echo $time->yesterday->is_past          // true
- * echo $time->monday;                     // 2013-01-28T00:00:00+0100
- * echo $time->sunday;                     // 2013-02-03T00:00:00+0100
+ * echo $time->monday;                     // 2013-01-28T00:00:00+01:00
+ * echo $time->sunday;                     // 2013-02-03T00:00:00+01:00
  *
  * echo $time->timestamp;                  // 1359921825
- * echo $time;                             // 2013-02-03T21:03:45+0100
+ * echo $time;                             // 2013-02-03T21:03:45+01:00
  * $time->timestamp += 3600 * 4;
- * echo $time;                             // 2013-02-04T01:03:45+0100
+ * echo $time;                             // 2013-02-04T01:03:45+01:00
  *
  * echo $time->timezone;                   // Europe/Paris
  * // or
@@ -113,17 +113,17 @@ class ImmutableDateTime extends \DateTimeImmutable implements \JsonSerializable,
 	/*
 	 * The following constants need to be defined because they are only defined by \DateTime
 	 */
-	const ATOM = \DateTime::ATOM;
-	const COOKIE = \DateTime::COOKIE;
-	const RSS = \DateTime::RSS;
-	const ISO8601 = \DateTime::ISO8601;
-	const RFC822 = \DateTime::RFC822;
-	const RFC850 = \DateTime::RFC850;
-	const RFC1036 = \DateTime::RFC1036;
-	const RFC1123 = \DateTime::RFC1123;
-	const RFC2822 = \DateTime::RFC2822;
-	const RFC3339 = \DateTime::RFC3339;
-	const W3C = \DateTime::W3C;
+	const ATOM    = MutableDateTime::ATOM;
+	const COOKIE  = MutableDateTime::COOKIE;
+	const RSS     = MutableDateTime::RSS;
+	const ISO8601 = MutableDateTime::ISO8601;
+	const RFC822  = MutableDateTime::RFC822;
+	const RFC850  = MutableDateTime::RFC850;
+	const RFC1036 = MutableDateTime::RFC1036;
+	const RFC1123 = MutableDateTime::RFC1123;
+	const RFC2822 = MutableDateTime::RFC2822;
+	const RFC3339 = MutableDateTime::RFC3339;
+	const W3C     = MutableDateTime::W3C;
 
 	/**
 	 * @inheritdoc

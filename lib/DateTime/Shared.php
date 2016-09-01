@@ -295,7 +295,7 @@ trait Shared
 	 * If the format is {@link RFC822} or {@link RFC1123} and the time zone is equivalent to GMT,
 	 * the offset `+0000` is replaced by `GMT` according to the specs.
 	 *
-	 * If the format is {@link ISO8601} and the time zone is equivalent to UTC, the offset `+0000`
+	 * If the format is {@link ISO8601} and the time zone is equivalent to UTC, the offset `+00:00`
 	 * is replaced by `Z` according to the specs.
 	 *
 	 * @param string $as
@@ -315,7 +315,7 @@ trait Shared
 				return str_replace('+0000', 'GMT', $value);
 
 			case 'ISO8601':
-				return str_replace('+0000', 'Z', $value);
+				return str_replace('+00:00', 'Z', $value);
 
 			default:
 				return $value;

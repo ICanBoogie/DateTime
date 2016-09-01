@@ -174,9 +174,9 @@ class MutableDateTimeTest extends AbstractDateTimeTest
 	public function test_set_zone()
 	{
 		$d = $this->create('1977-06-06T12:00:00', 'Asia/Tokyo');
-		$this->assertSame('1977-06-06T12:00:00+0900', (string) $d);
+		$this->assertSame('1977-06-06T12:00:00+09:00', (string) $d);
 		$d->timezone = 'Europe/Paris';
-		$this->assertSame('1977-06-06T05:00:00+0200', (string) $d);
+		$this->assertSame('1977-06-06T05:00:00+02:00', (string) $d);
 	}
 
 	/**

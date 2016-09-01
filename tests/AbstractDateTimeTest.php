@@ -678,7 +678,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_format_as_iso8601_utc()
 	{
 		$now = $this->now()->utc;
-		$this->assertEquals(str_replace('+0000', 'Z', $now->format(ImmutableDateTime::ISO8601)), $now->format_as_iso8601());
+		$this->assertEquals(str_replace('+0000', 'Z', $now->format(\DateTime::ISO8601)), $now->format_as_iso8601());
 	}
 
 	public function test_get_as_iso8601()
@@ -690,7 +690,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_as_iso8601_utc()
 	{
 		$now = $this->now()->utc;
-		$this->assertEquals(str_replace('+0000', 'Z', $now->format(ImmutableDateTime::ISO8601)), $now->as_iso8601);
+		$this->assertEquals(str_replace('+0000', 'Z', $now->format(\DateTime::ISO8601)), $now->as_iso8601);
 	}
 
 	public function test_format_as_rfc822()
@@ -901,7 +901,7 @@ abstract class AbstractDateTimeTest extends \PHPUnit_Framework_TestCase
 	public function test_json_serialize()
 	{
 		$date = $this->create("2014-10-23 13:50:10", "Europe/Paris");
-		$this->assertEquals('{"date":"2014-10-23T13:50:10+0200"}', json_encode([ 'date' => $date ]));
+		$this->assertEquals('{"date":"2014-10-23T13:50:10+02:00"}', json_encode([ 'date' => $date ]));
 	}
 
 	/**

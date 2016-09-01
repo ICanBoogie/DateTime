@@ -42,6 +42,8 @@ class MutableDateTime extends \DateTime implements \JsonSerializable, DateTime
 	use DateTime\Shared;
 	use DateTime\Readers;
 
+	const ISO8601 = 'Y-m-d\TH:i:sP';
+
 	/**
 	 * @inheritdoc
 	 */
