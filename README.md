@@ -460,7 +460,7 @@ cloned with the following command line:
 
 ## Documentation
 
-The package is documented as part of the [ICanBoogie](http://icanboogie.org/) framework
+The package is documented as part of the [ICanBoogie](https://icanboogie.org/) framework
 [documentation][]. The documentation for the package and its
 dependencies can be generated with the `make doc` command. The documentation is generated in
 the `build/docs` directory using [ApiGen](http://apigen.org/). The package directory can later by
@@ -495,12 +495,12 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
 [ICanBoogie/CLDR]:              https://github.com/ICanBoogie/CLDR
 [JsonSerializable interface]:   http://php.net/manual/en/class.jsonserializable.php
-[documentation]:                http://api.icanboogie.org/datetime/latest/
+[documentation]:                https://icanboogie.org/api/datetime/master/
 [PHP's DateTime]:               http://php.net/manual/en/class.datetime.php
 [PHP's DateTimeImmutable]:      http://php.net/manual/en/class.datetimeimmutable.php
 [DateTimeInterface]:            http://php.net/manual/en/class.datetimeinterface.php
-[DateTime]:                     http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.DateTime.html
-[ImmutableDateTime]:            http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.ImmutableDateTime.html
-[MutableDateTime]:              http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.MutableDateTime.html
-[TimeZone]:                     http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.TimeZone.html
-[TimeZoneLocation]:             http://api.icanboogie.org/datetime/2.0/class-ICanBoogie.TimeZoneLocation.html
+[DateTime]:                     https://icanboogie.org/api/datetime/2.0/class-ICanBoogie.DateTime.html
+[ImmutableDateTime]:            https://icanboogie.org/api/datetime/2.0/class-ICanBoogie.ImmutableDateTime.html
+[MutableDateTime]:              https://icanboogie.org/api/datetime/2.0/class-ICanBoogie.MutableDateTime.html
+[TimeZone]:                     https://icanboogie.org/api/datetime/2.0/class-ICanBoogie.TimeZone.html
+[TimeZoneLocation]:             https://icanboogie.org/api/datetime/2.0/class-ICanBoogie.TimeZoneLocation.html
