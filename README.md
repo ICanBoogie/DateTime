@@ -2,7 +2,6 @@
 
 [![Release](https://img.shields.io/packagist/v/ICanBoogie/DateTime.svg)](https://packagist.org/packages/icanboogie/datetime)
 [![Build Status](https://img.shields.io/travis/ICanBoogie/DateTime.svg)](http://travis-ci.org/ICanBoogie/DateTime)
-[![HHVM](https://img.shields.io/hhvm/icanboogie/datetime.svg)](http://hhvm.h4cc.de/package/icanboogie/datetime)
 [![Code Coverage](https://img.shields.io/coveralls/ICanBoogie/DateTime.svg)](https://coveralls.io/r/ICanBoogie/DateTime)
 [![Packagist](https://img.shields.io/packagist/dm/icanboogie/datetime.svg?maxAge=2592000)](https://packagist.org/packages/icanboogie/datetime)
 
@@ -349,11 +348,7 @@ echo $date->localize('fr')->as_medium;        // 5 mai 2015 23:13:05
 
 ## Requirement
 
-The package requires PHP 5.4 or later.
-
-Starting with v1.1.0 the package implements the [JsonSerializable interface][]
- and thus requires PHP 5.4+. If you only have access to PHP 5.3, use the branch
- [1.0.x](https://github.com/ICanBoogie/DateTime/tree/1.0) instead.
+The package requires PHP 5.6 or later.
 
 
 

@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\ICanBoogie\Time;
+namespace Tests\ICanBoogie;
 
 use ICanBoogie\TimeZoneLocation;
+use PHPUnit\Framework\TestCase;
 
-class TimeZoneLocationTest extends \PHPUnit_Framework_TestCase
+class TimeZoneLocationTest extends TestCase
 {
 	public function test_from()
 	{
