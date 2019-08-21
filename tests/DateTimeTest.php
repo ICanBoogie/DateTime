@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\ICanBoogie\Time;
+namespace Tests\ICanBoogie;
 
 use ICanBoogie\DateTime;
 use ICanBoogie\DateTimeTest\MyDateTime;
+use PHPUnit\Framework\TestCase;
 
-class DateTimeTest extends \PHPUnit_Framework_TestCase
+class DateTimeTest extends TestCase
 {
 	public function setUp()
 	{
