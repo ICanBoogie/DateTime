@@ -54,9 +54,9 @@ echo $time->is_monday;                  // false
 echo $time->is_saturday;                // true
 echo $time->is_today;                   // true
 echo $time->tomorrow;                   // 2013-02-04T00:00:00+0100
-echo $time->tomorrow->is_future         // true
+echo $time->tomorrow->is_future;        // true
 echo $time->yesterday;                  // 2013-02-02T00:00:00+0100
-echo $time->yesterday->is_past          // true
+echo $time->yesterday->is_past;         // true
 echo $time->monday;                     // 2013-01-28T00:00:00+0100
 echo $time->sunday;                     // 2013-02-03T00:00:00+0100
 
@@ -111,7 +111,7 @@ The implementation of the [DateTime][] class is vastly inspired by Ruby's
 ```php
 <?php
 
-use ICanBoogie\DateTime:
+use ICanBoogie\DateTime;
 
 $time = new DateTime('2014-01-06 11:11:11', 'utc'); // a monday at 11:11:11 UTC
 
@@ -321,7 +321,7 @@ use ICanBoogie\DateTime;
 
 // …
 
-$repository = new Repository($provider);
+/* @var Repository $repository */
 
 DateTime::$localizer = function(DateTime $instance, $locale) use ($repository) {
 
@@ -426,7 +426,7 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 [JsonSerializable interface]: http://php.net/manual/en/class.jsonserializable.php
 [documentation]:              http://api.icanboogie.org/datetime/latest/
 [DateTime]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.DateTime.html
-[TimeZone]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZone.html)
+[TimeZone]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZone.html
 [TimeZoneLocation]:           http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZoneLocation.html
 [PropertyNotDefined]:         http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotDefined.html
 [PropertyNotWritable]:        http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotWritable.html
