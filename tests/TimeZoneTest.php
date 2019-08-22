@@ -12,6 +12,7 @@
 namespace Tests\ICanBoogie;
 
 use ICanBoogie\TimeZone;
+use ICanBoogie\TimeZoneLocation;
 use PHPUnit\Framework\TestCase;
 
 class TimeZoneTest extends TestCase
@@ -19,7 +20,7 @@ class TimeZoneTest extends TestCase
 	public function test_get_location()
 	{
 		$z = new TimeZone('Europe/Paris');
-		$this->assertInstanceOf('ICanBoogie\TimeZoneLocation', $z->location);
+		$this->assertInstanceOf(TimeZoneLocation::class, $z->location);
 	}
 
 	public function test_get_name()
