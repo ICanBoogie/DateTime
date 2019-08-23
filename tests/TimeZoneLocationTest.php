@@ -21,7 +21,7 @@ class TimeZoneLocationTest extends TestCase
 		$zone = new \DateTimeZone('Europe/Paris');
 		$location = TimeZoneLocation::from($zone);
 
-		$this->assertInstanceOf('ICanBoogie\TimeZoneLocation', $location);
+		$this->assertInstanceOf(TimeZoneLocation::class, $location);
 	}
 
 	public function test_from_cache()
@@ -51,6 +51,7 @@ class TimeZoneLocationTest extends TestCase
 
 	/**
 	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedExceptionMessage The property `country_code` for object of class `ICanBoogie\TimeZoneLocation` is not writable.
 	 */
 	public function test_set_country_code()
 	{
@@ -72,6 +73,7 @@ class TimeZoneLocationTest extends TestCase
 
 	/**
 	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedExceptionMessage The property `latitude` for object of class `ICanBoogie\TimeZoneLocation` is not writable.
 	 */
 	public function test_set_latitude()
 	{
@@ -93,6 +95,7 @@ class TimeZoneLocationTest extends TestCase
 
 	/**
 	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedExceptionMessage The property `longitude` for object of class `ICanBoogie\TimeZoneLocation` is not writable.
 	 */
 	public function test_set_longitude()
 	{
@@ -114,6 +117,7 @@ class TimeZoneLocationTest extends TestCase
 
 	/**
 	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedExceptionMessage The property `comments` for object of class `ICanBoogie\TimeZoneLocation` is not writable.
 	 */
 	public function test_set_comments()
 	{
@@ -126,6 +130,7 @@ class TimeZoneLocationTest extends TestCase
 
 	/**
 	 * @expectedException \ICanBoogie\PropertyNotDefined
+	 * @expectedExceptionMessage Undefined property `you_know_that_i_m_no_good` for object of class `ICanBoogie\TimeZoneLocation`.
 	 */
 	public function test_get_unsupported_property()
 	{
@@ -138,6 +143,7 @@ class TimeZoneLocationTest extends TestCase
 
 	/**
 	 * @expectedException \ICanBoogie\PropertyNotWritable
+	 * @expectedExceptionMessage The property `unsupported_property` for object of class `ICanBoogie\TimeZoneLocation` is not writable.
 	 */
 	public function test_set_unsupported_property()
 	{
