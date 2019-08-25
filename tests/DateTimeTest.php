@@ -146,6 +146,21 @@ class DateTimeTest extends TestCase
 		];
 	}
 
+	public function test_change_on_timezone_option()
+	{
+		$expectedTimezone = 'Asia/Taipei';
+		$now = new DateTime();
+		$options = [
+
+			'timezone' => $expectedTimezone,
+
+		];
+		$result = $now->change($options);
+		$resultTimezone = $result->getTimezone();
+
+		$this->assertSame($expectedTimezone, $resultTimezone->getName());
+	}
+
 	/**
 	 * @dataProvider provider_test_change_cascade
 	 */
