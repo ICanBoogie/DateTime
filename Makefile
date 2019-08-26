@@ -5,6 +5,10 @@ PACKAGE_VERSION = v1.2
 PHPUNIT_VERSION = phpunit-5.7.phar
 PHPUNIT_FILENAME = build/$(PHPUNIT_VERSION)
 PHPUNIT = php $(PHPUNIT_FILENAME)
+PHPCS_FILENAME = build/phpcs.phar
+PHPCS = php $(PHPCS_FILENAME)
+PHPCBF_FILENAME = build/phpcbf.phar
+PHPCBF = php $(PHPCBF_FILENAME)
 
 # do not edit the following lines
 
@@ -40,6 +44,20 @@ test-coveralls: test-dependencies
 	composer require --dev php-coveralls/php-coveralls
 	@$(PHPUNIT) --coverage-clover build/logs/clover.xml
 	php vendor/bin/php-coveralls -v
+
+check-coding-style:
+$(PHPCS_FILENAME):
+	wget https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar -O $(PHPCS_FILENAME)
+
+check-coding-style: $(PHPCS_FILENAME)
+	@$(PHPCS) --standard=phpcs.xml
+
+fix-coding-style:
+$(PHPCBF_FILENAME):
+	wget https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar -O $(PHPCBF_FILENAME)
+
+fix-coding-style: $(PHPCBF_FILENAME)
+	@$(PHPCBF) --standard=phpcs.xml
 
 doc: vendor
 	@mkdir -p build/docs

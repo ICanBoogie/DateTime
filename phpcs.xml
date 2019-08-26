@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="pcsg-generated-ruleset">
+    <description>ICanBoogie/DateTime coding style</description>
+
+    <file>./lib</file>
+    <file>./tests</file>
+
+    <rule ref="Generic.Files.LineEndings">
+        <properties>
+            <property name="eolChar" value="\n" />
+        </properties>
+    </rule>
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="150" />
+            <property name="absoluteLineLimit" value="200" />
+        </properties>
+    </rule>
+</ruleset>
