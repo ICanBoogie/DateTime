@@ -705,7 +705,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 			'day' => null,
 			'hour' => null,
 			'minute' => null,
-			'second' => null
+			'second' => null,
+			'timezone' => null,
 
 		];
 
@@ -717,8 +718,14 @@ class DateTime extends \DateTime implements \JsonSerializable
 		$hour = null;
 		$minute = null;
 		$second = null;
+		$timezone = null;
 
 		extract($options);
+
+		if ($timezone !== null)
+		{
+			$this->setTimezone($timezone);
+		}
 
 		if ($cascade)
 		{
