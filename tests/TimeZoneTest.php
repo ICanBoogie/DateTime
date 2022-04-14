@@ -14,6 +14,7 @@ namespace Tests\ICanBoogie;
 use ICanBoogie\TimeZone;
 use ICanBoogie\TimeZoneLocation;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class TimeZoneTest extends TestCase
 {
@@ -70,13 +71,11 @@ class TimeZoneTest extends TestCase
 		$this->assertSame($z1, $z2);
 	}
 
-	/**
-	 * @expectedException \RuntimeException
-	 */
 	public function test_getting_undefined_property_should_throw_exception()
 	{
 		$property = uniqid();
 		$z1 = TimeZone::from('utc');
+		$this->expectExceptionMessageMatches("/Undefined property/");
 		$z1->$property;
 	}
 

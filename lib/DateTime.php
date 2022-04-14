@@ -11,6 +11,8 @@
 
 namespace ICanBoogie;
 
+use DateTimeZone;
+
 /**
  * Representation of a date and time.
  *
@@ -293,7 +295,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * $d->zone->name;                    // "Asia/Tokio"
 	 * </pre>
 	 *
-	 * @param \DateTimeZone|string $timezone The time zone in which the empty date is created.
+	 * @param DateTimeZone|string $timezone The time zone in which the empty date is created.
 	 * Defaults to "UTC".
 	 *
 	 * @return DateTime
@@ -318,13 +320,13 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * </pre>
 	 *
 	 * @param string $time Defaults to "now".
-	 * @param \DateTimeZone|string|null $timezone
+	 * @param DateTimeZone|string|null $timezone
 	 */
 	public function __construct($time = 'now', $timezone = null)
 	{
 		if (is_string($timezone))
 		{
-			$timezone = new \DateTimeZone($timezone);
+			$timezone = new DateTimeZone($timezone);
 		}
 
 		#
@@ -641,10 +643,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns a {@link ISO8601} representation of the instance.
-	 *
-	 * @return string
 	 */
-	public function jsonSerialize()
+	public function jsonSerialize(): string
 	{
 		return (string) $this;
 	}
@@ -657,16 +657,16 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @inheritdoc
 	 */
-	public function setTimezone($timezone)
+	public function setTimezone($timezone): self
 	{
 		if ($timezone === 'local')
 		{
 			$timezone = date_default_timezone_get();
 		}
 
-		if (!$timezone instanceof \DateTimeZone)
+		if (!$timezone instanceof DateTimeZone)
 		{
-			$timezone = new \DateTimeZone($timezone);
+			$timezone = new DateTimeZone($timezone);
 		}
 
 		return parent::setTimezone($timezone);
@@ -787,7 +787,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @inheritdoc
 	 */
-	public function format($format)
+	public function format(string $format): string
 	{
 		if (($format == self::DATE || $format == self::DB) && $this->is_empty)
 		{

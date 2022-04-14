@@ -11,22 +11,32 @@
 
 namespace Tests\ICanBoogie;
 
+use DateTimeInterface;
+use DateTimeZone;
+use Exception;
 use ICanBoogie\DateTime;
-use ICanBoogie\DateTimeTest\MyDateTime;
+use ICanBoogie\PropertyNotWritable;
 use PHPUnit\Framework\TestCase;
+use function array_map;
+use function preg_split;
 
 class DateTimeTest extends TestCase
 {
-	protected function setUp()
+	protected function setUp(): void
 	{
+		parent::setUp();
+
 		date_default_timezone_set('Europe/Paris');
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	public function test_now()
 	{
 		$d = DateTime::now();
 		$now = new \DateTime('@' . $_SERVER['REQUEST_TIME']);
-		$now->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+		$now->setTimezone(new DateTimeZone(date_default_timezone_get()));
 		$this->assertEquals(date_default_timezone_get(), $d->zone->name);
 		$this->assertEquals($d->year, $now->format('Y'));
 		$this->assertEquals($d->month, $now->format('m'));
@@ -55,34 +65,37 @@ class DateTimeTest extends TestCase
 		$this->assertTrue($d->is_empty);
 		$this->assertSame("", (string) $d);
 
-		$d = DateTime::none(new \DateTimeZone('Asia/Tokyo'));
+		$d = DateTime::none(new DateTimeZone('Asia/Tokyo'));
 		$this->assertEquals('Asia/Tokyo', $d->zone->name);
 		$this->assertTrue($d->is_empty);
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	public function test_from()
 	{
-		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')));
+		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new DateTimeZone('Europe/Paris')));
 		$this->assertEquals('Europe/Paris', $d->zone->name);
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 
-		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')), new \DateTimeZone('UTC'));
+		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new DateTimeZone('Europe/Paris')), new DateTimeZone('UTC'));
 		$this->assertEquals('Europe/Paris', $d->zone->name);
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 
-		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('UTC')));
+		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new DateTimeZone('UTC')));
 		$this->assertEquals('UTC', $d->zone->name);
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 
-		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('UTC')), new \DateTimeZone('Europe/Paris'));
+		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new DateTimeZone('UTC')), new DateTimeZone('Europe/Paris'));
 		$this->assertEquals('UTC', $d->zone->name);
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 
-		$d = DateTime::from('2001-01-01 01:01:01', new \DateTimeZone('UTC'));
+		$d = DateTime::from('2001-01-01 01:01:01', new DateTimeZone('UTC'));
 		$this->assertEquals('UTC', (string) $d->zone);
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 
-		$d = DateTime::from('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris'));
+		$d = DateTime::from('2001-01-01 01:01:01', new DateTimeZone('Europe/Paris'));
 		$this->assertEquals('Europe/Paris', $d->zone->name);
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 
@@ -126,27 +139,29 @@ class DateTimeTest extends TestCase
 			'day' => 1,
 			'hour' => 1,
 			'minute' => 1,
-			'second' => 1
+			'second' => 1,
 
 		]);
 
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 	}
 
-	public function provider_test_change_cascade()
+	public function provider_test_change_cascade(): array
 	{
 		return [
-			['2001-01-01 01:02:00', [ 'minute' => 2 ]],
-			['2001-01-01 02:00:00', [ 'hour' => 2 ]],
-			['2001-01-01 01:02:02', [ 'minute' => 2, 'second' => 2 ]],
-			['2001-01-01 02:02:00', [ 'hour' => 2, 'minute' => 2 ]],
-			['2001-01-01 02:02:02', [ 'hour' => 2, 'minute' => 2, 'second' => 2 ]],
-			['2001-01-01 01:00:00', [ 'minute' => 0]],
-			['2001-01-01 00:00:00', [ 'hour' => 0]],
+
+			[ '2001-01-01 01:02:00', [ 'minute' => 2 ] ],
+			[ '2001-01-01 02:00:00', [ 'hour' => 2 ] ],
+			[ '2001-01-01 01:02:02', [ 'minute' => 2, 'second' => 2 ] ],
+			[ '2001-01-01 02:02:00', [ 'hour' => 2, 'minute' => 2 ] ],
+			[ '2001-01-01 02:02:02', [ 'hour' => 2, 'minute' => 2, 'second' => 2 ] ],
+			[ '2001-01-01 01:00:00', [ 'minute' => 0 ] ],
+			[ '2001-01-01 00:00:00', [ 'hour' => 0 ] ],
+
 		];
 	}
 
-	public function test_change_on_timezone_option()
+	public function test_change_on_timezone_option(): void
 	{
 		$expectedTimezone = 'Asia/Taipei';
 		$now = new DateTime();
@@ -164,7 +179,7 @@ class DateTimeTest extends TestCase
 	/**
 	 * @dataProvider provider_test_change_cascade
 	 */
-	public function test_change_cascade($expected_datetime, $change_format)
+	public function test_change_cascade($expected_datetime, $change_format): void
 	{
 		$datetime = '2001-01-01 01:01:01';
 
@@ -172,7 +187,7 @@ class DateTimeTest extends TestCase
 		$this->assertEquals($expected_datetime, $d->change($change_format, true)->as_db);
 	}
 
-	public function test_with()
+	public function test_with(): void
 	{
 		$d = new DateTime('2001-01-01 01:01:01');
 		$e = $d->with([ 'year' => 2015, 'month' => 5, 'day' => 5 ]);
@@ -184,46 +199,50 @@ class DateTimeTest extends TestCase
 		$this->assertEquals('2015-05-05 01:01:01', $e->as_db);
 	}
 
-	public function provider_test_get_year()
+	public function provider_test_get_year(): array
 	{
 		return [
-			['2012-12-16 15:00:00', 2012],
-			['0000-12-16 15:00:00', 0],
-			['9999-12-16 15:00:00', 9999],
+
+			[ '2012-12-16 15:00:00', 2012 ],
+			[ '0000-12-16 15:00:00', 0 ],
+			[ '9999-12-16 15:00:00', 9999 ],
+
 		];
 	}
 
 	/**
 	 * @dataProvider provider_test_get_year
 	 */
-	public function test_get_year($datetime, $expected)
+	public function test_get_year($datetime, $expected): void
 	{
 		$d = new DateTime($datetime);
 		$this->assertEquals($expected, $d->year);
 	}
 
-	public function test_set_year()
+	public function test_set_year(): void
 	{
 		$d = new DateTime('2001-01-01 01:01:01');
 		$d->year = 2009;
 		$this->assertEquals('2009-01-01 01:01:01', $d->as_db);
 	}
 
-	public function provider_test_get_quarter()
+	public function provider_test_get_quarter(): array
 	{
 		return [
-			['2012-01-16 15:00:00', 1],
-			['2012-02-16 15:00:00', 1],
-			['2012-03-16 15:00:00', 1],
-			['2012-04-16 15:00:00', 2],
-			['2012-05-16 15:00:00', 2],
-			['2012-06-16 15:00:00', 2],
-			['2012-07-16 15:00:00', 3],
-			['2012-08-16 15:00:00', 3],
-			['2012-09-16 15:00:00', 3],
-			['2012-10-16 15:00:00', 4],
-			['2012-11-16 15:00:00', 4],
-			['2012-12-16 15:00:00', 4],
+
+			[ '2012-01-16 15:00:00', 1 ],
+			[ '2012-02-16 15:00:00', 1 ],
+			[ '2012-03-16 15:00:00', 1 ],
+			[ '2012-04-16 15:00:00', 2 ],
+			[ '2012-05-16 15:00:00', 2 ],
+			[ '2012-06-16 15:00:00', 2 ],
+			[ '2012-07-16 15:00:00', 3 ],
+			[ '2012-08-16 15:00:00', 3 ],
+			[ '2012-09-16 15:00:00', 3 ],
+			[ '2012-10-16 15:00:00', 4 ],
+			[ '2012-11-16 15:00:00', 4 ],
+			[ '2012-12-16 15:00:00', 4 ],
+
 		];
 	}
 
@@ -236,22 +255,14 @@ class DateTimeTest extends TestCase
 		$this->assertEquals($expected, $d->quarter);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `quarter` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_quarter()
-	{
-		$d = DateTime::now();
-		$d->quarter = true;
-	}
-
-	public function provider_test_get_month()
+	public function provider_test_get_month(): array
 	{
 		return [
-			['2012-01-16 15:00:00', 1],
-			['2012-06-16 15:00:00', 6],
-			['2012-12-16 15:00:00', 12],
+
+			[ '2012-01-16 15:00:00', 1 ],
+			[ '2012-06-16 15:00:00', 6 ],
+			[ '2012-12-16 15:00:00', 12 ],
+
 		];
 	}
 
@@ -264,50 +275,34 @@ class DateTimeTest extends TestCase
 		$this->assertEquals($expected, $d->month);
 	}
 
-	public function test_set_month()
+	public function test_set_month(): void
 	{
 		$d = new DateTime('2001-01-01 01:01:01');
 		$d->month = 9;
 		$this->assertEquals('2001-09-01 01:01:01', $d->as_db);
 	}
 
-	public function provider_test_get_week()
-	{
-		return [
-			['2012-01-01 15:00:00', 52],
-			['2012-01-16 15:00:00', 3],
-		];
-	}
-
 	/**
-	 * @dataProvider provider_test_get_week
+	 * @dataProvider provide_test_get_week
 	 */
-	public function test_get_week($datetime, $expected)
+	public function test_get_week($datetime, $expected): void
 	{
 		$d = new DateTime($datetime);
 		$this->assertEquals($expected, $d->week);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `week` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_week()
-	{
-		$d = DateTime::now();
-		$d->week = true;
-	}
-
-	public function provider_test_get_year_day()
+	public function provide_test_get_week(): array
 	{
 		return [
-			['2012-01-01 15:00:00', 1],
-			['2012-12-31 15:00:00', 366],
+
+			[ '2012-01-01 15:00:00', 52 ],
+			[ '2012-01-16 15:00:00', 3 ],
+
 		];
 	}
 
 	/**
-	 * @dataProvider provider_test_get_year_day
+	 * @dataProvider provide_test_get_year_day
 	 */
 	public function test_get_year_day($datetime, $expected)
 	{
@@ -315,32 +310,20 @@ class DateTimeTest extends TestCase
 		$this->assertEquals($expected, $d->year_day);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `year_day` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_year_day()
-	{
-		$d = DateTime::now();
-		$d->year_day = true;
-	}
-
-	public function provider_test_get_weekday()
+	public function provide_test_get_year_day(): array
 	{
 		return [
-			['2012-12-17 15:00:00', 1],
-			['2012-12-18 15:00:00', 2],
-			['2012-12-19 15:00:00', 3],
-			['2012-12-20 15:00:00', 4],
-			['2012-12-21 15:00:00', 5],
-			['2012-12-22 15:00:00', 6],
-			['2012-12-23 15:00:00', 7],
+
+			[ '2012-01-01 15:00:00', 1 ],
+			[ '2012-12-31 15:00:00', 366 ],
+
 		];
 	}
 
 	/**
 	 * Sunday must be 7, Monday must be 1.
-	 * @dataProvider provider_test_get_weekday
+	 *
+	 * @dataProvider provide_test_get_weekday
 	 */
 	public function test_get_weekday($datetime, $expected)
 	{
@@ -348,32 +331,39 @@ class DateTimeTest extends TestCase
 		$this->assertEquals($expected, $d->weekday);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `weekday` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_weekday()
-	{
-		$d = DateTime::now();
-		$d->weekday = true;
-	}
-
-	public function provider_test_get_day()
+	public function provide_test_get_weekday(): array
 	{
 		return [
-			['2012-12-16 15:00:00', 16],
-			['2012-12-17 15:00:00', 17],
-			['2013-01-01 03:00:00', 1],
+
+			[ '2012-12-17 15:00:00', 1 ],
+			[ '2012-12-18 15:00:00', 2 ],
+			[ '2012-12-19 15:00:00', 3 ],
+			[ '2012-12-20 15:00:00', 4 ],
+			[ '2012-12-21 15:00:00', 5 ],
+			[ '2012-12-22 15:00:00', 6 ],
+			[ '2012-12-23 15:00:00', 7 ],
+
 		];
 	}
 
 	/**
-	 * @dataProvider provider_test_get_day
+	 * @dataProvider provide_test_get_day
 	 */
 	public function test_get_day($datetime, $expected)
 	{
 		$d = new DateTime($datetime);
 		$this->assertEquals($expected, $d->day);
+	}
+
+	public function provide_test_get_day(): array
+	{
+		return [
+
+			[ '2012-12-16 15:00:00', 16 ],
+			[ '2012-12-17 15:00:00', 17 ],
+			[ '2013-01-01 03:00:00', 1 ],
+
+		];
 	}
 
 	public function test_set_day()
@@ -434,16 +424,6 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_sunday);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_monday` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_monday()
-	{
-		$d = new DateTime('2013-02-04 21:00:00', 'utc');
-		$d->is_monday = true;
-	}
-
 	public function test_get_is_tuesday()
 	{
 		$d = new DateTime('2013-02-05 21:00:00', 'utc');
@@ -454,16 +434,6 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_friday);
 		$this->assertFalse($d->is_saturday);
 		$this->assertFalse($d->is_sunday);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_tuesday` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_tuesday()
-	{
-		$d = new DateTime('2013-02-05 21:00:00', 'utc');
-		$d->is_tuesday = true;
 	}
 
 	public function test_get_is_wednesday()
@@ -478,16 +448,6 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_sunday);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_wednesday` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_wednesday()
-	{
-		$d = new DateTime('2013-02-06 21:00:00', 'utc');
-		$d->is_wednesday = true;
-	}
-
 	public function test_get_is_thursday()
 	{
 		$d = new DateTime('2013-02-07 21:00:00', 'utc');
@@ -498,16 +458,6 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_friday);
 		$this->assertFalse($d->is_saturday);
 		$this->assertFalse($d->is_sunday);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_thursday` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_thursday()
-	{
-		$d = new DateTime('2013-02-07 21:00:00', 'utc');
-		$d->is_thursday = true;
 	}
 
 	public function test_get_is_friday()
@@ -522,16 +472,6 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_sunday);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_friday` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_friday()
-	{
-		$d = new DateTime('2013-02-08 21:00:00', 'utc');
-		$d->is_friday = true;
-	}
-
 	public function test_get_is_saturday()
 	{
 		$d = new DateTime('2013-02-09 21:00:00', 'utc');
@@ -542,16 +482,6 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_friday);
 		$this->assertTrue($d->is_saturday);
 		$this->assertFalse($d->is_sunday);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_saturday` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_saturday()
-	{
-		$d = new DateTime('2013-02-09 21:00:00', 'utc');
-		$d->is_saturday = true;
 	}
 
 	public function test_get_is_sunday()
@@ -566,16 +496,6 @@ class DateTimeTest extends TestCase
 		$this->assertTrue($d->is_sunday);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_sunday` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_sunday()
-	{
-		$d = new DateTime('2013-02-10 21:00:00', 'utc');
-		$d->is_sunday = true;
-	}
-
 	public function test_get_is_today()
 	{
 		$d = DateTime::now();
@@ -583,16 +503,6 @@ class DateTimeTest extends TestCase
 		$this->assertTrue($d->is_today);
 		$this->assertFalse($d->tomorrow->is_today);
 		$this->assertFalse($d->yesterday->is_today);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_today` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_today()
-	{
-		$d = DateTime::now();
-		$d->is_today = true;
 	}
 
 	public function test_get_is_past()
@@ -605,16 +515,6 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_past);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_past` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_past()
-	{
-		$d = DateTime::now();
-		$d->is_past = true;
-	}
-
 	public function test_get_is_future()
 	{
 		$d = DateTime::now();
@@ -623,16 +523,6 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_future);
 		$d->timestamp += 7200;
 		$this->assertTrue($d->is_future);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_future` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_future()
-	{
-		$d = DateTime::now();
-		$d->is_future = true;
 	}
 
 	public function test_get_is_empty()
@@ -649,62 +539,16 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_empty);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_empty` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_empty()
-	{
-		DateTime::now()->is_empty = true;
-	}
-
 	public function test_get_tomorrow()
 	{
 		$d = new DateTime('2013-02-10 21:21:21', 'utc');
 		$this->assertEquals('2013-02-11 00:00:00', $d->tomorrow->as_db);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `tomorrow` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_tomorrow()
-	{
-		$d = DateTime::now();
-		$d->tomorrow = true;
-	}
-
 	public function test_get_yesterday()
 	{
 		$d = new DateTime('2013-02-10 21:21:21', 'utc');
 		$this->assertEquals('2013-02-09 00:00:00', $d->yesterday->as_db);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `yesterday` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_yesterday()
-	{
-		$d = DateTime::now();
-		$d->yesterday = true;
-	}
-
-	/**
-	 * @dataProvider provide_writeonly_property
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessageReg The property `\w+` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_writeonly_property($property)
-	{
-		DateTime::now()->$property = null;
-	}
-
-	public function provide_writeonly_property()
-	{
-		$properties = 'monday|tuesday|wednesday|thursday|friday|saturday|sunday';
-
-		return array_map(function($v) { return (array) $v; }, explode('|', $properties));
 	}
 
 	/**
@@ -716,7 +560,7 @@ class DateTimeTest extends TestCase
 		$this->assertEquals($expected, $d->$day->as_db);
 	}
 
-	public function provide_test_day_instance()
+	public function provide_test_day_instance(): array
 	{
 		return [
 
@@ -858,16 +702,6 @@ class DateTimeTest extends TestCase
 		$this->assertEquals('2013-03-06 17:00:00', $utc->as_db);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `utc` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_utc()
-	{
-		$d = DateTime::now();
-		$d->utc = null;
-	}
-
 	public function test_get_is_utc()
 	{
 		$d = DateTime::now();
@@ -875,16 +709,6 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_utc);
 		$d->zone = 'UTC';
 		$this->assertTrue($d->is_utc);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_utc` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_utc()
-	{
-		$d = DateTime::now();
-		$d->is_utc = true;
 	}
 
 	public function test_get_local()
@@ -896,16 +720,6 @@ class DateTimeTest extends TestCase
 		$this->assertEquals('2013-03-06 18:00:00', $local->as_db);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `local` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_local()
-	{
-		$d = DateTime::now();
-		$d->local = true;
-	}
-
 	public function test_get_is_local()
 	{
 		$d = DateTime::now();
@@ -913,16 +727,6 @@ class DateTimeTest extends TestCase
 		$this->assertFalse($d->is_local);
 		$d->zone = date_default_timezone_get();
 		$this->assertTrue($d->is_local);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_local` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_local()
-	{
-		$d = DateTime::now();
-		$d->is_local = true;
 	}
 
 	public function test_get_is_dst()
@@ -933,22 +737,12 @@ class DateTimeTest extends TestCase
 		$this->assertTrue($d->is_dst);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `is_dst` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_is_dst()
-	{
-		$d = DateTime::now();
-		$d->is_dst = true;
-	}
-
 	public function test_format()
 	{
 		$empty = DateTime::none();
 		$this->assertEquals('0000-00-00', $empty->format(DateTime::DATE));
 		$this->assertEquals('0000-00-00 00:00:00', $empty->format(DateTime::DB));
-		$this->assertStringEndsWith('30 Nov -0001 00:00:00 +0000', $empty->format(DateTime::RSS));
+		$this->assertStringEndsWith('30 Nov -0001 00:00:00 +0000', $empty->format(DateTimeInterface::RSS));
 	}
 
 	/*
@@ -958,282 +752,172 @@ class DateTimeTest extends TestCase
 	public function test_format_as_atom()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::ATOM), $now->format_as_atom());
+		$this->assertEquals($now->format(DateTimeInterface::ATOM), $now->format_as_atom());
 	}
 
 	public function test_get_as_atom()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::ATOM), $now->as_atom);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_atom` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_atom()
-	{
-		$d = DateTime::now();
-		$d->as_atom = true;
+		$this->assertEquals($now->format(DateTimeInterface::ATOM), $now->as_atom);
 	}
 
 	public function test_format_as_cookie()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::COOKIE), $now->format_as_cookie());
+		$this->assertEquals($now->format(DateTimeInterface::COOKIE), $now->format_as_cookie());
 	}
 
 	public function test_get_as_cookie()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::COOKIE), $now->as_cookie);
+		$this->assertEquals($now->format(DateTimeInterface::COOKIE), $now->as_cookie);
 
 		$date = new DateTime('2013-11-04 20:21:22 UTC');
 		$this->assertEquals("Monday, 04-Nov-2013 20:21:22 UTC", $date->as_cookie);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_cookie` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_cookie()
-	{
-		$d = DateTime::now();
-		$d->as_cookie = true;
-	}
-
 	public function test_format_as_iso8601()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::ISO8601), $now->format_as_iso8601());
+		$this->assertEquals($now->format(DateTimeInterface::ISO8601), $now->format_as_iso8601());
 	}
 
 	public function test_format_as_iso8601_utc()
 	{
 		$now = DateTime::now()->utc;
-		$this->assertEquals(str_replace('+0000', 'Z', $now->format(DateTime::ISO8601)), $now->format_as_iso8601());
+		$this->assertEquals(str_replace('+0000', 'Z', $now->format(DateTimeInterface::ISO8601)), $now->format_as_iso8601());
 	}
 
 	public function test_get_as_iso8601()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::ISO8601), $now->as_iso8601);
+		$this->assertEquals($now->format(DateTimeInterface::ISO8601), $now->as_iso8601);
 	}
 
 	public function test_as_iso8601_utc()
 	{
 		$now = DateTime::now()->utc;
-		$this->assertEquals(str_replace('+0000', 'Z', $now->format(DateTime::ISO8601)), $now->as_iso8601);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_iso8601` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_iso8601()
-	{
-		$d = DateTime::now();
-		$d->as_iso8601 = true;
+		$this->assertEquals(str_replace('+0000', 'Z', $now->format(DateTimeInterface::ISO8601)), $now->as_iso8601);
 	}
 
 	public function test_format_as_rfc822()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC822), $now->format_as_rfc822());
+		$this->assertEquals($now->format(DateTimeInterface::RFC822), $now->format_as_rfc822());
 	}
 
 	public function test_format_as_rfc822_utc()
 	{
 		$now = DateTime::now()->utc;
-		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTime::RFC822)), $now->format_as_rfc822());
+		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTimeInterface::RFC822)), $now->format_as_rfc822());
 	}
 
 	public function test_get_as_rfc822()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC822), $now->as_rfc822);
+		$this->assertEquals($now->format(DateTimeInterface::RFC822), $now->as_rfc822);
 	}
 
 	public function test_get_as_rfc822_utc()
 	{
 		$now = DateTime::now()->utc;
-		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTime::RFC822)), $now->as_rfc822);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_rfc822` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_rfc822()
-	{
-		$d = DateTime::now();
-		$d->as_rfc822 = true;
+		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTimeInterface::RFC822)), $now->as_rfc822);
 	}
 
 	public function test_format_as_rfc850()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC850), $now->format_as_rfc850());
+		$this->assertEquals($now->format(DateTimeInterface::RFC850), $now->format_as_rfc850());
 	}
 
 	public function test_get_as_rfc850()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC850), $now->as_rfc850);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_rfc850` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_rfc850()
-	{
-		$d = DateTime::now();
-		$d->as_rfc850 = true;
+		$this->assertEquals($now->format(DateTimeInterface::RFC850), $now->as_rfc850);
 	}
 
 	public function test_format_as_rfc1036()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC1036), $now->format_as_rfc1036());
+		$this->assertEquals($now->format(DateTimeInterface::RFC1036), $now->format_as_rfc1036());
 	}
 
 	public function test_get_as_rfc1036()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC1036), $now->as_rfc1036);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_rfc1036` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_rfc1036()
-	{
-		$d = DateTime::now();
-		$d->as_rfc1036 = true;
+		$this->assertEquals($now->format(DateTimeInterface::RFC1036), $now->as_rfc1036);
 	}
 
 	public function test_format_as_rfc1123()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC1123), $now->format_as_rfc1123());
+		$this->assertEquals($now->format(DateTimeInterface::RFC1123), $now->format_as_rfc1123());
 	}
 
 	public function test_format_as_rfc1123_utc()
 	{
 		$now = DateTime::now()->utc;
-		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTime::RFC1123)), $now->format_as_rfc1123());
+		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTimeInterface::RFC1123)), $now->format_as_rfc1123());
 	}
 
 	public function test_get_as_rfc1123()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC1123), $now->as_rfc1123);
+		$this->assertEquals($now->format(DateTimeInterface::RFC1123), $now->as_rfc1123);
 	}
 
 	public function test_get_as_rfc1123_utc()
 	{
 		$now = DateTime::now()->utc;
-		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTime::RFC1123)), $now->as_rfc1123);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_rfc1123` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_rfc1123()
-	{
-		$d = DateTime::now();
-		$d->as_rfc1123 = true;
+		$this->assertEquals(str_replace('+0000', 'GMT', $now->format(DateTimeInterface::RFC1123)), $now->as_rfc1123);
 	}
 
 	public function test_format_as_rfc2822()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC2822), $now->format_as_rfc2822());
+		$this->assertEquals($now->format(DateTimeInterface::RFC2822), $now->format_as_rfc2822());
 	}
 
 	public function test_get_as_rfc2822()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC2822), $now->as_rfc2822);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_rfc2822` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_rfc2822()
-	{
-		$d = DateTime::now();
-		$d->as_rfc2822 = true;
+		$this->assertEquals($now->format(DateTimeInterface::RFC2822), $now->as_rfc2822);
 	}
 
 	public function test_format_as_rfc3339()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC3339), $now->format_as_rfc3339());
+		$this->assertEquals($now->format(DateTimeInterface::RFC3339), $now->format_as_rfc3339());
 	}
 
 	public function test_get_as_rfc3339()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RFC3339), $now->as_rfc3339);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_rfc3339` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_rfc3339()
-	{
-		$d = DateTime::now();
-		$d->as_rfc3339 = true;
+		$this->assertEquals($now->format(DateTimeInterface::RFC3339), $now->as_rfc3339);
 	}
 
 	public function test_format_as_rss()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RSS), $now->format_as_rss());
+		$this->assertEquals($now->format(DateTimeInterface::RSS), $now->format_as_rss());
 	}
 
 	public function test_get_as_rss()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::RSS), $now->as_rss);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_rss` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_rss()
-	{
-		$d = DateTime::now();
-		$d->as_rss = true;
+		$this->assertEquals($now->format(DateTimeInterface::RSS), $now->as_rss);
 	}
 
 	public function test_format_as_w3c()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::W3C), $now->format_as_w3c());
+		$this->assertEquals($now->format(DateTimeInterface::W3C), $now->format_as_w3c());
 	}
 
 	public function test_get_as_w3c()
 	{
 		$now = DateTime::now();
-		$this->assertEquals($now->format(DateTime::W3C), $now->as_w3c);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_w3c` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_w3c()
-	{
-		$d = DateTime::now();
-		$d->as_w3c = true;
+		$this->assertEquals($now->format(DateTimeInterface::W3C), $now->as_w3c);
 	}
 
 	public function test_format_as_db()
@@ -1252,16 +936,6 @@ class DateTimeTest extends TestCase
 		$this->assertEquals('0000-00-00 00:00:00', $empty->as_db);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_db` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_db()
-	{
-		$d = DateTime::now();
-		$d->as_db = true;
-	}
-
 	public function test_format_as_number()
 	{
 		$now = DateTime::now();
@@ -1272,16 +946,6 @@ class DateTimeTest extends TestCase
 	{
 		$now = DateTime::now();
 		$this->assertEquals($now->format(DateTime::NUMBER), $now->as_number);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_number` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_number()
-	{
-		$d = DateTime::now();
-		$d->as_number = true;
 	}
 
 	public function test_format_as_date()
@@ -1300,16 +964,6 @@ class DateTimeTest extends TestCase
 		$this->assertEquals('0000-00-00', $empty->as_date);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_date` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_date()
-	{
-		$d = DateTime::now();
-		$d->as_date = true;
-	}
-
 	public function test_format_as_time()
 	{
 		$now = DateTime::now();
@@ -1320,16 +974,6 @@ class DateTimeTest extends TestCase
 	{
 		$now = DateTime::now();
 		$this->assertEquals($now->format(DateTime::TIME), $now->as_time);
-	}
-
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `as_time` for object of class `ICanBoogie\DateTime` is not writable.
-	 */
-	public function test_set_as_time()
-	{
-		$d = DateTime::now();
-		$d->as_time = true;
 	}
 
 	public function test_compare()
@@ -1365,7 +1009,7 @@ class DateTimeTest extends TestCase
 		$invoked = false;
 		$reference = DateTime::now();
 
-		DateTime::$localizer = function(DateTime $datetime, $locale) use (&$invoked, &$reference) {
+		DateTime::$localizer = function (DateTime $datetime, $locale) use (&$invoked, &$reference) {
 
 			$this->assertSame($datetime, $reference);
 			$this->assertEquals('fr', $locale);
@@ -1376,20 +1020,85 @@ class DateTimeTest extends TestCase
 	}
 
 	/**
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionMessageReg Undefined property `\w+` for object of class `ICanBoogie\DateTime`.
+	 * @dataProvider provide_read_only_property
 	 */
-	public function test_getting_undefined_property_should_throw_exception()
+	public function test_read_only_property(string $property): void
+	{
+		$d = DateTime::now();
+		$this->expectException(PropertyNotWritable::class);
+		$this->expectExceptionMessageMatches("/The property `$property` .+ is not writable./");
+		$d->{$property} = null;
+	}
+
+	public function provide_read_only_property(): array
+	{
+		$read_only_properties = <<<EOT
+		as_time 
+		as_date
+		as_number
+		as_db
+		as_w3c
+		as_rfc822 
+		as_rfc3339
+		as_rss 
+		as_rfc2822 
+		as_iso8601
+		as_rfc850
+		as_rfc1036
+		as_rfc1123
+		as_cookie
+		as_atom
+		utc
+		local
+		monday
+		tuesday
+		wednesday
+		thursday
+		friday
+		saturday
+		sunday
+		yesterday
+		tomorrow
+		is_dst
+		is_utc
+		is_local
+		is_monday
+		is_tuesday
+		is_wednesday
+		is_thursday
+		is_friday
+		is_saturday
+		is_sunday
+		is_today
+		is_past
+		is_future
+		is_empty
+		year_day
+		week
+		weekday
+		quarter
+		EOT;
+
+		return array_map(
+			fn($property): array => [ trim($property) ],
+			preg_split('/\s+/', $read_only_properties)
+		);
+	}
+
+	public function test_getting_undefined_property_should_throw_exception(): void
 	{
 		$date = DateTime::now();
 		$property = uniqid();
+		$this->expectExceptionMessageMatches("/Undefined property/");
 		$date->$property;
 	}
 }
 
-namespace ICanBoogie\DateTimeTest;
+namespace Tests\ICanBoogie;
 
-class MyDateTime extends \ICanBoogie\DateTime
+use ICanBoogie\DateTime;
+
+class MyDateTime extends DateTime
 {
 
 }

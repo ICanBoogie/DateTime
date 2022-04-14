@@ -17,12 +17,14 @@
 		"issues": "https://github.com/ICanBoogie/DateTime/issues",
 		"source": "https://github.com/ICanBoogie/DateTime"
 	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
 	"require": {
-		"php": ">=5.6.0"
+		"php": ">=8.1"
 	},
 	"require-dev": {
-		"icanboogie/common": "^1.2",
-		"phpunit/phpunit": "^5.6"
+		"icanboogie/common": "^6.0",
+		"phpunit/phpunit": "^9.5"
 	},
 	"suggest": {
 		"icanboogie/common": "Allows finer exceptions to be thrown"
@@ -30,6 +32,11 @@
 	"autoload": {
 		"psr-4": {
 			"ICanBoogie\\": "lib/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\ICanBoogie\\": "tests/"
 		}
 	}
 }

@@ -33,11 +33,13 @@ class TimeZoneLocationTest extends TestCase
 		$this->assertEquals(spl_object_hash($location), spl_object_hash($cached));
 	}
 
-	public function test_location()
+	public function test_location(): void
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
 		$location = $zone->getLocation();
-		new TimeZoneLocation($location);
+		$tzl = new TimeZoneLocation($location);
+
+		$this->assertEquals('FR', $tzl->country_code);
 	}
 
 	public function test_get_coutry_code()
@@ -49,16 +51,14 @@ class TimeZoneLocationTest extends TestCase
 		$this->assertEquals($location['country_code'], $instance->country_code);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `country_code` for object of class `ICanBoogie\TimeZoneLocation` is not writable.
-	 */
 	public function test_set_country_code()
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
 		$location = $zone->getLocation();
 		$instance = new TimeZoneLocation($location);
 
+		$this->expectExceptionMessage("The property `country_code` for object of class `ICanBoogie\TimeZoneLocation` is not writable.");
+		$this->expectException(\ICanBoogie\PropertyNotWritable::class);
 		$instance->country_code = true;
 	}
 
@@ -71,16 +71,14 @@ class TimeZoneLocationTest extends TestCase
 		$this->assertEquals($location['latitude'], $instance->latitude);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `latitude` for object of class `ICanBoogie\TimeZoneLocation` is not writable.
-	 */
 	public function test_set_latitude()
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
 		$location = $zone->getLocation();
 		$instance = new TimeZoneLocation($location);
 
+		$this->expectExceptionMessage("The property `latitude` for object of class `ICanBoogie\TimeZoneLocation` is not writable.");
+		$this->expectException(\ICanBoogie\PropertyNotWritable::class);
 		$instance->latitude = true;
 	}
 
@@ -93,16 +91,14 @@ class TimeZoneLocationTest extends TestCase
 		$this->assertEquals($location['longitude'], $instance->longitude);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `longitude` for object of class `ICanBoogie\TimeZoneLocation` is not writable.
-	 */
 	public function test_set_longitude()
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
 		$location = $zone->getLocation();
 		$instance = new TimeZoneLocation($location);
 
+		$this->expectExceptionMessage("The property `longitude` for object of class `ICanBoogie\TimeZoneLocation` is not writable.");
+		$this->expectException(\ICanBoogie\PropertyNotWritable::class);
 		$instance->longitude = true;
 	}
 
@@ -115,42 +111,36 @@ class TimeZoneLocationTest extends TestCase
 		$this->assertEquals($location['comments'], $instance->comments);
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `comments` for object of class `ICanBoogie\TimeZoneLocation` is not writable.
-	 */
 	public function test_set_comments()
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
 		$location = $zone->getLocation();
 		$instance = new TimeZoneLocation($location);
 
+		$this->expectExceptionMessage("The property `comments` for object of class `ICanBoogie\TimeZoneLocation` is not writable.");
+		$this->expectException(\ICanBoogie\PropertyNotWritable::class);
 		$instance->comments = true;
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotDefined
-	 * @expectedExceptionMessage Undefined property `you_know_that_i_m_no_good` for object of class `ICanBoogie\TimeZoneLocation`.
-	 */
 	public function test_get_unsupported_property()
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
 		$location = $zone->getLocation();
 		$instance = new TimeZoneLocation($location);
 
+		$this->expectExceptionMessage("Undefined property `you_know_that_i_m_no_good` for object of class `ICanBoogie\TimeZoneLocation`.");
+		$this->expectException(\ICanBoogie\PropertyNotDefined::class);
 		$instance->you_know_that_i_m_no_good;
 	}
 
-	/**
-	 * @expectedException \ICanBoogie\PropertyNotWritable
-	 * @expectedExceptionMessage The property `unsupported_property` for object of class `ICanBoogie\TimeZoneLocation` is not writable.
-	 */
 	public function test_set_unsupported_property()
 	{
 		$zone = new \DateTimeZone('Europe/Paris');
 		$location = $zone->getLocation();
 		$instance = new TimeZoneLocation($location);
 
+		$this->expectExceptionMessage("The property `unsupported_property` for object of class `ICanBoogie\TimeZoneLocation` is not writable.");
+		$this->expectException(\ICanBoogie\PropertyNotWritable::class);
 		$instance->unsupported_property = true;
 	}
 
