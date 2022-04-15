@@ -381,6 +381,12 @@ The project is continuously tested by [GitHub actions](https://github.com/ICanBo
 
 
 
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+
+
 ## License
 
 **ICanBoogie/DateTime** is released under the [BSD-3-Clause](LICENSE).
