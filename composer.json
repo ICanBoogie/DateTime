@@ -3,13 +3,13 @@
 	"type": "library",
 	"description": "Extends the features of PHP DateTime and DateTimeZone",
 	"keywords": ["time", "date", "timezone"],
-	"homepage": "http://icanboogie.org/",
+	"homepage": "https://icanboogie.org/",
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
 			"name": "Olivier Laviale",
 			"email": "olivier.laviale@gmail.com",
-			"homepage": "http://www.weirdog.com/",
+			"homepage": "https://olvlvl.com",
 			"role" : "Developer"
 		}
 	],
@@ -21,7 +21,8 @@
 		"php": ">=5.6.0"
 	},
 	"require-dev": {
-		"icanboogie/common": "~1.2"
+		"icanboogie/common": "^1.2",
+		"phpunit/phpunit": "^5.6"
 	},
 	"suggest": {
 		"icanboogie/common": "Allows finer exceptions to be thrown"

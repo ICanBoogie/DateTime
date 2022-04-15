@@ -1,7 +1,6 @@
 # DateTime
 
 [![Release](https://img.shields.io/packagist/v/ICanBoogie/DateTime.svg)](https://packagist.org/packages/icanboogie/datetime)
-[![Build Status](https://img.shields.io/travis/ICanBoogie/DateTime.svg)](http://travis-ci.org/ICanBoogie/DateTime)
 [![Code Coverage](https://img.shields.io/coveralls/ICanBoogie/DateTime.svg)](https://coveralls.io/r/ICanBoogie/DateTime)
 [![Packagist](https://img.shields.io/packagist/dm/icanboogie/datetime.svg?maxAge=2592000)](https://packagist.org/packages/icanboogie/datetime)
 
@@ -344,16 +343,6 @@ echo $date->localize('fr')->as_medium;        // 5 mai 2015 23:13:05
 
 
 
-
-
-## Requirement
-
-The package requires PHP 5.6 or later.
-
-
-
-
-
 ## Installation
 
 The recommended way to install this package is through [Composer](https://getcomposer.org/):
@@ -365,19 +354,6 @@ $ composer require icanboogie/datetime
 The package [icanboogie/common](https://github.com/ICanBoogie/Common) is suggested to
 provide finer exceptions, such as [PropertyNotDefined][] and [PropertyNotWritable][].
 If the package is not included, `RunTimeException` instances are thrown instead.
-
-
-
-
-
-### Cloning the repository
-
-The package is [available on GitHub](https://github.com/ICanBoogie/DateTime), its repository can be
-cloned with the following command line:
-
-	$ git clone https://github.com/ICanBoogie/DateTime.git
-
-
 
 
 
@@ -397,28 +373,17 @@ The following classes are documented:
 
 
 
+## Continuous Integration
 
+The project is continuously tested by [GitHub actions](https://github.com/ICanBoogie/DateTime/actions).
 
-## Testing
-
-The test suite is ran with the `make test` command. [Composer](http://getcomposer.org/) is
-automatically installed as well as all the dependencies required to run the suite. The package
-directory can later be cleaned with the `make clean` command.
-
-The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
-
-[![Build Status](https://travis-ci.org/ICanBoogie/DateTime.svg)](https://travis-ci.org/ICanBoogie/DateTime)
-[![Code Coverage](https://img.shields.io/coveralls/ICanBoogie/DateTime.svg)](https://coveralls.io/r/ICanBoogie/DateTime)
-
-
+[![Tests](https://github.com/ICanBoogie/DateTime/workflows/test/badge.svg?branch=master)](https://github.com/ICanBoogie/DateTime/actions?query=workflow%3Atest)
 
 
 
 ## License
 
-**icanboogie/datetime** is licensed under the New BSD License - See the [LICENSE](LICENSE) file for details.
-
-
+**ICanBoogie/DateTime** is released under the [BSD-3-Clause](LICENSE).
 
 
 

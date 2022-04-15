@@ -237,7 +237,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 		if ($source instanceof \DateTime)
 		{
-			return new static($source->format(self::DB), $source->getTimezone());
+			return new static($source->format('Y-m-d\TH:i:s.u'), $source->getTimezone());
 		}
 
 		return new static($source, $timezone);
