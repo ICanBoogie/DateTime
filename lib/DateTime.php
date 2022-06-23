@@ -11,6 +11,9 @@
 
 namespace ICanBoogie;
 
+use DateTimeZone;
+use RuntimeException;
+
 /**
  * Representation of a date and time.
  *
@@ -169,38 +172,28 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * We redefine the constant to make sure that the cookie uses a valid pattern.
 	 *
 	 * @see http://grokbase.com/t/php/php-bugs/111xynxd6m/php-bug-bug-53879-new-datetime-createfromformat-fails-to-parse-cookie-expiration-date
-	 *
-	 * @var string
 	 */
-	const COOKIE = 'l, d-M-Y H:i:s T';
+	public const COOKIE = 'l, d-M-Y H:i:s T';
 
 	/**
 	 * DB (example: 2013-02-03 20:59:03)
-	 *
-	 * @var string
 	 */
-	const DB = 'Y-m-d H:i:s';
+	public const DB = 'Y-m-d H:i:s';
 
 	/**
 	 * Number (example: 20130203205903)
-	 *
-	 * @var string
 	 */
-	const NUMBER = 'YmdHis';
+	public const NUMBER = 'YmdHis';
 
 	/**
 	 * Date (example: 2013-02-03)
-	 *
-	 * @var string
 	 */
-	const DATE = 'Y-m-d';
+	public const DATE = 'Y-m-d';
 
 	/**
 	 * Time (example: 20:59:03)
-	 *
-	 * @var string
 	 */
-	const TIME = 'H:i:s';
+	public const TIME = 'H:i:s';
 
 	/**
 	 * Callable used to create localized instances.
@@ -225,10 +218,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * @param mixed $source
 	 * @param mixed $timezone The time zone to use to create the time. The value is ignored if the
 	 * source is an instance of {@link \DateTime}.
-	 *
-	 * @return DateTime
 	 */
-	static public function from($source, $timezone = null)
+	static public function from($source, $timezone = null): self
 	{
 		if ($source instanceof static)
 		{
@@ -249,10 +240,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * **Note:** Subsequent calls return equal times, event if they are minutes apart. _now_
 	 * actually refers to the `REQUEST_TIME` or, if it is now available, to the first time
 	 * the method was invoked.
-	 *
-	 * @return static
 	 */
-	static public function now()
+	static public function now(): self
 	{
 		static $now;
 
@@ -268,10 +257,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * Returns an instance with the current local time and the local time zone.
 	 *
 	 * **Note:** Subsequent calls may return different times.
-	 *
-	 * @return static
 	 */
-	static public function right_now()
+	static public function right_now(): self
 	{
 		return new static;
 	}
@@ -293,12 +280,12 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * $d->zone->name;                    // "Asia/Tokio"
 	 * </pre>
 	 *
-	 * @param \DateTimeZone|string $timezone The time zone in which the empty date is created.
+	 * @param DateTimeZone|string $timezone The time zone in which the empty date is created.
 	 * Defaults to "UTC".
 	 *
 	 * @return DateTime
 	 */
-	static public function none($timezone = 'utc')
+	static public function none($timezone = 'utc'): self
 	{
 		return new static('0000-00-00', $timezone);
 	}
@@ -317,22 +304,16 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * new DateTime;
 	 * </pre>
 	 *
-	 * @param string $time Defaults to "now".
-	 * @param \DateTimeZone|string|null $timezone
+	 * @param DateTimeZone|string|null $timezone
 	 */
-	public function __construct($time = 'now', $timezone = null)
+	public function __construct(string $time = 'now', $timezone = null)
 	{
 		if (is_string($timezone))
 		{
-			$timezone = new \DateTimeZone($timezone);
+			$timezone = new DateTimeZone($timezone);
 		}
 
-		#
-		# PHP 5.3.3 considers null $timezone as an error and will complain that it is not
-		# a \DateTimeZone instance.
-		#
-
-		$timezone === null ? parent::__construct($time) : parent::__construct($time, $timezone);
+		parent::__construct($time, $timezone);
 	}
 
 	/**
@@ -404,8 +385,16 @@ class DateTime extends \DateTime implements \JsonSerializable
 				$time->setTime(0, 0, 0);
 				return $time;
 
-			/*
+			/**
 			 * days
+			 *
+			 * @uses get_monday
+			 * @uses get_tuesday
+			 * @uses get_wednesday
+			 * @uses get_thursday
+			 * @uses get_friday
+			 * @uses get_saturday
+			 * @uses get_sunday
 			 */
 			case 'monday':
 			case 'tuesday':
@@ -434,22 +423,20 @@ class DateTime extends \DateTime implements \JsonSerializable
 				return $transitions[0]['isdst'];
 		}
 
-		if (class_exists('ICanBoogie\PropertyNotDefined'))
+		if (class_exists(PropertyNotDefined::class))
 		{
 			throw new PropertyNotDefined([ $property, $this ]);
 		}
 		else
 		{
-			throw new \RuntimeException("Property is not defined: $property.");
+			throw new RuntimeException("Property is not defined: $property.");
 		}
 	}
 
 	/**
 	 * Returns Monday of the week.
-	 *
-	 * @return DateTime
 	 */
-	protected function get_monday()
+	private function get_monday(): self
 	{
 		$time = clone $this;
 		$day = $time->weekday;
@@ -466,60 +453,48 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Tuesday of the week.
-	 *
-	 * @return DateTime
 	 */
-	protected function get_tuesday()
+	private function get_tuesday(): self
 	{
 		return $this->monday->modify('+1 day');
 	}
 
 	/**
 	 * Returns Wednesday of the week.
-	 *
-	 * @return DateTime
 	 */
-	protected function get_wednesday()
+	private function get_wednesday(): self
 	{
 		return $this->monday->modify('+2 day');
 	}
 
 	/**
 	 * Returns Thursday of the week.
-	 *
-	 * @return DateTime
 	 */
-	protected function get_thursday()
+	private function get_thursday(): self
 	{
 		return $this->monday->modify('+3 day');
 	}
 
 	/**
 	 * Returns Friday of the week.
-	 *
-	 * @return DateTime
 	 */
-	protected function get_friday()
+	private function get_friday(): self
 	{
 		return $this->monday->modify('+4 day');
 	}
 
 	/**
 	 * Returns Saturday of the week.
-	 *
-	 * @return DateTime
 	 */
-	protected function get_saturday()
+	private function get_saturday(): self
 	{
 		return $this->monday->modify('+5 day');
 	}
 
 	/**
 	 * Returns Sunday of the week.
-	 *
-	 * @return DateTime
 	 */
-	protected function get_sunday()
+	private function get_sunday(): self
 	{
 		$time = clone $this;
 		$day = $time->weekday;
@@ -543,10 +518,12 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @inheritdoc
 	 */
-	public function __set($property, $value)
+	public function __set($property, $value): void
 	{
-		static $readonly = [ 'quarter', 'week', 'year_day', 'weekday',
-		'tomorrow', 'yesterday', 'utc', 'local' ];
+		static $readonly = [
+			'quarter', 'week', 'year_day', 'weekday',
+			'tomorrow', 'yesterday', 'utc', 'local'
+		];
 
 		switch ($property)
 		{
@@ -570,23 +547,23 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 		if (strpos($property, 'is_') === 0 || strpos($property, 'as_') === 0 || in_array($property, $readonly) || method_exists($this, 'get_' . $property))
 		{
-			if (class_exists('ICanBoogie\PropertyNotWritable'))
+			if (class_exists(PropertyNotWritable::class))
 			{
 				throw new PropertyNotWritable([ $property, $this ]);
 			}
 			else
 			{
-				throw new \RuntimeException("Property is not writeable: $property.");
+				throw new RuntimeException("Property is not writeable: $property.");
 			}
 		}
 
-		if (class_exists('ICanBoogie\PropertyNotDefined'))
+		if (class_exists(PropertyNotDefined::class))
 		{
 			throw new PropertyNotDefined([ $property, $this ]);
 		}
 		else
 		{
-			throw new \RuntimeException("Property is not defined: $property.");
+			throw new RuntimeException("Property is not defined: $property.");
 		}
 	}
 
@@ -634,17 +611,15 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * @return string The instance rendered as an {@link ISO8601} string, or an empty string if the
 	 * datetime is empty.
 	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		return $this->is_empty ? "" : $this->as_iso8601;
 	}
 
 	/**
 	 * Returns a {@link ISO8601} representation of the instance.
-	 *
-	 * @return string
 	 */
-	public function jsonSerialize()
+	public function jsonSerialize(): string
 	{
 		return (string) $this;
 	}
@@ -657,16 +632,16 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @inheritdoc
 	 */
-	public function setTimezone($timezone)
+	public function setTimezone($timezone): self
 	{
 		if ($timezone === 'local')
 		{
 			$timezone = date_default_timezone_get();
 		}
 
-		if (!$timezone instanceof \DateTimeZone)
+		if (!$timezone instanceof DateTimeZone)
 		{
-			$timezone = new \DateTimeZone($timezone);
+			$timezone = new DateTimeZone($timezone);
 		}
 
 		return parent::setTimezone($timezone);
@@ -689,14 +664,12 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * $time->change([ 'year' => 2000, 'second' => 0 ]);
 	 * </pre>
 	 *
-	 * @param array $options
+	 * @param array{ year: int, month: int, day: int, hour: int, minute: int, second: int, timezone: string } $options
 	 * @param bool $cascade If `true`, time options (`hour`, `minute`, `second`) reset
 	 * cascading, so if only the hour is passed, then minute and second is set to 0. If the hour
 	 * and minute is passed, then second is set to 0.
-	 *
-	 * @return DateTime
 	 */
-	public function change(array $options, $cascade=false)
+	public function change(array $options, bool $cascade = false): self
 	{
 		static $default_options = [
 
@@ -766,12 +739,12 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Instantiate a new instance with changes properties.
 	 *
-	 * @param array $options
-	 * @param bool $cascade
-	 *
-	 * @return DateTime
+	 * @param array{ year: int, month: int, day: int, hour: int, minute: int, second: int, timezone: string } $options
+	 * @param bool $cascade If `true`, time options (`hour`, `minute`, `second`) reset
+	 * cascading, so if only the hour is passed, then minute and second is set to 0. If the hour
+	 * and minute is passed, then second is set to 0.
 	 */
-	public function with(array $options, $cascade = false)
+	public function with(array $options, bool $cascade = false): self
 	{
 		$dt = clone $this;
 
@@ -787,7 +760,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @inheritdoc
 	 */
-	public function format($format)
+	public function format($format): string
 	{
 		if (($format == self::DATE || $format == self::DB) && $this->is_empty)
 		{
@@ -800,19 +773,17 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns a localized instance.
 	 *
-	 * @param string $locale
-	 *
 	 * @return mixed
 	 *
-	 * @throws \RuntimeException if {@link $localizer} is not defined.
+	 * @throws RuntimeException if {@link $localizer} is not defined.
 	 */
-	public function localize($locale = 'en')
+	public function localize(string $locale = 'en')
 	{
 		$localizer = self::$localizer;
 
 		if (!$localizer)
 		{
-			throw new \RuntimeException("Localizer is not defined yet.");
+			throw new RuntimeException("Localizer is not defined yet.");
 		}
 
 		return $localizer($this, $locale);

@@ -1,22 +1,22 @@
 ---
 version: "3.0"
 services:
-  app56:
+  app73:
     build:
       context: .
       args:
-        PHP_VERSION: 5.6
+        PHP_VERSION: 7.3
     environment:
       PHP_IDE_CONFIG: "serverName=icanboogie-datetime"
     volumes:
       - .:/app:delegated
       - ~/.composer:/root/.composer:delegated
     working_dir: /app
-  app74:
+  app81:
     build:
       context: .
       args:
-        PHP_VERSION: 7.4
+        PHP_VERSION: 8.1
     environment:
       PHP_IDE_CONFIG: "serverName=icanboogie-datetime"
     volumes:

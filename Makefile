@@ -8,6 +8,8 @@ PHPUNIT = vendor/bin/phpunit
 vendor:
 	@composer install
 
+# testing
+
 .PHONY: test-dependencies
 test-dependencies: vendor
 
@@ -18,19 +20,19 @@ test: test-dependencies
 .PHONY: test-coverage
 test-coverage: test-dependencies
 	@mkdir -p build/coverage
-	@$(PHPUNIT) --coverage-html build/coverage
+	@XDEBUG_MODE=coverage $(PHPUNIT) --coverage-html build/coverage
 
 .PHONY: test-coveralls
 test-coveralls: test-dependencies
 	@mkdir -p build/logs
-	@$(PHPUNIT) --coverage-clover build/logs/clover.xml
+	@XDEBUG_MODE=coverage $(PHPUNIT) --coverage-clover build/logs/clover.xml
 
-.PHONY: test-container-56
-test-container-56:
-	@docker-compose run --rm app56 sh
+.PHONY: test-container-73
+test-container-73:
+	@docker-compose run --rm app73 sh
 	@docker-compose down
 
-.PHONY: test-container-74
-test-container-74:
-	@docker-compose run --rm app74 sh
+.PHONY: test-container-81
+test-container-81:
+	@docker-compose run --rm app81 sh
 	@docker-compose down

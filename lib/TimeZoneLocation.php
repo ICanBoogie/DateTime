@@ -11,6 +11,8 @@
 
 namespace ICanBoogie;
 
+use RuntimeException;
+
 /**
  * Representation of a time zone location.
  *
@@ -41,12 +43,8 @@ class TimeZoneLocation
 
 	/**
 	 * Creates an instance from a {@link \DateTimeZone} instance.
-	 *
-	 * @param \DateTimeZone $zone
-	 *
-	 * @return \ICanBoogie\TimeZoneLocation
 	 */
-	static public function from(\DateTimeZone $zone)
+	static public function from(\DateTimeZone $zone): self
 	{
 		$hash = spl_object_hash($zone);
 
@@ -75,8 +73,6 @@ class TimeZoneLocation
 	 * {@link $comments} properties.
 	 *
 	 * @throws PropertyNotDefined in attempt to get an unsupported property.
-	 *
-	 * @inheritdoc
 	 */
 	public function __get($property)
 	{
@@ -85,13 +81,13 @@ class TimeZoneLocation
 			return $this->location[$property];
 		}
 
-		if (class_exists('ICanBoogie\PropertyNotDefined'))
+		if (class_exists(PropertyNotDefined::class))
 		{
 			throw new PropertyNotDefined([ $property, $this ]);
 		}
 		else
 		{
-			throw new \RuntimeException("Property is not defined: $property.");
+			throw new RuntimeException("Property is not defined: $property.");
 		}
 	}
 
@@ -102,13 +98,13 @@ class TimeZoneLocation
 	 */
 	public function __set($property, $value)
 	{
-		if (class_exists('ICanBoogie\PropertyNotWritable'))
+		if (class_exists(PropertyNotWritable::class))
 		{
 			throw new PropertyNotWritable([ $property, $this ]);
 		}
 		else
 		{
-			throw new \RuntimeException("Property is not writable: $property.");
+			throw new RuntimeException("Property is not writable: $property.");
 		}
 	}
 
@@ -117,8 +113,8 @@ class TimeZoneLocation
 	 *
 	 * @return string
 	 */
-	public function __toString()
+	public function __toString(): string
 	{
-		return "{$this->country_code},{$this->latitude},{$this->longitude}";
+		return "$this->country_code,$this->latitude,$this->longitude";
 	}
 }

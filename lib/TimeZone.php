@@ -45,10 +45,8 @@ class TimeZone extends \DateTimeZone
 	 * the same instance.
 	 *
 	 * @param mixed $source Source of the timezone.
-	 *
-	 * @return TimeZone
 	 */
-	static public function from($source)
+	static public function from($source): self
 	{
 		if ($source instanceof self)
 		{
@@ -87,10 +85,8 @@ class TimeZone extends \DateTimeZone
 
 	/**
 	 * Initializes the {@link $name} property.
-	 *
-	 * @param string $timezone
 	 */
-	public function __construct($timezone)
+	public function __construct(string $timezone)
 	{
 		parent::__construct($timezone);
 
@@ -111,7 +107,7 @@ class TimeZone extends \DateTimeZone
 	 *
 	 * @inheritdoc
 	 */
-	public function __get($property)
+	public function __get(string $property)
 	{
 		switch ($property)
 		{
@@ -140,7 +136,7 @@ class TimeZone extends \DateTimeZone
 				return $this->getOffset($utc_time);
 		}
 
-		if (class_exists('ICanBoogie\PropertyNotDefined'))
+		if (class_exists(PropertyNotDefined::class))
 		{
 			throw new PropertyNotDefined([ $property, $this ]);
 		}
@@ -152,10 +148,8 @@ class TimeZone extends \DateTimeZone
 
 	/**
 	 * Returns the name of the timezone.
-	 *
-	 * @return string
 	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		return $this->name;
 	}

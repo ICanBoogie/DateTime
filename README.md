@@ -12,6 +12,12 @@ year, quarter and more has been made especially easy. Also, all instances can be
 
 
 
+#### Installation
+
+```bash
+composer require icanboogie/datetime
+```
+
 
 
 ### Usage
@@ -343,36 +349,6 @@ echo $date->localize('fr')->as_medium;        // 5 mai 2015 23:13:05
 
 
 
-## Installation
-
-The recommended way to install this package is through [Composer](https://getcomposer.org/):
-
-```
-$ composer require icanboogie/datetime
-```
-
-The package [icanboogie/common](https://github.com/ICanBoogie/Common) is suggested to
-provide finer exceptions, such as [PropertyNotDefined][] and [PropertyNotWritable][].
-If the package is not included, `RunTimeException` instances are thrown instead.
-
-
-
-## Documentation
-
-The package is documented as part of the [ICanBoogie](http://icanboogie.org/) framework
-[documentation][]. The documentation for the package and its
-dependencies can be generated with the `make doc` command. The documentation is generated in
-the `build/docs` directory using [ApiGen](http://apigen.org/). The package directory can later by
-cleaned with the `make clean` command.
-
-The following classes are documented:
-
-- [DateTime][]
-- [TimeZone][]
-- [TimeZoneLocation][]
-
-
-
 ## Continuous Integration
 
 The project is continuously tested by [GitHub actions](https://github.com/ICanBoogie/DateTime/actions).
@@ -395,9 +371,6 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 [ICanBoogie/CLDR]:            https://github.com/ICanBoogie/CLDR
 [JsonSerializable interface]: http://php.net/manual/en/class.jsonserializable.php
-[documentation]:              http://api.icanboogie.org/datetime/latest/
-[DateTime]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.DateTime.html
-[TimeZone]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZone.html
-[TimeZoneLocation]:           http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZoneLocation.html
-[PropertyNotDefined]:         http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotDefined.html
-[PropertyNotWritable]:        http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotWritable.html
+[DateTime]:                   lib/DateTime.php
+[TimeZone]:                   lib/TimeZone.php
+[TimeZoneLocation]:           lib/TimeZoneLocation.php
