@@ -12,7 +12,8 @@ None
 
 ### Backward Incompatible Changes
 
-None
+- `DateTime::__construct()` no longer accepts `DateTimeInterface` instances, only string, just like
+  PHP's `DateTime`. Use `::from()` instead.
 
 ### Deprecated Features
 
