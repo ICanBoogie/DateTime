@@ -1,0 +1,10 @@
+parameters:
+  bootstrapFiles:
+  - tests/bootstrap.php
+  level: max
+  paths:
+    - src
+  ignoreErrors:
+  # PHPStan is not tracing traits used during construct
+  - "#Readonly property .+ is assigned outside of the constructor#"
+  - "#Access to an uninitialized readonly property#"

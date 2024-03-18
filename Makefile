@@ -1,36 +1,53 @@
 # customization
 
-PACKAGE_NAME = ICanBoogie/DateTime
 PHPUNIT = vendor/bin/phpunit
 
 # do not edit the following lines
 
+.PHONY: usage
+usage:
+	@echo "test:  Runs the test suite.\ndoc:   Creates the documentation.\nclean: Removes the documentation, the dependencies and the Composer files."
+
 vendor:
 	@composer install
 
+# testing
+
 .PHONY: test-dependencies
-test-dependencies: vendor
+test-dependencies: vendor test-cleanup
 
 .PHONY: test
 test: test-dependencies
-	@$(PHPUNIT)
+	@$(PHPUNIT) $(ARGS)
 
 .PHONY: test-coverage
 test-coverage: test-dependencies
 	@mkdir -p build/coverage
-	@$(PHPUNIT) --coverage-html build/coverage
+	@XDEBUG_MODE=coverage $(PHPUNIT) --coverage-html build/coverage
 
 .PHONY: test-coveralls
 test-coveralls: test-dependencies
 	@mkdir -p build/logs
-	@$(PHPUNIT) --coverage-clover build/logs/clover.xml
+	@XDEBUG_MODE=coverage $(PHPUNIT) --coverage-clover build/logs/clover.xml
 
-.PHONY: test-container-56
-test-container-56:
-	@docker-compose run --rm app56 sh
-	@docker-compose down
+.PHONY: test-cleanup
+test-cleanup:
+	@rm -rf tests/sandbox/*
 
-.PHONY: test-container-74
-test-container-74:
-	@docker-compose run --rm app74 sh
-	@docker-compose down
+.PHONY: test-container
+test-container: test-container-82
+
+.PHONY: test-container-82
+test-container-82:
+	@-docker-compose run --rm app82 bash
+	@docker-compose down -v
+
+.PHONY: test-container-83
+test-container-83:
+	@-docker-compose run --rm app83 bash
+	@docker-compose down -v
+
+.PHONY: lint
+lint:
+	@XDEBUG_MODE=off phpcs -s
+	@XDEBUG_MODE=off vendor/bin/phpstan

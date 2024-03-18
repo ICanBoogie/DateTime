@@ -1,0 +1,21 @@
+<?php
+
+namespace Test\ICanBoogie\DateTime;
+
+use ICanBoogie\DateTime\DayOfWeek;
+use ICanBoogie\DateTime\Month;
+
+const SAMPLE_DATE_VALUE = "2024-03-18";
+const SAMPLE_TIME_VALUE = "01:44:17.305194";
+const SAMPLE_DATETIME_VALUE = "2024-03-18T01:44:17.305194";
+const SAMPLE_YEAR = 2024;
+const SAMPLE_MONTH = Month::MARCH;
+const SAMPLE_MONTH_NUMBER = 3;
+const SAMPLE_DAY_OF_MONTH = 18;
+const SAMPLE_DAY_OF_WEEK = DayOfWeek::MONDAY;
+const SAMPLE_DAY_OF_YEAR = 78;
+const SAMPLE_HOUR = 1;
+const SAMPLE_MINUTE = 44;
+const SAMPLE_SECOND = 17;
+const SAMPLE_MICRO_SECOND = 305194;
+const SAMPLE_SECONDS_OF_DAY = SAMPLE_HOUR * 60 * 60 + SAMPLE_MINUTE * 60 + SAMPLE_SECOND;

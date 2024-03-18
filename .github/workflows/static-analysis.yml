@@ -1,0 +1,32 @@
+name: static-analysis
+
+on:
+- push
+- pull_request
+
+jobs:
+  phpstan:
+    name: phpstan
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: "8.3"
+        ini-values: memory_limit=-1
+        tools: composer:v2
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.composer/cache
+          vendor
+        key: phpstan-deps
+
+    - name: Install dependencies
+      run: composer install --no-interaction --no-progress
+
+    - name: Analyze
+      run: vendor/bin/phpstan

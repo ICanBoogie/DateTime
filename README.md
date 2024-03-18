@@ -1,341 +1,117 @@
 # DateTime
 
-[![Release](https://img.shields.io/packagist/v/ICanBoogie/DateTime.svg)](https://packagist.org/packages/icanboogie/datetime)
+[![Release](https://img.shields.io/packagist/v/icanboogie/datetime.svg)](https://packagist.org/packages/icanboogie/datetime)
+[![Code Quality](https://img.shields.io/scrutinizer/g/ICanBoogie/DateTime.svg)](https://scrutinizer-ci.com/g/ICanBoogie/DateTime)
 [![Code Coverage](https://img.shields.io/coveralls/ICanBoogie/DateTime.svg)](https://coveralls.io/r/ICanBoogie/DateTime)
-[![Packagist](https://img.shields.io/packagist/dm/icanboogie/datetime.svg?maxAge=2592000)](https://packagist.org/packages/icanboogie/datetime)
+[![Downloads](https://img.shields.io/packagist/dt/icanboogie/datetime.svg)](https://packagist.org/packages/icanboogie/datetime)
 
-This package extends the features of PHP [DateTime](http://www.php.net/manual/en/class.datetime.php)
-and [DateTimeZone](http://www.php.net/manual/en/class.datetimezone.php) classes to ease the
-handling of times, time zones and time zone locations. Getting the UTC or local representation of
-a time, formatting the time to a predefined format, accessing common properties such as day, month,
-year, quarter and more has been made especially easy. Also, all instances can be used as strings.
-
-
-
+A library to work with date and time.
 
 
 ### Usage
 
-Let's say that _now_ is "2013-02-03 21:03:45" in Paris:
-
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+namespace ICanBoogie\DateTime;
 
-date_default_timezone_set('EST'); // set local time zone to Eastern Standard Time
+require_once 'vendor/autoload.php';
 
-$time = new DateTime('now', 'Europe/Paris');
+//
+// Time
+//
 
-echo $time;                             // 2013-02-03T21:03:45+0100
-echo $time->utc;                        // 2013-02-03T20:03:45Z
-echo $time->local;                      // 2013-02-03T15:03:45-0500
-echo $time->utc->local;                 // 2013-02-03T15:03:45-0500
-echo $time->utc->is_utc;                // true
-echo $time->utc->is_local;              // false
-echo $time->local->is_utc;              // false
-echo $time->local->is_local;            // true
-echo $time->is_dst;                     // false
+$time = LocalTime::from("19:10:20.123");
+# or
+$time = new LocalTime(19, 10, 20, 123);
 
-echo $time->as_rss;                     // Sun, 03 Feb 2013 21:03:45 +0100
-echo $time->as_db;                      // 2013-02-03 21:03:45
+echo PHP_EOL . $time;                                                     // 19:10:20.123000
+echo PHP_EOL . $time->hour;                                               // 19
+echo PHP_EOL . $time->minute;                                             // 10
+echo PHP_EOL . $time->second;                                             // 20
+echo PHP_EOL . $time->microsecond;                                        // 123000
+echo PHP_EOL . $time->toSecondOfDay();                                    // 69020
+echo PHP_EOL . $time->toMillisecondOfDay();                               // 69020123
+echo PHP_EOL . $time->toMicrosecondOfDay();                               // 69020123000
+echo PHP_EOL . $time->format(LocalTime::FORMAT_WITH_MICROSECONDS);        // 19:10:20.123000
+echo PHP_EOL . $time->format(LocalTime::FORMAT_WITHOUT_MICROSECONDS);     // 19:10:20
 
-echo $time->as_time;                    // 21:03:45
-echo $time->utc->as_time;               // 20:03:45
-echo $time->local->as_time;             // 15:03:45
-echo $time->utc->local->as_time;        // 15:03:45
+$interval = new \DateInterval("PT1H");
+$before = $date->sub($interval);
+$after = $date->add($interval);
 
-echo $time->quarter;                    // 1
-echo $time->week;                       // 5
-echo $time->day;                        // 3
-echo $time->minute;                     // 3
-echo $time->is_monday;                  // false
-echo $time->is_saturday;                // true
-echo $time->is_today;                   // true
-echo $time->tomorrow;                   // 2013-02-04T00:00:00+0100
-echo $time->tomorrow->is_future;        // true
-echo $time->yesterday;                  // 2013-02-02T00:00:00+0100
-echo $time->yesterday->is_past;         // true
-echo $time->monday;                     // 2013-01-28T00:00:00+0100
-echo $time->sunday;                     // 2013-02-03T00:00:00+0100
+echo PHP_EOL . $before;                                                   // 20:10:20.123000
+echo PHP_EOL . $after;                                                    // 18:10:20.123000
+echo PHP_EOL . ($time <=> $before);                                       // 1
+echo PHP_EOL . ($time <=> $after);                                        // -1
 
-echo $time->timestamp;                  // 1359921825
-echo $time;                             // 2013-02-03T21:03:45+0100
-$time->timestamp += 3600 * 4;
-echo $time;                             // 2013-02-04T01:03:45+0100
+//
+// Date
+//
 
-echo $time->zone;                       // Europe/Paris
-echo $time->zone->offset;               // 3600
-echo $time->zone->location;             // FR,48.86667,2.33333
-echo $time->zone->location->latitude;   // 48.86667
-$time->zone = 'Asia/Tokyo';
-echo $time;                             // 2013-02-04T09:03:45+0900
+$date = LocalDate::from("2024-03-20");
+# or
+$date = new LocalDate(2024, 3, 20);
+# or
+$date = new LocalDate(2024, Month::MARCH, 20);
 
-$time->hour += 72;
-echo "Rendez-vous in 72 hours: $time";  // Rendez-vous in 72 hours: 2013-02-07T05:03:45+0900
-```
+echo PHP_EOL . $date;                                                     // 2024-03-20
+echo PHP_EOL . $date->year;                                               // 2024
+echo PHP_EOL . $date->month->name;                                        // MARCH
+echo PHP_EOL . $date->monthNumber;                                        // 3
+echo PHP_EOL . $date->dayOfMonth;                                         // 20
+echo PHP_EOL . $date->dayOfWeek->name;                                    // WEDNESDAY
+echo PHP_EOL . $date->dayOfYear;                                          // 80
 
-Empty dates are also supported:
+$interval = new \DateInterval("P1M");
+$before = $date->sub($interval);
+$after = $date->add($interval);
 
-```php
-<?php
-
-use ICanBoogie\DateTime;
-
-$time = new DateTime('0000-00-00', 'utc');
-// or
-$time = DateTime::none();
-
-echo $time->is_empty;                   // true
-echo $time->as_date;                    // 0000-00-00
-echo $time->as_db;                      // 0000-00-00 00:00:00
-echo $time;                             // ""
+echo PHP_EOL . $before;                                                   // 2024-02-20
+echo PHP_EOL . $after;                                                    // 2024-04-20
+echo PHP_EOL . ($date <=> $before);                                       // 1
+echo PHP_EOL . ($date <=> $after);                                        // -1
 ```
 
 
 
+#### Installation
 
-
-### Acknowledgements
-
-The implementation of the [DateTime][] class is vastly inspired by Ruby's
-[Time](http://www.ruby-doc.org/core-1.9.3/Time.html) class.
-
-
-
-
-
-## Day of week
-
-```php
-<?php
-
-use ICanBoogie\DateTime;
-
-$time = new DateTime('2014-01-06 11:11:11', 'utc'); // a monday at 11:11:11 UTC
-
-echo $time->monday;                          // 2014-01-06T00:00:00Z
-echo $time->tuesday;                         // 2014-01-07T00:00:00Z
-echo $time->wednesday;                       // 2014-01-08T00:00:00Z
-echo $time->thursday;                        // 2014-01-09T00:00:00Z
-echo $time->friday;                          // 2014-01-10T00:00:00Z
-echo $time->saturday;                        // 2014-01-11T00:00:00Z
-echo $time->sunday;                          // 2014-01-12T00:00:00Z
-
-$time->monday->is_monday;                    // true
-$time->tuesday->is_tuesday;                  // true
-$time->wednesday->is_wednesday;              // true
-$time->thursday->is_thursday;                // true
-$time->friday->is_friday;                    // true
-$time->saturday->is_saturday;                // true
-$time->sunday->is_sunday;                    // true
-
-$time->monday->is_tuesday;                   // false
-$time->tuesday->is_wednesday;                // false
-$time->wednesday->is_thursday;               // false
-$time->thursday->is_friday;                  // false
-$time->friday->is_saturday;                  // false
-$time->saturday->is_sunday;                  // false
-$time->sunday->is_monday;                    // false
-
-$time->monday->weekday;                      // 1
-$time->tuesday->weekday;                     // 2
-$time->wednesday->weekday;                   // 3
-$time->thursday->weekday;                    // 4
-$time->friday->weekday;                      // 5
-$time->saturday->weekday;                    // 6
-$time->sunday->weekday;                      // 7
+```bash
+composer require icanboogie/datetime
 ```
 
 
 
+## Types
 
-
-## `now()` and `right_now()`
-
-`DateTime::now()` returns a new instance with the current local time and the local time zone. Subsequent calls return equal times, event if they are minutes apart. _now_ actually refers to the `REQUEST_TIME` or, if it is not available, to the first time the method was invoked.
-
-On the other hand, `DateTime::right_now()` returns a new instance with the _real_ current local time and the local time zone.
-
-The following example demonstrates the difference:
-
-```php
-<?php
-
-use ICanBoogie\DateTime;
-
-$now = DateTime::now();
-
-sleep(2);
-
-$now == DateTime::now();         // true
-$now == DateTime::right_now();   // false
-```
+The library provides a basic set of types for working with date and time. All types are immutable.
 
 
 
+### Type use-cases
+
+Here is some basic advice on how to choose which of the date-carrying types to use in what cases:
+
+- Use `LocalDateTime` to represent
+- Use `LocalDate` to represent the date of an event that does not have a specific time associated with it (like a birth date).
+- Use `LocalTime` to represent the time of an event that does not have a specific date associated with it.
 
 
-## Comparing DateTime instances
 
-[DateTime][] Instances are compared using standard comparison operations:
+## Compatibility with PHP's DateTime
+
+`LocalDateTime`, `LocalDate`, and `LocalTime` do not implement `DateTimeInterface`, but they all maintain a `DateTimeImmutable` that used as a delegate for operations.
 
 ```php
 <?php
 
-use ICanBoogie\DateTime;
+namespace ICanBoogie\DateTime;
 
-$d1 = DateTime::now();
-$d2 = DateTime::now();
-
-$d1 == $d2; // true
-$d1 >= $d2; // true
-$d1 <= $d2; // true
-$d1 != $d2; // false
-$d1 > $d2;  // false
-$d1 < $d2;  // false
-
-$d2->second++;
-$d1 != $d2; // true
-$d1 < $d2;  // true
-$d2 > $d1;  // true
-$d1 == $d2; // false
-$d1 >= $d2; // false
-$d2 <= $d1; // false
+Time::from("now")->delegate;     // A DateTimeImmutable with date components set to 0
+Date::from("now")->delegate;     // A DateTimeImmutable with time components set to 0
+DateTime::from("now")->delegate; // A DateTimeImmutable
 ```
-
-To determine if an instance is between two other instances you just need two comparisons:
-
-```php
-<?php
-
-use ICanBoogie\DateTime;
-
-$now = DateTime::now();
-
-$now > $now->yesterday && $now < $now->tomorrow; // true
-```
-
-To determine which instance is the most recent, or the most late, simply use PHP's `min()`
-and `max()` functions:
-
-```php
-<?php
-
-use ICanBoogie\DateTime;
-
-$now = DateTime::now();
-$yesterday = $now->yesterday;
-$tomorrow = $now->tomorrow;
-
-$yesterday === min($now, $yesterday, $tomorrow); // true
-$tomorrow  === max($now, $yesterday, $tomorrow); // true
-```
-
-
-
-
-
-## DateTime and JSON
-
-Starting with v1.1.0, [DateTime][] instances implements the [JsonSerializable interface][] and
-are serialized into ISO-8601 strings.
-
-```php
-<?php
-
-use ICanBoogie\DateTime;
-
-$date = new DateTime("2014-10-23 13:50:10", "Europe/Paris");
-
-echo json_encode([ 'date' => $date ]);
-// {"date":"2014-10-23T13:50:10+0200"}
-```
-
-
-
-
-
-## Changing multiple properties
-
-The `change()` method is used to change multiple properties at once.
-
-**Note:** Values exceeding ranges are added to their parent values.
-
-```php
-<?php
-
-use ICanBoogie\DateTime;
-
-$date = DateTime::now()->change([ 'year' => 2015, 'month' => 5, 'hour' => 12 ]);
-```
-
-Using the `$cascade` parameter, setting the hour resets the minute and second to 0, and setting the minute resets the second to 0.
-
-```php
-<?php
-
-use ICanBoogie\DateTime;
-
-echo DateTime::from("2015-05-05 12:13:14")->change([ 'hour' => 13 ], true);   // 2015-05-05 13:00:00
-```
-
-
-
-
-
-## Creating a new instance with changed properties
-
-The `with()` method is similar to the `change()` method as it is used to define multiple properties at once, the difference is that the method creates a new instance, leaving the original instance intact.
-
-```php
-<?php
-
-use ICanBoogie\DateTime;
-
-$now = DateTime::now();
-$next_year = $now->with([ 'year' => $now->year + 1 ]);
-
-spl_object_hash($now) == spl_object_hash($next_year);   // false
-```
-
-
-
-
-
-## Localized formatting
-
-Localized formatting is outside of this package scope, still a _localizer_ can be provided to the
-[DateTime][] class to localize its instances, but of course the result depends on the
-implementation.
-
-The following example demonstrates how to localize instances using [ICanBoogie/CLDR][] which uses
-Unicode's Common Locale Data Repository to format [DateTime][] instances.
-
-```php
-<?php
-
-use ICanBoogie\CLDR\Repository;
-use ICanBoogie\DateTime;
-
-// …
-
-/* @var Repository $repository */
-
-DateTime::$localizer = function(DateTime $instance, $locale) use ($repository) {
-
-	return $repository->locales[$locale]->localize($instance);
-
-};
-
-$date = DateTime::from('2015-05-05 23:21:05', 'UTC');
-
-echo $date->localize('fr')->format('long');   // mardi 5 mai 2015 23:13:05 UTC
-echo $date->localize('fr')->as_medium;        // 5 mai 2015 23:13:05
-```
-
-
-
 
 
 
@@ -343,41 +119,20 @@ echo $date->localize('fr')->as_medium;        // 5 mai 2015 23:13:05
 
 
 
-## Installation
-
-The recommended way to install this package is through [Composer](https://getcomposer.org/):
-
-```
-$ composer require icanboogie/datetime
-```
-
-The package [icanboogie/common](https://github.com/ICanBoogie/Common) is suggested to
-provide finer exceptions, such as [PropertyNotDefined][] and [PropertyNotWritable][].
-If the package is not included, `RunTimeException` instances are thrown instead.
-
-
-
-## Documentation
-
-The package is documented as part of the [ICanBoogie](http://icanboogie.org/) framework
-[documentation][]. The documentation for the package and its
-dependencies can be generated with the `make doc` command. The documentation is generated in
-the `build/docs` directory using [ApiGen](http://apigen.org/). The package directory can later by
-cleaned with the `make clean` command.
-
-The following classes are documented:
-
-- [DateTime][]
-- [TimeZone][]
-- [TimeZoneLocation][]
-
-
-
 ## Continuous Integration
 
 The project is continuously tested by [GitHub actions](https://github.com/ICanBoogie/DateTime/actions).
 
-[![Tests](https://github.com/ICanBoogie/DateTime/workflows/test/badge.svg?branch=master)](https://github.com/ICanBoogie/DateTime/actions?query=workflow%3Atest)
+[![Tests](https://github.com/ICanBoogie/DateTime/workflows/test/badge.svg)](https://github.com/ICanBoogie/DateTime/actions?query=workflow%3Atest)
+[![Static Analysis](https://github.com/ICanBoogie/DateTime/workflows/static-analysis/badge.svg)](https://github.com/ICanBoogie/DateTime/actions?query=workflow%3Astatic-analysis)
+[![Code Style](https://github.com/ICanBoogie/DateTime/workflows/code-style/badge.svg)](https://github.com/ICanBoogie/DateTime/actions?query=workflow%3Acode-style)
+
+
+
+## Code of Conduct
+
+This project adheres to a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in
+this project and its community, you are expected to uphold this code.
 
 
 
@@ -390,14 +145,3 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 ## License
 
 **ICanBoogie/DateTime** is released under the [BSD-3-Clause](LICENSE).
-
-
-
-[ICanBoogie/CLDR]:            https://github.com/ICanBoogie/CLDR
-[JsonSerializable interface]: http://php.net/manual/en/class.jsonserializable.php
-[documentation]:              http://api.icanboogie.org/datetime/latest/
-[DateTime]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.DateTime.html
-[TimeZone]:                   http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZone.html
-[TimeZoneLocation]:           http://api.icanboogie.org/datetime/latest/class-ICanBoogie.TimeZoneLocation.html
-[PropertyNotDefined]:         http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotDefined.html
-[PropertyNotWritable]:        http://api.icanboogie.org/common/1.2/class-ICanBoogie.PropertyNotWritable.html

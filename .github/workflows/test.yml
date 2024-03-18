@@ -7,16 +7,15 @@ on:
 jobs:
   phpunit:
     name: phpunit
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         php-version:
-        - "5.6"
-        - "7.0"
-        - "7.4"
+        - "8.2"
+        - "8.3"
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -25,7 +24,7 @@ jobs:
         ini-values: memory_limit=-1
         tools: composer:v2
     - name: Cache dependencies
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: |
           ~/.composer/cache
@@ -40,7 +39,7 @@ jobs:
       run: make test-coveralls
 
     - name: Upload code coverage
-      if: ${{ matrix.php-version == '5.6' }}
+      if: ${{ matrix.php-version == '8.3' }}
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
