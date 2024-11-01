@@ -1,8 +1,8 @@
 # DateTime
 
 [![Release](https://img.shields.io/packagist/v/ICanBoogie/DateTime.svg)](https://packagist.org/packages/icanboogie/datetime)
-[![Code Coverage](https://img.shields.io/coveralls/ICanBoogie/DateTime.svg)](https://coveralls.io/r/ICanBoogie/DateTime)
-[![Packagist](https://img.shields.io/packagist/dm/icanboogie/datetime.svg?maxAge=2592000)](https://packagist.org/packages/icanboogie/datetime)
+[![Coverage Status](https://coveralls.io/repos/github/ICanBoogie/DateTime/badge.svg?branch=2.0)](https://coveralls.io/github/ICanBoogie/DateTime?branch=2.0)
+[![Packagist](https://img.shields.io/packagist/dm/icanboogie/datetime.svg)](https://packagist.org/packages/icanboogie/datetime)
 
 This package extends the features of PHP [DateTime](http://www.php.net/manual/en/class.datetime.php)
 and [DateTimeZone](http://www.php.net/manual/en/class.datetimezone.php) classes to ease the
@@ -353,7 +353,7 @@ echo $date->localize('fr')->as_medium;        // 5 mai 2015 23:13:05
 
 The project is continuously tested by [GitHub actions](https://github.com/ICanBoogie/DateTime/actions).
 
-[![Tests](https://github.com/ICanBoogie/DateTime/workflows/test/badge.svg?branch=master)](https://github.com/ICanBoogie/DateTime/actions?query=workflow%3Atest)
+[![Tests](https://github.com/ICanBoogie/DateTime/actions/workflows/test.yml/badge.svg?branch=2.0)](https://github.com/ICanBoogie/DateTime/actions/workflows/test.yml)
 
 
 
