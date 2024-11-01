@@ -3,7 +3,6 @@
 namespace ICanBoogie;
 
 use DateTimeZone;
-use RuntimeException;
 
 /**
  * Representation of a date and time.
@@ -159,13 +158,6 @@ use RuntimeException;
  */
 class DateTime extends \DateTime implements \JsonSerializable
 {
-	/**
-	 * We redefine the constant to make sure that the cookie uses a valid pattern.
-	 *
-	 * @link http://grokbase.com/t/php/php-bugs/111xynxd6m/php-bug-bug-53879-new-datetime-createfromformat-fails-to-parse-cookie-expiration-date
-	 */
-	public const COOKIE = 'l, d-M-Y H:i:s T';
-
 	/**
 	 * DB (example: 2013-02-03 20:59:03)
 	 */
@@ -776,7 +768,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @return mixed
 	 *
-	 * @throws RuntimeException if {@see $localizer} is not defined.
+	 * @throws \RuntimeException if {@see $localizer} is not defined.
 	 */
 	public function localize(string $locale = 'en')
 	{
@@ -784,7 +776,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 		if (!$localizer)
 		{
-			throw new RuntimeException("Localizer is not defined yet.");
+			throw new \RuntimeException("Localizer is not defined yet.");
 		}
 
 		return $localizer($this, $locale);
