@@ -3,8 +3,6 @@
 namespace Test\ICanBoogie;
 
 use ICanBoogie\DateTime;
-use ICanBoogie\PropertyNotDefined;
-use ICanBoogie\PropertyNotWritable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Test\ICanBoogie\DateTimeTest\MyDateTime;
@@ -24,8 +22,7 @@ final class DateTimeTest extends TestCase
 	{
 		$d = DateTime::now();
 
-		$this->expectExceptionMessage("The property `$property` for object of class `ICanBoogie\DateTime` is not writable.");
-		$this->expectException(PropertyNotWritable::class);
+		$this->expectExceptionMessage("Readonly property: ICanBoogie\DateTime::$property");
 		$d->{ $property } = null;
 	}
 
@@ -153,7 +150,7 @@ final class DateTimeTest extends TestCase
 			'day' => 1,
 			'hour' => 1,
 			'minute' => 1,
-			'second' => 1
+			'second' => 1,
 
 		]);
 
@@ -1003,12 +1000,12 @@ final class DateTimeTest extends TestCase
 		$this->assertTrue($invoked);
 	}
 
-	public function test_getting_undefined_property_should_throw_exception()
+	public function test_getting_undefined_property_should_trigger_a_warning()
 	{
 		$date = DateTime::now();
 		$property = uniqid();
-		$this->expectException(PropertyNotDefined::class);
-		$this->expectExceptionMessage("Undefined property `$property` for object of class `ICanBoogie\DateTime`.");
+
+		$this->expectExceptionMessage("Undefined property: ICanBoogie\DateTime::$property");
 		$date->$property;
 	}
 }

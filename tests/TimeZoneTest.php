@@ -75,7 +75,8 @@ final class TimeZoneTest extends TestCase
 	{
 		$property = uniqid();
 		$z1 = TimeZone::from('utc');
-		$this->expectException(PropertyNotDefined::class);
+
+		$this->expectExceptionMessage("Undefined property: ICanBoogie\TimeZone::$property");
 		$z1->$property;
 	}
 

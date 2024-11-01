@@ -28,11 +28,7 @@
 		"php": ">=8.2"
 	},
 	"require-dev": {
-		"icanboogie/common": "^2.0",
 		"phpunit/phpunit": "^11.4"
-	},
-	"suggest": {
-		"icanboogie/common": "Allows finer exceptions to be thrown"
 	},
 	"autoload": {
 		"psr-4": {

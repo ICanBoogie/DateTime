@@ -424,14 +424,9 @@ class DateTime extends \DateTime implements \JsonSerializable
 				return $transitions[0]['isdst'];
 		}
 
-		if (class_exists(PropertyNotDefined::class))
-		{
-			throw new PropertyNotDefined([ $property, $this ]);
-		}
-		else
-		{
-			throw new RuntimeException("Property is not defined: $property.");
-		}
+		throw new \LogicException(
+			sprintf("Undefined property: %s::%s", $this::class, $property)
+		);
 	}
 
 	/**
@@ -533,8 +528,6 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * Sets the {@see $year}, {@see $month}, {@see $day}, {@see $hour}, {@see $minute},
 	 * {@see $second}, {@see $timestamp} and {@see $zone} properties.
 	 *
-	 * @throws PropertyNotWritable in an attempt to set a read-only property.
-	 * @throws PropertyNotDefined in an attempt to set an unsupported property.
 	 * @throws \DateInvalidTimeZoneException
 	 */
 	public function __set($property, $value): void
@@ -565,24 +558,14 @@ class DateTime extends \DateTime implements \JsonSerializable
 			|| method_exists($this, 'get_' . $property)
 		)
 		{
-			if (class_exists(PropertyNotWritable::class))
-			{
-				throw new PropertyNotWritable([ $property, $this ]);
-			}
-			else
-			{
-				throw new RuntimeException("Property is not writeable: $property.");
-			}
+			throw new \LogicException(
+				sprintf("Readonly property: %s::%s", $this::class, $property)
+			);
 		}
 
-		if (class_exists(PropertyNotDefined::class))
-		{
-			throw new PropertyNotDefined([ $property, $this ]);
-		}
-		else
-		{
-			throw new RuntimeException("Property is not defined: $property.");
-		}
+		throw new \LogicException(
+			sprintf("Undefined property: %s::%s", $this::class, $property),
+		);
 	}
 
 	/**

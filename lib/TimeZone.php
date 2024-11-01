@@ -116,14 +116,9 @@ class TimeZone extends \DateTimeZone
 				return $this->getOffset($utc_time);
 		}
 
-		if (class_exists(PropertyNotDefined::class))
-		{
-			throw new PropertyNotDefined([ $property, $this ]);
-		}
-		else
-		{
-			throw new \RuntimeException("Property no defined: $property.");
-		}
+		throw new \LogicException(
+			sprintf("Undefined property: %s::%s", $this::class, $property),
+		);
 	}
 
 	/**
