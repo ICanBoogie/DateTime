@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the ICanBoogie package.
- *
- * (c) Olivier Laviale <olivier.laviale@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace ICanBoogie;
 
 use DateTimeZone;
@@ -125,21 +116,21 @@ use RuntimeException;
  * @property-read DateTime $saturday A new instance representing Saturday of the week. Time is reset to 00:00:00.
  * @property-read DateTime $sunday A new instance representing Sunday of the week. Time is reset to 00:00:00.
  *
- * @property-read string $as_atom The instance formatted according to {@link ATOM}.
- * @property-read string $as_cookie The instance formatted according to {@link COOKIE}.
- * @property-read string $as_iso8601 The instance formatted according to {@link ISO8601}.
- * @property-read string $as_rfc822 The instance formatted according to {@link RFC822}.
- * @property-read string $as_rfc850 The instance formatted according to {@link RFC850}.
- * @property-read string $as_rfc1036 The instance formatted according to {@link RFC1036}.
- * @property-read string $as_rfc1123 The instance formatted according to {@link RFC1123}.
- * @property-read string $as_rfc2822 The instance formatted according to {@link RFC2822}.
- * @property-read string $as_rfc3339 The instance formatted according to {@link RFC3339}.
- * @property-read string $as_rss The instance formatted according to {@link RSS}.
- * @property-read string $as_w3c The instance formatted according to {@link W3C}.
- * @property-read string $as_db The instance formatted according to {@link DB}.
- * @property-read string $as_number The instance formatted according to {@link NUMBER}.
- * @property-read string $as_date The instance formatted according to {@link DATE}.
- * @property-read string $as_time The instance formatted according to {@link TIME}.
+ * @property-read string $as_atom The instance formatted according to {@see ATOM}.
+ * @property-read string $as_cookie The instance formatted according to {@see COOKIE}.
+ * @property-read string $as_iso8601 The instance formatted according to {@see ISO8601}.
+ * @property-read string $as_rfc822 The instance formatted according to {@see RFC822}.
+ * @property-read string $as_rfc850 The instance formatted according to {@see RFC850}.
+ * @property-read string $as_rfc1036 The instance formatted according to {@see RFC1036}.
+ * @property-read string $as_rfc1123 The instance formatted according to {@see RFC1123}.
+ * @property-read string $as_rfc2822 The instance formatted according to {@see RFC2822}.
+ * @property-read string $as_rfc3339 The instance formatted according to {@see RFC3339}.
+ * @property-read string $as_rss The instance formatted according to {@see RSS}.
+ * @property-read string $as_w3c The instance formatted according to {@see W3C}.
+ * @property-read string $as_db The instance formatted according to {@see DB}.
+ * @property-read string $as_number The instance formatted according to {@see NUMBER}.
+ * @property-read string $as_date The instance formatted according to {@see DATE}.
+ * @property-read string $as_time The instance formatted according to {@see TIME}.
  *
  * @property TimeZone $zone The timezone of the instance.
  * @property-read DateTime $utc A new instance in the UTC timezone.
@@ -148,30 +139,30 @@ use RuntimeException;
  * @property-read bool $is_local `true` if the instance is in the local timezone.
  * @property-read bool $is_dst `true` if time occurs during Daylight Saving Time in its time zone.
  *
- * @method string format_as_atom() format_as_atom() Formats the instance according to {@link ATOM}.
- * @method string format_as_cookie() format_as_cookie() Formats the instance according to {@link COOKIE}.
- * @method string format_as_iso8601() format_as_iso8601() Formats the instance according to {@link ISO8601}.
- * @method string format_as_rfc822() format_as_rfc822() Formats the instance according to {@link RFC822}.
- * @method string format_as_rfc850() format_as_rfc850() Formats the instance according to {@link RFC850}.
- * @method string format_as_rfc1036() format_as_rfc1036() Formats the instance according to {@link RFC1036}.
- * @method string format_as_rfc1123() format_as_rfc1123() Formats the instance according to {@link RFC1123}.
- * @method string format_as_rfc2822() format_as_rfc2822() Formats the instance according to {@link RFC2822}.
- * @method string format_as_rfc3339() format_as_rfc3339() Formats the instance according to {@link RFC3339}.
- * @method string format_as_rss() format_as_rss() Formats the instance according to {@link RSS}.
- * @method string format_as_w3c() format_as_w3c() Formats the instance according to {@link W3C}.
- * @method string format_as_db() format_as_db() Formats the instance according to {@link DB}.
- * @method string format_as_number() format_as_number() Formats the instance according to {@link NUMBER}.
- * @method string format_as_date() format_as_date() Formats the instance according to {@link DATE}.
- * @method string format_as_time() format_as_time() Formats the instance according to {@link TIME}.
+ * @method string format_as_atom() Formats the instance according to {@see ATOM}.
+ * @method string format_as_cookie() Formats the instance according to {@see COOKIE}.
+ * @method string format_as_iso8601() Formats the instance according to {@see ISO8601}.
+ * @method string format_as_rfc822() Formats the instance according to {@see RFC822}.
+ * @method string format_as_rfc850() Formats the instance according to {@see RFC850}.
+ * @method string format_as_rfc1036() Formats the instance according to {@see RFC1036}.
+ * @method string format_as_rfc1123() Formats the instance according to {@see RFC1123}.
+ * @method string format_as_rfc2822() Formats the instance according to {@see RFC2822}.
+ * @method string format_as_rfc3339() Formats the instance according to {@see RFC3339}.
+ * @method string format_as_rss() Formats the instance according to {@see RSS}.
+ * @method string format_as_w3c() Formats the instance according to {@see W3C}.
+ * @method string format_as_db() Formats the instance according to {@see DB}.
+ * @method string format_as_number() Formats the instance according to {@see NUMBER}.
+ * @method string format_as_date() Formats the instance according to {@see DATE}.
+ * @method string format_as_time() Formats the instance according to {@see TIME}.
  *
- * @see http://en.wikipedia.org/wiki/ISO_8601
+ * @link http://en.wikipedia.org/wiki/ISO_8601
  */
 class DateTime extends \DateTime implements \JsonSerializable
 {
 	/**
 	 * We redefine the constant to make sure that the cookie uses a valid pattern.
 	 *
-	 * @see http://grokbase.com/t/php/php-bugs/111xynxd6m/php-bug-bug-53879-new-datetime-createfromformat-fails-to-parse-cookie-expiration-date
+	 * @link http://grokbase.com/t/php/php-bugs/111xynxd6m/php-bug-bug-53879-new-datetime-createfromformat-fails-to-parse-cookie-expiration-date
 	 */
 	public const COOKIE = 'l, d-M-Y H:i:s T';
 
@@ -203,7 +194,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	static public $localizer = null;
 
 	/**
-	 * Creates a {@link DateTime} instance from a source.
+	 * Creates a {@see DateTime} instance from a source.
 	 *
 	 * <pre>
 	 * <?php
@@ -215,11 +206,17 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * DateTime::from('now');
 	 * </pre>
 	 *
-	 * @param mixed $source
-	 * @param mixed $timezone The time zone to use to create the time. The value is ignored if the
-	 * source is an instance of {@link \DateTime}.
+	 * @param self|\DateTime|string $source
+	 * @param DateTimeZone|string|null $timezone The time zone to use to create the time.
+	 * The value is ignored if the source is an instance of {@see \DateTime}.
+	 *
+	 * @throws \DateInvalidTimeZoneException
+	 * @throws \DateMalformedStringException
 	 */
-	static public function from($source, $timezone = null): self
+	static public function from(
+		self|\DateTime|string $source,
+		DateTimeZone|string|null $timezone = null
+	): static
 	{
 		if ($source instanceof static)
 		{
@@ -237,17 +234,22 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Returns an instance with the current local time and the local time zone.
 	 *
-	 * **Note:** Subsequent calls return equal times, event if they are minutes apart. _now_
+	 * **Note:** Subsequent calls return equal times, event if they're minutes apart. _now_
 	 * actually refers to the `REQUEST_TIME` or, if it is now available, to the first time
 	 * the method was invoked.
+	 *
+	 * @throws \DateInvalidTimeZoneException
+	 * @throws \DateMalformedStringException
 	 */
-	static public function now(): self
+	static public function now(): static
 	{
 		static $now;
 
 		if (!$now)
 		{
-			$now = empty($_SERVER['REQUEST_TIME']) ? new static : (new static('@' . $_SERVER['REQUEST_TIME']))->local;
+			$now = empty($_SERVER['REQUEST_TIME'])
+				? new static()
+				: (new static('@' . $_SERVER['REQUEST_TIME']))->local;
 		}
 
 		return clone $now;
@@ -283,15 +285,16 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * @param DateTimeZone|string $timezone The time zone in which the empty date is created.
 	 * Defaults to "UTC".
 	 *
-	 * @return DateTime
+	 * @throws \DateInvalidTimeZoneException
+	 * @throws \DateMalformedStringException
 	 */
-	static public function none($timezone = 'utc'): self
+	static public function none(DateTimeZone|string $timezone = 'utc'): static
 	{
 		return new static('0000-00-00', $timezone);
 	}
 
 	/**
-	 * If the time zone is specified as a string a {@link \DateTimeZone} instance is created and
+	 * If the time zone is specified as a string a {@see \DateTimeZone} instance is created and
 	 * used instead.
 	 *
 	 * <pre>
@@ -304,9 +307,10 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * new DateTime;
 	 * </pre>
 	 *
-	 * @param DateTimeZone|string|null $timezone
+	 * @throws \DateInvalidTimeZoneException
+	 * @throws \DateMalformedStringException
 	 */
-	public function __construct(string $time = 'now', $timezone = null)
+	public function __construct(string $time = 'now', DateTimeZone|string|null $timezone = null)
 	{
 		if (is_string($timezone))
 		{
@@ -316,12 +320,9 @@ class DateTime extends \DateTime implements \JsonSerializable
 		parent::__construct($time, $timezone);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	public function __get($property)
 	{
-		if (strpos($property, 'as_') === 0)
+		if (str_starts_with($property, 'as_'))
 		{
 			return $this->{ 'format_' . $property }();
 		}
@@ -435,6 +436,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Monday of the week.
+	 *
+	 * @throws \DateMalformedStringException
 	 */
 	private function get_monday(): self
 	{
@@ -453,6 +456,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Tuesday of the week.
+	 *
+	 * @throws \DateMalformedStringException
 	 */
 	private function get_tuesday(): self
 	{
@@ -461,6 +466,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Wednesday of the week.
+	 *
+	 * @throws \DateMalformedStringException
 	 */
 	private function get_wednesday(): self
 	{
@@ -469,6 +476,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Thursday of the week.
+	 *
+	 * @throws \DateMalformedStringException
 	 */
 	private function get_thursday(): self
 	{
@@ -477,6 +486,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Friday of the week.
+	 *
+	 * @throws \DateMalformedStringException
 	 */
 	private function get_friday(): self
 	{
@@ -485,6 +496,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Saturday of the week.
+	 *
+	 * @throws \DateMalformedStringException
 	 */
 	private function get_saturday(): self
 	{
@@ -493,6 +506,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Sunday of the week.
+	 *
+	 * @throws \DateMalformedStringException
 	 */
 	private function get_sunday(): self
 	{
@@ -509,22 +524,21 @@ class DateTime extends \DateTime implements \JsonSerializable
 		return $time;
 	}
 
+	private const READONLY_PROPERTIES = [
+		'quarter', 'week', 'year_day', 'weekday',
+		'tomorrow', 'yesterday', 'utc', 'local'
+	];
+
 	/**
-	 * Sets the {@link $year}, {@link $month}, {@link $day}, {@link $hour}, {@link $minute},
-	 * {@link $second}, {@link $timestamp} and {@link $zone} properties.
+	 * Sets the {@see $year}, {@see $month}, {@see $day}, {@see $hour}, {@see $minute},
+	 * {@see $second}, {@see $timestamp} and {@see $zone} properties.
 	 *
-	 * @throws PropertyNotWritable in attempt to set a read-only property.
-	 * @throws PropertyNotDefined in attempt to set an unsupported property.
-	 *
-	 * @inheritdoc
+	 * @throws PropertyNotWritable in an attempt to set a read-only property.
+	 * @throws PropertyNotDefined in an attempt to set an unsupported property.
+	 * @throws \DateInvalidTimeZoneException
 	 */
 	public function __set($property, $value): void
 	{
-		static $readonly = [
-			'quarter', 'week', 'year_day', 'weekday',
-			'tomorrow', 'yesterday', 'utc', 'local'
-		];
-
 		switch ($property)
 		{
 			case 'year':
@@ -545,7 +559,11 @@ class DateTime extends \DateTime implements \JsonSerializable
 				return;
 		}
 
-		if (strpos($property, 'is_') === 0 || strpos($property, 'as_') === 0 || in_array($property, $readonly) || method_exists($this, 'get_' . $property))
+		if (str_starts_with($property, 'is_')
+			|| str_starts_with($property, 'as_')
+			|| in_array($property, self::READONLY_PROPERTIES)
+			|| method_exists($this, 'get_' . $property)
+		)
 		{
 			if (class_exists(PropertyNotWritable::class))
 			{
@@ -570,19 +588,17 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Handles the `format_as_*` methods.
 	 *
-	 * If the format is {@link RFC822} or {@link RFC1123} and the time zone is equivalent to GMT,
+	 * If the format is {@see RFC822} or {@see RFC1123} and the time zone is equivalent to GMT,
 	 * the offset `+0000` is replaced by `GMT` according to the specs.
 	 *
-	 * If the format is {@link ISO8601} and the time zone is equivalent to UTC, the offset `+0000`
+	 * If the format is {@see ISO8601} and the time zone is equivalent to UTC, the offset `+0000`
 	 * is replaced by `Z` according to the specs.
 	 *
 	 * @throws \BadMethodCallException in attempt to call an unsupported method.
-	 *
-	 * @inheritdoc
 	 */
 	public function __call($method, $arguments)
 	{
-		if (strpos($method, 'format_as_') !== 0)
+		if (!str_starts_with($method, 'format_as_'))
 		{
 			throw new \BadMethodCallException("Unsupported method: $method.");
 		}
@@ -591,24 +607,18 @@ class DateTime extends \DateTime implements \JsonSerializable
 		$format = constant(__CLASS__ . '::' . $as);
 		$value = $this->format($format);
 
-		switch ($as)
+		return match ($as)
 		{
-			case 'RFC822':
-			case 'RFC1123':
-				return str_replace('+0000', 'GMT', $value);
-
-			case 'ISO8601':
-				return str_replace('+0000', 'Z', $value);
-
-			default:
-				return $value;
-		}
+			'RFC822', 'RFC1123' => str_replace('+0000', 'GMT', $value),
+			'ISO8601' => str_replace('+0000', 'Z', $value),
+			default => $value,
+		};
 	}
 
 	/**
-	 * Returns the datetime formatted as {@link ISO8601}.
+	 * Returns the datetime formatted as {@see ISO8601}.
 	 *
-	 * @return string The instance rendered as an {@link ISO8601} string, or an empty string if the
+	 * @return string The instance rendered as an {@see ISO8601} string, or an empty string if the
 	 * datetime is empty.
 	 */
 	public function __toString(): string
@@ -617,7 +627,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	}
 
 	/**
-	 * Returns a {@link ISO8601} representation of the instance.
+	 * Returns a {@see ISO8601} representation of the instance.
 	 */
 	public function jsonSerialize(): string
 	{
@@ -625,12 +635,14 @@ class DateTime extends \DateTime implements \JsonSerializable
 	}
 
 	/**
+	 * @inheritdoc
+	 *
 	 * The timezone can be specified as a string.
 	 *
-	 * If the timezone is `local` the timezone returned by {@link date_default_timezone_get()} is
+	 * If the timezone is `local` the timezone returned by {@see date_default_timezone_get()} is
 	 * used instead.
 	 *
-	 * @inheritdoc
+	 * @throws \DateInvalidTimeZoneException
 	 */
 	public function setTimezone($timezone): self
 	{
@@ -650,8 +662,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Modifies the properties of the instance according to the options.
 	 *
-	 * The following properties can be updated: {@link $year}, {@link $month}, {@link $day},
-	 * {@link $hour}, {@link $minute} and {@link $second}.
+	 * The following properties can be updated: {@see $year}, {@see $month}, {@see $day},
+	 * {@see $hour}, {@see $minute} and {@see $second}.
 	 *
 	 * Note: Values exceeding ranges are added to their parent values.
 	 *
@@ -664,10 +676,13 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * $time->change([ 'year' => 2000, 'second' => 0 ]);
 	 * </pre>
 	 *
-	 * @param array{ year: int, month: int, day: int, hour: int, minute: int, second: int, timezone: string } $options
+	 * @param array{ year: int, month: int, day: int, hour: int, minute: int, second: int,
+	 *     timezone: string } $options
 	 * @param bool $cascade If `true`, time options (`hour`, `minute`, `second`) reset
-	 * cascading, so if only the hour is passed, then minute and second is set to 0. If the hour
-	 * and minute is passed, then second is set to 0.
+	 * cascading, so if only the hour is passed, then minute and second are set to 0. If the hour
+	 * and minute are passed, the second is set to 0.
+	 *
+	 * @throws \DateInvalidTimeZoneException
 	 */
 	public function change(array $options, bool $cascade = false): self
 	{
@@ -739,10 +754,13 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Instantiate a new instance with changes properties.
 	 *
-	 * @param array{ year: int, month: int, day: int, hour: int, minute: int, second: int, timezone: string } $options
+	 * @param array{ year: int, month: int, day: int, hour: int, minute: int, second: int,
+	 *     timezone: string } $options
 	 * @param bool $cascade If `true`, time options (`hour`, `minute`, `second`) reset
-	 * cascading, so if only the hour is passed, then minute and second is set to 0. If the hour
-	 * and minute is passed, then second is set to 0.
+	 * cascading, so if only the hour is passed, then minute and second are set to 0. If the hour
+	 * and minute are passed, the second is set to 0.
+	 *
+	 * @throws \DateInvalidTimeZoneException
 	 */
 	public function with(array $options, bool $cascade = false): self
 	{
@@ -752,10 +770,10 @@ class DateTime extends \DateTime implements \JsonSerializable
 	}
 
 	/**
-	 * If the instance represents an empty date and the format is {@link DATE} or {@link DB},
+	 * If the instance represents an empty date and the format is {@see DATE} or {@see DB},
 	 * an empty date is returned, respectively "0000-00-00" and "0000-00-00 00:00:00". Note that
-	 * the time information is discarded for {@link DB}. This only apply to {@link DATE} and
-	 * {@link DB} formats. For instance {@link RSS} will return the following string:
+	 * the time information is discarded for {@see DB}. This only applies to {@see DATE} and
+	 * {@see DB} formats. For instance {@see RSS} will return the following string:
 	 * "Wed, 30 Nov -0001 00:00:00 +0000".
 	 *
 	 * @inheritdoc
@@ -775,7 +793,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @return mixed
 	 *
-	 * @throws RuntimeException if {@link $localizer} is not defined.
+	 * @throws RuntimeException if {@see $localizer} is not defined.
 	 */
 	public function localize(string $locale = 'en')
 	{

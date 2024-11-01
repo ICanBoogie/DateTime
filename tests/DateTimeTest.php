@@ -1,19 +1,11 @@
 <?php
 
-/*
- * This file is part of the ICanBoogie package.
- *
- * (c) Olivier Laviale <olivier.laviale@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Test\ICanBoogie;
 
 use ICanBoogie\DateTime;
 use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\PropertyNotWritable;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Test\ICanBoogie\DateTimeTest\MyDateTime;
 use function array_map;
@@ -27,9 +19,7 @@ final class DateTimeTest extends TestCase
 		date_default_timezone_set('Europe/Paris');
 	}
 
-	/**
-	 * @dataProvider provide_readonly
-	 */
+	#[DataProvider("provide_readonly")]
 	public function test_readonly(string $property): void
 	{
 		$d = DateTime::now();
@@ -39,13 +29,13 @@ final class DateTimeTest extends TestCase
 		$d->{ $property } = null;
 	}
 
-	public function provide_readonly(): array
+	public static function provide_readonly(): array
 	{
 		$properties = <<<EOT
-		quarter week weekday year_day 
+		quarter week weekday year_day
 		is_monday is_tuesday is_wednesday is_thursday is_friday is_saturday is_sunday
-		is_today is_past is_future is_empty 
-		tomorrow yesterday 
+		is_today is_past is_future is_empty
+		tomorrow yesterday
 		monday tuesday wednesday thursday friday saturday sunday
 		utc is_utc
 		local is_local
@@ -170,7 +160,7 @@ final class DateTimeTest extends TestCase
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 	}
 
-	public function provider_test_change_cascade(): array
+	public static function provide_test_change_cascade(): array
 	{
 		return [
 			['2001-01-01 01:02:00', [ 'minute' => 2 ]],
@@ -198,9 +188,7 @@ final class DateTimeTest extends TestCase
 		$this->assertSame($expectedTimezone, $resultTimezone->getName());
 	}
 
-	/**
-	 * @dataProvider provider_test_change_cascade
-	 */
+	#[DataProvider('provide_test_change_cascade')]
 	public function test_change_cascade($expected_datetime, $change_format): void
 	{
 		$datetime = '2001-01-01 01:01:01';
@@ -221,7 +209,7 @@ final class DateTimeTest extends TestCase
 		$this->assertEquals('2015-05-05 01:01:01', $e->as_db);
 	}
 
-	public function provider_test_get_year(): array
+	public static function provide_test_get_year(): array
 	{
 		return [
 			['2012-12-16 15:00:00', 2012],
@@ -230,9 +218,7 @@ final class DateTimeTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider provider_test_get_year
-	 */
+	#[DataProvider('provide_test_get_year')]
 	public function test_get_year($datetime, $expected): void
 	{
 		$d = new DateTime($datetime);
@@ -246,7 +232,7 @@ final class DateTimeTest extends TestCase
 		$this->assertEquals('2009-01-01 01:01:01', $d->as_db);
 	}
 
-	public function provider_test_get_quarter(): array
+	public static function provide_test_get_quarter(): array
 	{
 		return [
 			['2012-01-16 15:00:00', 1],
@@ -264,16 +250,14 @@ final class DateTimeTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider provider_test_get_quarter
-	 */
+	#[DataProvider('provide_test_get_quarter')]
 	public function test_get_quarter($datetime, $expected): void
 	{
 		$d = new DateTime($datetime);
 		$this->assertEquals($expected, $d->quarter);
 	}
 
-	public function provider_test_get_month(): array
+	public static function provide_test_get_month(): array
 	{
 		return [
 			['2012-01-16 15:00:00', 1],
@@ -282,9 +266,7 @@ final class DateTimeTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider provider_test_get_month
-	 */
+	#[DataProvider('provide_test_get_month')]
 	public function test_get_month($datetime, $expected): void
 	{
 		$d = new DateTime($datetime);
@@ -298,7 +280,7 @@ final class DateTimeTest extends TestCase
 		$this->assertEquals('2001-09-01 01:01:01', $d->as_db);
 	}
 
-	public function provider_test_get_week(): array
+	public static function provide_test_get_week(): array
 	{
 		return [
 			['2012-01-01 15:00:00', 52],
@@ -306,16 +288,14 @@ final class DateTimeTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider provider_test_get_week
-	 */
+	#[DataProvider('provide_test_get_week')]
 	public function test_get_week($datetime, $expected): void
 	{
 		$d = new DateTime($datetime);
 		$this->assertEquals($expected, $d->week);
 	}
 
-	public function provider_test_get_year_day(): array
+	public static function provide_test_get_year_day(): array
 	{
 		return [
 			['2012-01-01 15:00:00', 1],
@@ -323,16 +303,14 @@ final class DateTimeTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider provider_test_get_year_day
-	 */
+	#[DataProvider('provide_test_get_year_day')]
 	public function test_get_year_day($datetime, $expected): void
 	{
 		$d = new DateTime($datetime);
 		$this->assertEquals($expected, $d->year_day);
 	}
 
-	public function provider_test_get_weekday(): array
+	public static function provide_test_get_weekday(): array
 	{
 		return [
 			['2012-12-17 15:00:00', 1],
@@ -347,15 +325,15 @@ final class DateTimeTest extends TestCase
 
 	/**
 	 * Sunday must be 7, Monday must be 1.
-	 * @dataProvider provider_test_get_weekday
 	 */
+	#[DataProvider('provide_test_get_weekday')]
 	public function test_get_weekday($datetime, $expected): void
 	{
 		$d = new DateTime($datetime);
 		$this->assertEquals($expected, $d->weekday);
 	}
 
-	public function provider_test_get_day(): array
+	public static function provide_test_get_day(): array
 	{
 		return [
 			['2012-12-16 15:00:00', 16],
@@ -364,9 +342,7 @@ final class DateTimeTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider provider_test_get_day
-	 */
+	#[DataProvider('provide_test_get_day')]
 	public function test_get_day($datetime, $expected): void
 	{
 		$d = new DateTime($datetime);
@@ -558,16 +534,14 @@ final class DateTimeTest extends TestCase
 		$this->assertEquals('2013-02-09 00:00:00', $d->yesterday->as_db);
 	}
 
-	/**
-	 * @dataProvider provide_test_day_instance
-	 */
+	#[DataProvider('provide_test_day_instance')]
 	public function test_day_instance($date, $expected, $day): void
 	{
 		$d = new DateTime($date);
 		$this->assertEquals($expected, $d->$day->as_db);
 	}
 
-	public function provide_test_day_instance(): array
+	public static function provide_test_day_instance(): array
 	{
 		return [
 

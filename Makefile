@@ -1,6 +1,5 @@
 # customization
 
-PACKAGE_NAME = ICanBoogie/DateTime
 PHPUNIT = vendor/bin/phpunit
 
 # do not edit the following lines
@@ -15,7 +14,7 @@ test-dependencies: vendor
 
 .PHONY: test
 test: test-dependencies
-	@$(PHPUNIT)
+	@$(PHPUNIT) $(ARGS)
 
 .PHONY: test-coverage
 test-coverage: test-dependencies
@@ -27,12 +26,15 @@ test-coveralls: test-dependencies
 	@mkdir -p build/logs
 	@XDEBUG_MODE=coverage $(PHPUNIT) --coverage-clover build/logs/clover.xml
 
-.PHONY: test-container-73
-test-container-73:
-	@docker-compose run --rm app73 sh
+.PHONY: test-container
+test-container: test-container-82
+
+.PHONY: test-container-82
+test-container-82:
+	@docker-compose run --rm app82 bash
 	@docker-compose down
 
 .PHONY: test-container-83
 test-container-83:
-	@docker-compose run --rm app83 sh
+	@docker-compose run --rm app83 bash
 	@docker-compose down

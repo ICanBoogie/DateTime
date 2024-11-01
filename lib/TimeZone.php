@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the ICanBoogie package.
- *
- * (c) Olivier Laviale <olivier.laviale@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace ICanBoogie;
 
 /**
@@ -33,8 +24,12 @@ namespace ICanBoogie;
  */
 class TimeZone extends \DateTimeZone
 {
-	static private $utc_time;
-	static private $cache;
+	static private \DateTime $utc_time;
+
+	/**
+	 * @var array<string, TimeZone>
+	 */
+	static private array $cache = [];
 
 	/**
 	 * Returns a timezone according to the specified source.
@@ -45,46 +40,42 @@ class TimeZone extends \DateTimeZone
 	 * the same instance.
 	 *
 	 * @param mixed $source Source of the timezone.
+	 *
+	 * @throws \DateInvalidTimeZoneException
 	 */
-	static public function from($source): self
+	static public function from(self|\DateTimeZone|\Stringable|string $source): self
 	{
 		if ($source instanceof self)
 		{
 			return $source;
 		}
-		else if ($source instanceof \DateTimeZone)
+
+		if ($source instanceof \DateTimeZone)
 		{
 			$source = $source->getName();
 		}
 
 		$source = (string) $source;
 
-		if (empty(self::$cache[$source]))
-		{
-			self::$cache[$source] = new static($source);
-		}
-
-		return self::$cache[$source];
+		return self::$cache[$source] ??= new self($source);
 	}
 
 	/**
 	 * The name of the timezone.
 	 *
 	 * Note: This variable is only used to provide information during debugging.
-	 *
-	 * @var string
 	 */
-	private $name;
+	private string $name;
 
 	/**
 	 * Location of the timezone.
-	 *
-	 * @var TimeZoneLocation
 	 */
-	private $location;
+	private TimeZoneLocation $location;
 
 	/**
-	 * Initializes the {@link $name} property.
+	 * Initializes the {@see $name} property.
+	 *
+	 * @throws \DateInvalidTimeZoneException
 	 */
 	public function __construct(string $timezone)
 	{
@@ -92,7 +83,7 @@ class TimeZone extends \DateTimeZone
 
 		$name = $this->getName();
 
-		if ($name == 'utc')
+		if ($name === 'utc')
 		{
 			$name = 'UTC';
 		}
@@ -101,11 +92,10 @@ class TimeZone extends \DateTimeZone
 	}
 
 	/**
-	 * Returns the {@link $location}, {@link $name} and {@link $offset} properties.
+	 * Returns the {@see $location}, {@see $name} and {@see $offset} properties.
 	 *
-	 * @throws PropertyNotDefined in attempt to get an unsupported  property.
-	 *
-	 * @inheritdoc
+	 * @throws PropertyNotDefined in an attempt to get an unsupported property.
+	 * @throws \DateMalformedStringException
 	 */
 	public function __get(string $property)
 	{
@@ -113,12 +103,7 @@ class TimeZone extends \DateTimeZone
 		{
 			case 'location':
 
-				if (!$this->location)
-				{
-					$this->location = TimeZoneLocation::from($this);
-				}
-
-				return $this->location;
+				return $this->location ??= TimeZoneLocation::from($this);
 
 			case 'name':
 
@@ -126,12 +111,7 @@ class TimeZone extends \DateTimeZone
 
 			case 'offset':
 
-				$utc_time = self::$utc_time;
-
-				if (!$utc_time)
-				{
-					self::$utc_time = $utc_time = new \DateTime('now', new \DateTimeZone('utc'));
-				}
+				$utc_time = self::$utc_time ??= new \DateTime('now', new \DateTimeZone('utc'));
 
 				return $this->getOffset($utc_time);
 		}

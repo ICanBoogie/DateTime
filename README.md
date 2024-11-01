@@ -1,20 +1,20 @@
 # DateTime
 
 [![Release](https://img.shields.io/packagist/v/ICanBoogie/DateTime.svg)](https://packagist.org/packages/icanboogie/datetime)
-[![Coverage Status](https://coveralls.io/repos/github/ICanBoogie/DateTime/badge.svg?branch=2.0)](https://coveralls.io/github/ICanBoogie/DateTime?branch=2.0)
-[![Packagist](https://img.shields.io/packagist/dm/icanboogie/datetime.svg)](https://packagist.org/packages/icanboogie/datetime)
+[![Code Coverage](https://coveralls.io/repos/github/ICanBoogie/DateTime/badge.svg?branch=3.0)](https://coveralls.io/github/ICanBoogie/DateTime?branch=3.0)
+[![Downloads](https://img.shields.io/packagist/dm/icanboogie/datetime.svg)](https://packagist.org/packages/icanboogie/datetime)
 
 This package extends the features of PHP [DateTime](http://www.php.net/manual/en/class.datetime.php)
 and [DateTimeZone](http://www.php.net/manual/en/class.datetimezone.php) classes to ease the
-handling of times, time zones and time zone locations. Getting the UTC or local representation of
+handling of times, time zones, and time zone locations. Getting the UTC or local representation of
 a time, formatting the time to a predefined format, accessing common properties such as day, month,
-year, quarter and more has been made especially easy. Also, all instances can be used as strings.
+year, quarter, and more has been made especially easy. Also, all instances can be used as strings.
 
 
 
 #### Installation
 
-```bash
+```shell
 composer require icanboogie/datetime
 ```
 
@@ -104,14 +104,13 @@ echo $time;                             // ""
 
 ### Acknowledgements
 
-The implementation of the [DateTime][] class is vastly inspired by Ruby's
-[Time](http://www.ruby-doc.org/core-1.9.3/Time.html) class.
+Ruby's [Time](http://www.ruby-doc.org/core-1.9.3/Time.html) class greatly inspired the implementation of the [DateTime][] class.
 
 
 
 
 
-## Day of week
+## Day of the week
 
 ```php
 <?php
@@ -159,9 +158,12 @@ $time->sunday->weekday;                      // 7
 
 ## `now()` and `right_now()`
 
-`DateTime::now()` returns a new instance with the current local time and the local time zone. Subsequent calls return equal times, event if they are minutes apart. _now_ actually refers to the `REQUEST_TIME` or, if it is not available, to the first time the method was invoked.
+`DateTime::now()` returns a new instance with the current local time and the local time zone.
+Further calls return equal times, event if they're minutes apart. _now_ actually refers to the
+`REQUEST_TIME` or, if it is not available, to the first time the method was invoked.
 
-On the other hand, `DateTime::right_now()` returns a new instance with the _real_ current local time and the local time zone.
+On the other hand, `DateTime::right_now()` returns a new instance with the _real_ current local time
+and the local time zone.
 
 The following example demonstrates the difference:
 
@@ -210,7 +212,7 @@ $d1 >= $d2; // false
 $d2 <= $d1; // false
 ```
 
-To determine if an instance is between two other instances you just need two comparisons:
+To determine if an instance is between two other instances, you need two comparisons:
 
 ```php
 <?php
@@ -222,8 +224,8 @@ $now = DateTime::now();
 $now > $now->yesterday && $now < $now->tomorrow; // true
 ```
 
-To determine which instance is the most recent, or the most late, simply use PHP's `min()`
-and `max()` functions:
+To determine which instance is the most recent, or the latest, use PHP's `min()` and `max()`
+functions:
 
 ```php
 <?php
@@ -244,8 +246,8 @@ $tomorrow  === max($now, $yesterday, $tomorrow); // true
 
 ## DateTime and JSON
 
-Starting with v1.1.0, [DateTime][] instances implements the [JsonSerializable interface][] and
-are serialized into ISO-8601 strings.
+Starting with v1.1.0, [DateTime][] implements the [JsonSerializable interface][] and serializes into
+ISO-8601 strings.
 
 ```php
 <?php
@@ -292,7 +294,9 @@ echo DateTime::from("2015-05-05 12:13:14")->change([ 'hour' => 13 ], true);   //
 
 ## Creating a new instance with changed properties
 
-The `with()` method is similar to the `change()` method as it is used to define multiple properties at once, the difference is that the method creates a new instance, leaving the original instance intact.
+The `with()` method is similar to the `change()` method as it is used to define multiple properties
+at once, the difference is that the method creates a new instance, leaving the original instance
+intact.
 
 ```php
 <?php
@@ -330,7 +334,7 @@ use ICanBoogie\DateTime;
 
 DateTime::$localizer = function(DateTime $instance, $locale) use ($repository) {
 
-	return $repository->locales[$locale]->localize($instance);
+    return $repository->locales[$locale]->localize($instance);
 
 };
 
@@ -353,13 +357,20 @@ echo $date->localize('fr')->as_medium;        // 5 mai 2015 23:13:05
 
 The project is continuously tested by [GitHub actions](https://github.com/ICanBoogie/DateTime/actions).
 
-[![Tests](https://github.com/ICanBoogie/DateTime/actions/workflows/test.yml/badge.svg?branch=2.0)](https://github.com/ICanBoogie/DateTime/actions/workflows/test.yml)
+[![Tests](https://github.com/ICanBoogie/DateTime/actions/workflows/test.yml/badge.svg?branch=3.0)](https://github.com/ICanBoogie/DateTime/actions/workflows/test.yml)
+
+
+
+## Code of Conduct
+
+This project adheres to a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in
+this project and its community, you're expected to uphold this code.
 
 
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+See [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 
 

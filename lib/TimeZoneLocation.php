@@ -1,17 +1,6 @@
 <?php
 
-/*
- * This file is part of the ICanBoogie package.
- *
- * (c) Olivier Laviale <olivier.laviale@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace ICanBoogie;
-
-use RuntimeException;
 
 /**
  * Representation of a time zone location.
@@ -28,90 +17,63 @@ use RuntimeException;
  * echo $location->country_code; // FR
  * echo $location->latitude;     // 48.86667
  * echo $location->longitude;    // 2.33333
- *
- * $location->latitude = true;   // throws ICanBoogie\PropertyNotWritable
  * </pre>
- *
- * @property-read string $country_code The country code of the location.
- * @property-read float $latitude The latitude of the location.
- * @property-read float $longitude The longitude of the location.
- * @property-read string $comments Comments on the location.
  */
 class TimeZoneLocation
 {
-	static private $cache;
+	/**
+	 * @var array<string, self>
+	 */
+	private static array $cache;
 
 	/**
-	 * Creates an instance from a {@link \DateTimeZone} instance.
+	 * Creates an instance from a {@see \DateTimeZone} instance.
 	 */
 	static public function from(\DateTimeZone $zone): self
 	{
 		$hash = spl_object_hash($zone);
 
-		if (empty(self::$cache[$hash]))
-		{
-			self::$cache[$hash] = new static($zone->getLocation());
-		}
-
-		return self::$cache[$hash];
-	}
-
-	private $location;
-
-	/**
-	 * Initializes the {@link $location} property.
-	 *
-	 * @param array $location Location information provided by {@link \DateTimeZone::getLocation()}.
-	 */
-	public function __construct(array $location)
-	{
-		$this->location = $location;
+		return self::$cache[$hash] ??= new static($zone->getLocation());
 	}
 
 	/**
-	 * Returns the {@link $country_code}, {@link $latitude}, {@link $longitude} and
-	 * {@link $comments} properties.
-	 *
-	 * @throws PropertyNotDefined in attempt to get an unsupported property.
+	 * The country code of the location.
 	 */
-	public function __get($property)
-	{
-		if (isset($this->location[$property]))
-		{
-			return $this->location[$property];
-		}
-
-		if (class_exists(PropertyNotDefined::class))
-		{
-			throw new PropertyNotDefined([ $property, $this ]);
-		}
-		else
-		{
-			throw new RuntimeException("Property is not defined: $property.");
-		}
-	}
+	public readonly string $country_code;
 
 	/**
-	 * @throws PropertyNotWritable in attempt to set an unsupported property.
-	 *
-	 * @inheritdoc
+	 * The latitude of the location.
 	 */
-	public function __set($property, $value)
-	{
-		if (class_exists(PropertyNotWritable::class))
-		{
-			throw new PropertyNotWritable([ $property, $this ]);
-		}
-		else
-		{
-			throw new RuntimeException("Property is not writable: $property.");
-		}
+	public readonly float $latitude;
+
+	/**
+	 * The longitude of the location.
+	 */
+	public readonly float $longitude;
+
+	/**
+	 * Comments on the location.
+	 */
+	public readonly string $comments;
+
+	/**
+	 * @param array{
+	 *     country_code: string,
+	 *     latitude: float,
+	 *     longitude: float,
+	 *     comments: string } $location Location information provided by {@see \DateTimeZone::getLocation()}.
+	 */
+	public function __construct(
+		public readonly array $location
+	) {
+		$this->country_code = $location['country_code'];
+		$this->latitude = $location['latitude'];
+		$this->longitude = $location['longitude'];
+		$this->comments = $location['comments'];
 	}
 
 	/**
 	 * Returns the instance formatted as "{$country_code},{$latitude},{$longitude}".
-	 *
-	 * @return string
 	 */
 	public function __toString(): string
 	{

@@ -1,5 +1,29 @@
 # CHANGELOG
 
+## v3.0
+
+### New Requirements
+
+Requires PHP 8.2+
+
+### New features
+
+None
+
+### Backward Incompatible Changes
+
+None
+
+### Deprecated Features
+
+None
+
+### Other Changes
+
+None
+
+
+
 ## v2.0
 
 ### New Requirements

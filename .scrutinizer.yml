@@ -1,0 +1,12 @@
+build:
+  nodes:
+    analysis:
+      tests:
+        override:
+        - php-scrutinizer-run
+  environment:
+    php:
+      version: "8.2"
+filter:
+  excluded_paths:
+  - 'tests/*'
