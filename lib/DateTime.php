@@ -198,7 +198,6 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * DateTime::from('now');
 	 * </pre>
 	 *
-	 * @param self|\DateTime|string $source
 	 * @param DateTimeZone|string|null $timezone The time zone to use to create the time.
 	 * The value is ignored if the source is an instance of {@see \DateTime}.
 	 *
@@ -206,7 +205,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * @throws \DateMalformedStringException
 	 */
 	static public function from(
-		self|\DateTime|string $source,
+		self|\DateTimeInterface|string $source,
 		DateTimeZone|string|null $timezone = null
 	): static
 	{
@@ -215,7 +214,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 			return clone $source;
 		}
 
-		if ($source instanceof \DateTime)
+		if ($source instanceof \DateTimeInterface)
 		{
 			return new static($source->format('Y-m-d\TH:i:s.u'), $source->getTimezone());
 		}

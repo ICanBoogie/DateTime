@@ -84,6 +84,10 @@ final class DateTimeTest extends TestCase
 		$this->assertTrue($d->is_empty);
 	}
 
+	/**
+	 * @throws \DateInvalidTimeZoneException
+	 * @throws \DateMalformedStringException
+	 */
 	public function test_from()
 	{
 		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('Europe/Paris')));
@@ -95,6 +99,10 @@ final class DateTimeTest extends TestCase
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 
 		$d = DateTime::from(new \DateTime('2001-01-01 01:01:01', new \DateTimeZone('UTC')));
+		$this->assertEquals('UTC', $d->zone->name);
+		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
+
+		$d = DateTime::from(new \DateTimeImmutable('2001-01-01 01:01:01', new \DateTimeZone('UTC')));
 		$this->assertEquals('UTC', $d->zone->name);
 		$this->assertEquals('2001-01-01 01:01:01', $d->as_db);
 
