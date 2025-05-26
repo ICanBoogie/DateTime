@@ -1,10 +1,10 @@
-# Migration
+# CHANGELOG
 
-## v1.x to v2.x
+## v2.0
 
 ### New Requirements
 
-Requires PHP 7.3+
+Requires PHP >=7.3 <8.4, for PHP 8.4+ use v3.0
 
 ### New features
 

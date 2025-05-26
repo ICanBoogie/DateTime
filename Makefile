@@ -32,7 +32,7 @@ test-container-73:
 	@docker-compose run --rm app73 sh
 	@docker-compose down
 
-.PHONY: test-container-81
-test-container-81:
-	@docker-compose run --rm app81 sh
+.PHONY: test-container-83
+test-container-83:
+	@docker-compose run --rm app83 sh
 	@docker-compose down
