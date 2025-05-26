@@ -2,17 +2,11 @@ ARG PHP_VERSION=8.2
 FROM php:${PHP_VERSION}-cli-bookworm
 
 RUN <<-EOF
-    docker-php-ext-enable opcache
-
-    PHP_VERSION=$(php -v | grep -oP '(?<=PHP )\d+\.\d+')
-
-    if [[ $PHP_VERSION < "8.4" ]]; then
-    apt-get update
+	apt-get update
 	apt-get install -y autoconf pkg-config
 	pecl channel-update pecl.php.net
 	pecl install xdebug
-        docker-php-ext-enable xdebug
-    fi
+	docker-php-ext-enable opcache xdebug
 EOF
 
 RUN <<-EOF

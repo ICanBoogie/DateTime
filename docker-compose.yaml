@@ -26,7 +26,7 @@ services:
     build:
       context: .
       args:
-        PHP_VERSION: "8.4.0RC3"
+        PHP_VERSION: "8.4"
     environment:
       PHP_IDE_CONFIG: "serverName=icanboogie-datetime"
     volumes:
