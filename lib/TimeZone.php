@@ -34,12 +34,12 @@ class TimeZone extends \DateTimeZone
 	/**
 	 * Returns a timezone according to the specified source.
 	 *
-	 * If the source is already an instance of {@link Zone}, it is returned as is.
+	 * If the source is already an instance of {@see Zone}, it is returned as is.
 	 *
 	 * Note: Instances created by the method are shared. That is, equivalent sources yield
 	 * the same instance.
 	 *
-	 * @param mixed $source Source of the timezone.
+	 * @param self|\DateTimeZone|\Stringable|string $source Source of the timezone.
 	 *
 	 * @throws \DateInvalidTimeZoneException
 	 */
@@ -94,10 +94,9 @@ class TimeZone extends \DateTimeZone
 	/**
 	 * Returns the {@see $location}, {@see $name} and {@see $offset} properties.
 	 *
-	 * @throws PropertyNotDefined in an attempt to get an unsupported property.
 	 * @throws \DateMalformedStringException
 	 */
-	public function __get(string $property)
+	public function __get(string $property): mixed
 	{
 		switch ($property)
 		{

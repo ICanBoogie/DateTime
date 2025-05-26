@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v3.0
+## v3.0.0
 
 ### New Requirements
 
@@ -20,11 +20,12 @@ None
 
 ### Other Changes
 
-None
+- Compatible with PHP 8.4.
+- Add static analysis with PHPStan.
 
 
 
-## v2.0
+## v2.0.0
 
 ### New Requirements
 

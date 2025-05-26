@@ -19,7 +19,7 @@ namespace ICanBoogie;
  * echo $location->longitude;    // 2.33333
  * </pre>
  */
-class TimeZoneLocation
+final class TimeZoneLocation
 {
 	/**
 	 * @var array<string, self>
@@ -32,8 +32,10 @@ class TimeZoneLocation
 	static public function from(\DateTimeZone $zone): self
 	{
 		$hash = spl_object_hash($zone);
+		$location = $zone->getLocation()
+			?: throw new \RunTimeException("Unable to get location for zone $hash");
 
-		return self::$cache[$hash] ??= new static($zone->getLocation());
+		return self::$cache[$hash] ??= new self($location);
 	}
 
 	/**

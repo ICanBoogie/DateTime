@@ -181,7 +181,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	/**
 	 * Callable used to create localized instances.
 	 *
-	 * @var callable
+	 * @var callable|null
 	 */
 	static public $localizer = null;
 
@@ -238,9 +238,12 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 		if (!$now)
 		{
-			$now = empty($_SERVER['REQUEST_TIME'])
-				? new static()
-				: (new static('@' . $_SERVER['REQUEST_TIME']))->local;
+			/** @var int|null $time */
+			$time = $_SERVER['REQUEST_TIME'] ?? null;
+
+			$now = $time
+				? (new static("@$time"))->local
+				: new static();
 		}
 
 		return clone $now;
@@ -251,9 +254,9 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * **Note:** Subsequent calls may return different times.
 	 */
-	static public function right_now(): self
+	static public function right_now(): static
 	{
-		return new static;
+		return new static();
 	}
 
 	/**
@@ -311,7 +314,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 		parent::__construct($time, $timezone);
 	}
 
-	public function __get($property)
+	public function __get(string $property): mixed
 	{
 		if (str_starts_with($property, 'as_'))
 		{
@@ -442,8 +445,6 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Tuesday of the week.
-	 *
-	 * @throws \DateMalformedStringException
 	 */
 	private function get_tuesday(): self
 	{
@@ -452,8 +453,6 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Wednesday of the week.
-	 *
-	 * @throws \DateMalformedStringException
 	 */
 	private function get_wednesday(): self
 	{
@@ -462,8 +461,6 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Thursday of the week.
-	 *
-	 * @throws \DateMalformedStringException
 	 */
 	private function get_thursday(): self
 	{
@@ -472,8 +469,6 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Friday of the week.
-	 *
-	 * @throws \DateMalformedStringException
 	 */
 	private function get_friday(): self
 	{
@@ -482,8 +477,6 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Saturday of the week.
-	 *
-	 * @throws \DateMalformedStringException
 	 */
 	private function get_saturday(): self
 	{
@@ -492,8 +485,6 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Returns Sunday of the week.
-	 *
-	 * @throws \DateMalformedStringException
 	 */
 	private function get_sunday(): self
 	{
@@ -521,7 +512,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * @throws \DateInvalidTimeZoneException
 	 */
-	public function __set($property, $value): void
+	public function __set(string $property, mixed $value): void
 	{
 		switch ($property)
 		{
@@ -531,14 +522,17 @@ class DateTime extends \DateTime implements \JsonSerializable
 			case 'hour':
 			case 'minute':
 			case 'second':
+				/** @phpstan-ignore-next-line */
 				$this->change([ $property => $value ]);
 				return;
 
 			case 'timestamp':
+				/** @phpstan-ignore-next-line */
 				$this->setTimestamp($value);
 				return;
 
 			case 'zone':
+				/** @phpstan-ignore-next-line */
 				$this->setTimezone($value);
 				return;
 		}
@@ -569,6 +563,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 * is replaced by `Z` according to the specs.
 	 *
 	 * @throws \BadMethodCallException in attempt to call an unsupported method.
+	 *
+	 * @phpstan-ignore-next-line
 	 */
 	public function __call($method, $arguments)
 	{
@@ -579,6 +575,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 		$as = strtoupper(substr($method, strlen('format_as_')));
 		$format = constant(__CLASS__ . '::' . $as);
+		assert(is_string($format));
 		$value = $this->format($format);
 
 		return match ($as)
@@ -615,6 +612,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 *
 	 * If the timezone is `local` the timezone returned by {@see date_default_timezone_get()} is
 	 * used instead.
+	 *
+	 * @param DateTimeZone|string $timezone
 	 *
 	 * @throws \DateInvalidTimeZoneException
 	 */
@@ -674,15 +673,13 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 		$options = array_intersect_key($options + $default_options, $default_options);
 
-		$year = null;
-		$month = null;
-		$day = null;
-		$hour = null;
-		$minute = null;
-		$second = null;
-		$timezone = null;
-
-		extract($options);
+		$year = $options['year'] ?? null;
+		$month = $options['month'] ?? null;
+		$day = $options['day'] ?? null;
+		$hour = $options['hour'] ?? null;
+		$minute = $options['minute'] ?? null;
+		$second = $options['second'] ?? null;
+		$timezone = $options['timezone'] ?? null;
 
 		if ($timezone !== null)
 		{
@@ -771,12 +768,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 	 */
 	public function localize(string $locale = 'en')
 	{
-		$localizer = self::$localizer;
-
-		if (!$localizer)
-		{
-			throw new \RuntimeException("Localizer is not defined yet.");
-		}
+		$localizer = self::$localizer
+			?? throw new \RuntimeException("Localizer is not defined yet.");
 
 		return $localizer($this, $locale);
 	}

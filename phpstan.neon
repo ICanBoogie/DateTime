@@ -1,0 +1,14 @@
+# $schema: https://phpstan.olvlvl.com/schema.json
+parameters:
+  level: 9
+  paths:
+    - lib
+  ignoreErrors:
+    - identifier: new.static
+      path: lib/DateTime.php
+    - message: "/DateMalformedStringException is not subtype of Throwable/"
+      reportUnmatched: false
+    - message: "/DateInvalidTimeZoneException is not subtype of Throwable/"
+      reportUnmatched: false
+    - message: "/::provide_.+ iterable type array/"
+      reportUnmatched: false
