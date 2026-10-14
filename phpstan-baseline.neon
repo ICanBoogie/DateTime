@@ -1,0 +1,193 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Binary operation "\." between ''@'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Cannot access property \$as_db on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Expression "\$date\-\>\{\$property\}" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_change_cascade\(\) has parameter \$change_format with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_change_cascade\(\) has parameter \$expected_datetime with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_day_instance\(\) has parameter \$date with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_day_instance\(\) has parameter \$day with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_day_instance\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_day\(\) has parameter \$datetime with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_day\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_month\(\) has parameter \$datetime with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_month\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_quarter\(\) has parameter \$datetime with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_quarter\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_week\(\) has parameter \$datetime with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_week\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_weekday\(\) has parameter \$datetime with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_weekday\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_year\(\) has parameter \$datetime with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_year\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_year_day\(\) has parameter \$datetime with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Method Test\\ICanBoogie\\DateTimeTest\:\:test_get_year_day\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Parameter \#1 \$options of method ICanBoogie\\DateTime\:\:change\(\) expects array\{year\?\: int, month\?\: int, day\?\: int, hour\?\: int, minute\?\: int, second\?\: int, timezone\?\: string\}, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Parameter \#1 \$time of class ICanBoogie\\DateTime constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 8
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, list\<string\>\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Property ICanBoogie\\DateTime\:\:\$zone \(ICanBoogie\\TimeZone\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 7
+			path: tests/DateTimeTest.php
+
+		-
+			message: '#^Cannot access offset ''comments'' on array\{country_code\: string, latitude\: float, longitude\: float, comments\: string\}\|false\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/TimeZoneLocationTest.php
+
+		-
+			message: '#^Cannot access offset ''country_code'' on array\{country_code\: string, latitude\: float, longitude\: float, comments\: string\}\|false\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/TimeZoneLocationTest.php
+
+		-
+			message: '#^Cannot access offset ''latitude'' on array\{country_code\: string, latitude\: float, longitude\: float, comments\: string\}\|false\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/TimeZoneLocationTest.php
+
+		-
+			message: '#^Cannot access offset ''longitude'' on array\{country_code\: string, latitude\: float, longitude\: float, comments\: string\}\|false\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/TimeZoneLocationTest.php
+
+		-
+			message: '#^Parameter \#1 \$location of class ICanBoogie\\TimeZoneLocation constructor expects array\{country_code\: string, latitude\: float, longitude\: float, comments\: string\}, array\{country_code\: string, latitude\: float, longitude\: float, comments\: string\}\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/TimeZoneLocationTest.php
+
+		-
+			message: '#^Expression "\$z1\-\>\{\$property\}" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: tests/TimeZoneTest.php

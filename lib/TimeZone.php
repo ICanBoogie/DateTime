@@ -24,107 +24,103 @@ namespace ICanBoogie;
  */
 class TimeZone extends \DateTimeZone
 {
-	static private \DateTime $utc_time;
+    private static \DateTime $utc_time;
 
-	/**
-	 * @var array<string, TimeZone>
-	 */
-	static private array $cache = [];
+    /**
+     * @var array<string, TimeZone>
+     */
+    private static array $cache = [];
 
-	/**
-	 * Returns a timezone according to the specified source.
-	 *
-	 * If the source is already an instance of {@see Zone}, it is returned as is.
-	 *
-	 * Note: Instances created by the method are shared. That is, equivalent sources yield
-	 * the same instance.
-	 *
-	 * @param self|\DateTimeZone|\Stringable|string $source Source of the timezone.
-	 *
-	 * @throws \DateInvalidTimeZoneException
-	 */
-	static public function from(self|\DateTimeZone|\Stringable|string $source): self
-	{
-		if ($source instanceof self)
-		{
-			return $source;
-		}
+    /**
+     * Returns a timezone according to the specified source.
+     *
+     * If the source is already an instance of {@see Zone}, it is returned as is.
+     *
+     * Note: Instances created by the method are shared. That is, equivalent sources yield
+     * the same instance.
+     *
+     * @param self|\DateTimeZone|\Stringable|string $source Source of the timezone.
+     *
+     * @throws \DateInvalidTimeZoneException
+     */
+    public static function from(self|\DateTimeZone|\Stringable|string $source): self
+    {
+        if ($source instanceof self) {
+            return $source;
+        }
 
-		if ($source instanceof \DateTimeZone)
-		{
-			$source = $source->getName();
-		}
+        if ($source instanceof \DateTimeZone) {
+            $source = $source->getName();
+        }
 
-		$source = (string) $source;
+        $source = (string) $source;
 
-		return self::$cache[$source] ??= new self($source);
-	}
+        return self::$cache[$source] ??= new self($source);
+    }
 
-	/**
-	 * The name of the timezone.
-	 *
-	 * Note: This variable is only used to provide information during debugging.
-	 */
-	private string $name;
+    /**
+     * The name of the timezone.
+     *
+     * Note: This variable is only used to provide information during debugging.
+     */
+    private string $name;
 
-	/**
-	 * Location of the timezone.
-	 */
-	private TimeZoneLocation $location;
+    /**
+     * Location of the timezone.
+     */
+    private TimeZoneLocation $location;
 
-	/**
-	 * Initializes the {@see $name} property.
-	 *
-	 * @throws \DateInvalidTimeZoneException
-	 */
-	public function __construct(string $timezone)
-	{
-		parent::__construct($timezone);
+    /**
+     * Initializes the {@see $name} property.
+     *
+     * @throws \DateInvalidTimeZoneException
+     */
+    public function __construct(string $timezone)
+    {
+        parent::__construct($timezone);
 
-		$name = $this->getName();
+        $name = $this->getName();
 
-		if ($name === 'utc')
-		{
-			$name = 'UTC';
-		}
+        if ($name === 'utc') {
+            $name = 'UTC';
+        }
 
-		$this->name = $name;
-	}
+        $this->name = $name;
+    }
 
-	/**
-	 * Returns the {@see $location}, {@see $name} and {@see $offset} properties.
-	 *
-	 * @throws \DateMalformedStringException
-	 */
-	public function __get(string $property): mixed
-	{
-		switch ($property)
-		{
-			case 'location':
+    /**
+     * Returns the {@see $location}, {@see $name} and {@see $offset} properties.
+     *
+     * @throws \DateMalformedStringException
+     */
+    public function __get(string $property): mixed
+    {
+        switch ($property) {
+            case 'location':
 
-				return $this->location ??= TimeZoneLocation::from($this);
+                return $this->location ??= TimeZoneLocation::from($this);
 
-			case 'name':
+            case 'name':
 
-				return $this->name;
+                return $this->name;
 
-			case 'offset':
+            case 'offset':
 
-				$utc_time = self::$utc_time ??= new \DateTime('now', new \DateTimeZone('utc'));
+                $utc_time = self::$utc_time ??= new \DateTime('now', new \DateTimeZone('utc'));
 
-				return $this->getOffset($utc_time);
-		}
+                return $this->getOffset($utc_time);
+        }
 
-		throw new \LogicException(
-			sprintf("Undefined property: %s::%s", $this::class, $property),
-		);
-	}
+        throw new \LogicException(
+            sprintf("Undefined property: %s::%s", $this::class, $property),
+        );
+    }
 
-	/**
-	 * Returns the name of the timezone.
-	 */
-	public function __toString(): string
-	{
-		return $this->name;
-	}
+    /**
+     * Returns the name of the timezone.
+     */
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 }

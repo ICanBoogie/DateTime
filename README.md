@@ -359,6 +359,7 @@ The project is continuously tested by [GitHub actions](https://github.com/ICanBo
 
 [![Tests](https://github.com/ICanBoogie/DateTime/actions/workflows/test.yml/badge.svg?branch=3.0)](https://github.com/ICanBoogie/DateTime/actions/workflows/test.yml)
 [![Static Analysis](https://github.com/ICanBoogie/DateTime/actions/workflows/static-analysis.yml/badge.svg?branch=3.0)](https://github.com/ICanBoogie/DateTime/actions/workflows/static-analysis.yml)
+[![Code Style](https://github.com/ICanBoogie/DateTime/actions/workflows/code-style.yml/badge.svg?branch=3.0)](https://github.com/ICanBoogie/DateTime/actions/workflows/code-style.yml)
 
 
 

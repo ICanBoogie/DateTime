@@ -21,64 +21,64 @@ namespace ICanBoogie;
  */
 final class TimeZoneLocation
 {
-	/**
-	 * @var array<string, self>
-	 */
-	private static array $cache;
+    /**
+     * @var array<string, self>
+     */
+    private static array $cache;
 
-	/**
-	 * Creates an instance from a {@see \DateTimeZone} instance.
-	 */
-	static public function from(\DateTimeZone $zone): self
-	{
-		$hash = spl_object_hash($zone);
-		$location = $zone->getLocation()
-			?: throw new \RunTimeException("Unable to get location for zone $hash");
+    /**
+     * Creates an instance from a {@see \DateTimeZone} instance.
+     */
+    public static function from(\DateTimeZone $zone): self
+    {
+        $hash = spl_object_hash($zone);
+        $location = $zone->getLocation()
+            ?: throw new \RunTimeException("Unable to get location for zone $hash");
 
-		return self::$cache[$hash] ??= new self($location);
-	}
+        return self::$cache[$hash] ??= new self($location);
+    }
 
-	/**
-	 * The country code of the location.
-	 */
-	public readonly string $country_code;
+    /**
+     * The country code of the location.
+     */
+    public readonly string $country_code;
 
-	/**
-	 * The latitude of the location.
-	 */
-	public readonly float $latitude;
+    /**
+     * The latitude of the location.
+     */
+    public readonly float $latitude;
 
-	/**
-	 * The longitude of the location.
-	 */
-	public readonly float $longitude;
+    /**
+     * The longitude of the location.
+     */
+    public readonly float $longitude;
 
-	/**
-	 * Comments on the location.
-	 */
-	public readonly string $comments;
+    /**
+     * Comments on the location.
+     */
+    public readonly string $comments;
 
-	/**
-	 * @param array{
-	 *     country_code: string,
-	 *     latitude: float,
-	 *     longitude: float,
-	 *     comments: string } $location Location information provided by {@see \DateTimeZone::getLocation()}.
-	 */
-	public function __construct(
-		public readonly array $location
-	) {
-		$this->country_code = $location['country_code'];
-		$this->latitude = $location['latitude'];
-		$this->longitude = $location['longitude'];
-		$this->comments = $location['comments'];
-	}
+    /**
+     * @param array{
+     *     country_code: string,
+     *     latitude: float,
+     *     longitude: float,
+     *     comments: string } $location Location information provided by {@see \DateTimeZone::getLocation()}.
+     */
+    public function __construct(
+        public readonly array $location
+    ) {
+        $this->country_code = $location['country_code'];
+        $this->latitude = $location['latitude'];
+        $this->longitude = $location['longitude'];
+        $this->comments = $location['comments'];
+    }
 
-	/**
-	 * Returns the instance formatted as "{$country_code},{$latitude},{$longitude}".
-	 */
-	public function __toString(): string
-	{
-		return "$this->country_code,$this->latitude,$this->longitude";
-	}
+    /**
+     * Returns the instance formatted as "{$country_code},{$latitude},{$longitude}".
+     */
+    public function __toString(): string
+    {
+        return "$this->country_code,$this->latitude,$this->longitude";
+    }
 }

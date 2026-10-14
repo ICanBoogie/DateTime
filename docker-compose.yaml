@@ -6,30 +6,23 @@ services:
       args:
         PHP_VERSION: "8.2"
     environment:
-      PHP_IDE_CONFIG: "serverName=icanboogie-datetime"
+      PHP_IDE_CONFIG: 'serverName=icanboogie-datetime'
     volumes:
       - .:/app:delegated
-      - ~/.composer:/root/.composer:delegated
+      - composer-cache:/root/.composer
     working_dir: /app
-  app83:
+
+  app85:
     build:
       context: .
       args:
-        PHP_VERSION: "8.3"
+        PHP_VERSION: "8.5"
     environment:
-      PHP_IDE_CONFIG: "serverName=icanboogie-datetime"
+      PHP_IDE_CONFIG: 'serverName=icanboogie-datetime'
     volumes:
       - .:/app:delegated
-      - ~/.composer:/root/.composer:delegated
+      - composer-cache:/root/.composer
     working_dir: /app
-  app84:
-    build:
-      context: .
-      args:
-        PHP_VERSION: "8.4"
-    environment:
-      PHP_IDE_CONFIG: "serverName=icanboogie-datetime"
-    volumes:
-      - .:/app:delegated
-      - ~/.composer:/root/.composer:delegated
-    working_dir: /app
+
+volumes:
+  composer-cache: ~

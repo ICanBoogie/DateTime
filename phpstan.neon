@@ -1,8 +1,14 @@
 # $schema: https://phpstan.olvlvl.com/schema.json
+includes:
+  - phpstan-baseline.neon
+
 parameters:
-  level: 9
+  level: max
   paths:
     - lib
+    - tests
+  excludePaths:
+    - tests/sandbox/*
   ignoreErrors:
     - identifier: new.static
       path: lib/DateTime.php

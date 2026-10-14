@@ -1,0 +1,21 @@
+name: code-style
+
+on:
+- push
+- pull_request
+
+jobs:
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        coverage: none
+        php-version: "8.4"
+        ini-values: memory_limit=-1
+        tools: php-cs-fixer, cs2pr
+    - name: Check code style
+      run: php-cs-fixer check --format=checkstyle | cs2pr
